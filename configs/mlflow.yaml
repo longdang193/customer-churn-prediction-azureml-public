@@ -1,0 +1,5 @@
+# MLflow Configuration
+
+mlflow:
+  experiment_name: "train-prod"
+

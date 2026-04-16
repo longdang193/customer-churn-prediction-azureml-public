@@ -1,0 +1,30 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: promote_model
+version: 1
+type: command
+
+inputs:
+  candidate_metrics:
+    type: uri_folder
+  baseline_metrics:
+    type: uri_file
+  config:
+    type: uri_file
+
+outputs:
+  promotion_decision:
+    type: uri_folder
+  promotion_manifest:
+    type: uri_folder
+
+code: ../../src
+
+environment: azureml:bank-churn-env:1
+
+command: >-
+  python -m promotion.promote_model
+  --candidate-metrics ${{inputs.candidate_metrics}}
+  --baseline-metrics ${{inputs.baseline_metrics}}
+  --output ${{outputs.promotion_decision}}
+  --manifest-output ${{outputs.promotion_manifest}}
+  --config ${{inputs.config}}

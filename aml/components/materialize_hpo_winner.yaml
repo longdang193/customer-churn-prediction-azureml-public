@@ -1,0 +1,102 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: materialize_hpo_winner
+version: 1
+type: command
+
+inputs:
+  hpo_summary:
+    type: uri_folder
+  base_train_config:
+    type: uri_file
+  logreg_metrics:
+    type: uri_folder
+    optional: true
+  rf_metrics:
+    type: uri_folder
+    optional: true
+  xgboost_metrics:
+    type: uri_folder
+    optional: true
+  logreg_model_output:
+    type: uri_folder
+    optional: true
+  rf_model_output:
+    type: uri_folder
+    optional: true
+  xgboost_model_output:
+    type: uri_folder
+    optional: true
+  logreg_mlflow_model:
+    type: uri_folder
+    optional: true
+  rf_mlflow_model:
+    type: uri_folder
+    optional: true
+  xgboost_mlflow_model:
+    type: uri_folder
+    optional: true
+  logreg_train_manifest:
+    type: uri_folder
+    optional: true
+  rf_train_manifest:
+    type: uri_folder
+    optional: true
+  xgboost_train_manifest:
+    type: uri_folder
+    optional: true
+  logreg_hpo_manifest:
+    type: uri_folder
+    optional: true
+  rf_hpo_manifest:
+    type: uri_folder
+    optional: true
+  xgboost_hpo_manifest:
+    type: uri_folder
+    optional: true
+
+outputs:
+  winner_candidate_metrics:
+    type: uri_folder
+  winner_model_output:
+    type: uri_folder
+  winner_mlflow_model:
+    type: uri_folder
+  winner_train_manifest:
+    type: uri_folder
+  winner_hpo_manifest:
+    type: uri_folder
+  winner_train_config:
+    type: uri_folder
+  winner_manifest:
+    type: uri_folder
+
+code: ../../src
+
+environment: azureml:bank-churn-env:1
+
+command: >-
+  python materialize_hpo_winner.py
+  --hpo-summary ${{inputs.hpo_summary}}
+  --winner-candidate-metrics ${{outputs.winner_candidate_metrics}}
+  --winner-model-output ${{outputs.winner_model_output}}
+  --winner-mlflow-model ${{outputs.winner_mlflow_model}}
+  --winner-train-manifest ${{outputs.winner_train_manifest}}
+  --winner-hpo-manifest ${{outputs.winner_hpo_manifest}}
+  --base-train-config ${{inputs.base_train_config}}
+  --winner-train-config ${{outputs.winner_train_config}}
+  --winner-manifest ${{outputs.winner_manifest}}
+  $[[--logreg-metrics ${{inputs.logreg_metrics}}]]
+  $[[--rf-metrics ${{inputs.rf_metrics}}]]
+  $[[--xgboost-metrics ${{inputs.xgboost_metrics}}]]
+  $[[--logreg-model-output ${{inputs.logreg_model_output}}]]
+  $[[--rf-model-output ${{inputs.rf_model_output}}]]
+  $[[--xgboost-model-output ${{inputs.xgboost_model_output}}]]
+  $[[--logreg-mlflow-model ${{inputs.logreg_mlflow_model}}]]
+  $[[--rf-mlflow-model ${{inputs.rf_mlflow_model}}]]
+  $[[--xgboost-mlflow-model ${{inputs.xgboost_mlflow_model}}]]
+  $[[--logreg-train-manifest ${{inputs.logreg_train_manifest}}]]
+  $[[--rf-train-manifest ${{inputs.rf_train_manifest}}]]
+  $[[--xgboost-train-manifest ${{inputs.xgboost_train_manifest}}]]
+  $[[--logreg-hpo-manifest ${{inputs.logreg_hpo_manifest}}]]
+  $[[--rf-hpo-manifest ${{inputs.rf_hpo_manifest}}]]
+  $[[--xgboost-hpo-manifest ${{inputs.xgboost_hpo_manifest}}]]

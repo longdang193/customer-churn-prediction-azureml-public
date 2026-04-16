@@ -1,0 +1,38 @@
+# Data Preparation Configuration
+# Controls data input/output and target information
+
+data:
+  # Input/Output paths
+  input_path: "data/churn.csv"
+  output_dir: "data/processed"
+  
+  # Target variable
+  target_column: "Exited"
+  
+  # Columns to remove (high cardinality, IDs)
+  columns_to_remove:
+    - "RowNumber"
+    - "CustomerId"
+    - "Surname"
+  
+  # Categorical columns to encode
+  categorical_columns:
+    - "Geography"
+    - "Gender"
+  
+  # Train/Test split
+  test_size: 0.2
+  random_state: 42
+  
+  # Stratified split (maintains class distribution)
+  stratify: true
+
+validation:
+  drift_share_threshold: 0.3
+  max_missing_fraction: 0.2
+  max_row_count_delta_fraction: 0.5
+  fail_on_drift: false
+  fail_on_schema_mismatch: true
+  fail_on_missing_fraction: true
+  fail_on_row_count_delta: false
+

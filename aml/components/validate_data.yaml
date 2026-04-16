@@ -1,0 +1,33 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: validate_data
+version: 1
+type: command
+
+inputs:
+  reference_data:
+    type: uri_folder
+  current_data:
+    type: uri_folder
+  config:
+    type: uri_file
+
+outputs:
+  validation_report:
+    type: uri_folder
+  validation_summary:
+    type: uri_folder
+  validation_manifest:
+    type: uri_folder
+
+code: ../../src
+
+environment: azureml:bank-churn-env:1
+
+command: >-
+  python validate_data.py
+  --reference-data ${{inputs.reference_data}}
+  --current-data ${{inputs.current_data}}
+  --output-dir ${{outputs.validation_report}}
+  --summary-path ${{outputs.validation_summary}}
+  --manifest-output ${{outputs.validation_manifest}}
+  --config ${{inputs.config}}

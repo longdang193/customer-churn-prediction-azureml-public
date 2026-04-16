@@ -1,0 +1,35 @@
+stage_id: data_validate
+name: Data validation
+status: active
+purpose: Validate new datasets and measure data drift against a training baseline before sweep or fixed training execution.
+inputs:
+  - Raw or processed churn dataset
+  - Validation and drift thresholds
+  - Reference baseline dataset
+  - optional smoke and validation-edge fixtures
+  - selected data config passed as AML `uri_file`
+outputs:
+  - Validation report artifact
+  - Validation summary JSON
+  - Proceed, warn, or fail decision signal
+  - Data-safety gate for any monitor-triggered retraining candidate before fixed training or HPO
+  - Validation result for a frozen retraining candidate handoff
+  - Validation result for the explicit post-validation retraining path selector
+  - Validation result for the smoke fixed-train handoff bridge driven by a frozen retraining candidate
+feature_refs:
+  - churn-data-preparation
+  - notebook-hpo
+  - model-training-pipeline
+code_refs:
+  - run_retraining_candidate.py
+  - run_retraining_path_selection.py
+  - src/validate_data.py
+  - aml/components/validate_data.yaml
+  - configs/data.yaml
+  - configs/data_smoke.yaml
+  - data/smoke/positive/churn_smoke.csv
+  - data/smoke/eval/churn_smoke_eval.csv
+  - data/smoke/negative/churn_validation_edge.csv
+doc_refs:
+  - docs/pipeline_guide.md
+  - docs/features/churn-data-preparation/churn-data-preparation.yaml

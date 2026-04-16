@@ -1,0 +1,51 @@
+stage_id: online_deploy
+name: Online deployment
+status: active
+purpose: Register the promoted deployable MLflow job output and deploy it to an Azure ML managed online endpoint after validating release lineage against source job manifests.
+inputs:
+  - Promotion decision artifact or approved release record
+  - MLflow model bundle or approved registered model
+  - Release runtime configuration
+  - Configured Azure ML endpoint request payload for processed-feature scoring
+outputs:
+  - Managed online endpoint deployment
+  - Endpoint smoke-test result
+  - Validated canary inference record with payload shape, endpoint/deployment coordinates, registered model coordinates, and response preview
+  - Release record JSON with status, model resolution, declared/source/effective lineage, smoke payload, smoke response, deployment sizing, Azure deployment state, recovery flags, inference-capture mode and status, monitoring handoff summary, and failure details when deployment remains failed or times out during finalization
+  - Release handoff metadata for monitoring, including the primary input consumed by `run_monitor.py`
+  - Registered model lineage tags for data assets, selected configs, components, environment, and git commit
+feature_refs:
+  - online-endpoint-deployment
+code_refs:
+  - run_release.py
+  - run_monitor_handoff.py
+  - run_release_monitor_smoke.py
+  - src/azureml/client.py
+  - src/azureml/deployment.py
+  - src/azureml/registry.py
+  - src/config/assets.py
+  - src/config/runtime.py
+  - src/inference/client_capture.py
+  - src/inference/online_scoring.py
+  - src/inference/payloads.py
+  - src/inference/score.py
+  - src/monitoring/handoff_helpers.py
+  - src/release/workflow.py
+  - notebooks/deploy_online_endpoint.ipynb
+  - sample-data.json
+doc_refs:
+  - README.md
+  - docs/pipeline_guide.md
+  - docs/features/online-endpoint-deployment/online-endpoint-deployment.yaml
+  - docs/features/online-endpoint-deployment/release-validation.md
+notes:
+  - Azure SDK deployment-operation exceptions are not automatically terminal; online deploy follows the real Azure deployment provisioning state before classifying the release outcome.
+  - If model resolution has already happened, online deploy must still leave a local `release_record.json` for delayed success, terminal failure, or explicit deployment-finalization timeout.
+  - Online deploy now has a cloud-proven repo-owned scorer path. Use `release_record.json > deployment.repo_owned_scoring_*` as the per-run source of truth, and treat `generated_runtime_still_in_control` as a fallback or older-run classification rather than the default expectation.
+  - The canonical repo-owned capture mode is `workspaceblobstore_jsonl`; healthy capture requires external sink proof and a runtime contract that does not contradict repo-owned scorer expectations.
+  - Caller-side capture now has a separate wrapper surface (`run_inference_capture.py`) for production evidence; direct Azure endpoint callers are not captured unless they use that wrapper or a future gateway.
+  - Release-plus-monitor smoke automation can compose online deploy with caller capture and monitor evaluation, but it stays a thin orchestration layer on top of `run_release.py`.
+  - Saved `release_record.json` files are now also the input for repeatable post-release monitoring through `run_monitor_handoff.py`; that path must not redeploy or mutate release truth.
+  - A dedicated `run_release_failure_probe.py` surface now exists for bounded scorer-failure proof in Azure; it intentionally bypasses local payload validation for one known-bad request without weakening the normal release path.
+  - Managed online collector binding remains unsupported for the current repo-owned scoring path, so healthy monitoring handoff should come from release evidence or repo-owned capture, not Azure collector assumptions.
+  - '`release_record.json.monitoring_handoff` is the repo-owned operator summary for what the monitor stage can trust today; it is intentionally narrower than a full production monitoring implementation.'

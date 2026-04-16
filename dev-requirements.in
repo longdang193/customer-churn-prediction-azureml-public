@@ -1,0 +1,18 @@
+pip-tools
+pytest
+black
+ruff
+isort
+pre-commit
+
+# Notebook dependencies (for EDA)
+matplotlib<3.10  # Constrain to Python 3.9 compatible version
+seaborn
+scipy<1.16  # Constrain to Python 3.9 compatible version
+psutil            # system and process utilities (required for Jupyter kernels)
+
+
+
+
+
+

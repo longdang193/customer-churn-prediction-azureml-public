@@ -1,0 +1,111 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: collect_hpo_results
+version: 1
+type: command
+
+inputs:
+  primary_metric:
+    type: string
+  data_config:
+    type: uri_file
+    optional: true
+  hpo_config:
+    type: uri_file
+    optional: true
+  current_data_asset:
+    type: string
+    optional: true
+  current_data_version:
+    type: string
+    optional: true
+  reference_data_asset:
+    type: string
+    optional: true
+  reference_data_version:
+    type: string
+    optional: true
+  logreg_metrics:
+    type: uri_folder
+    optional: true
+  rf_metrics:
+    type: uri_folder
+    optional: true
+  xgboost_metrics:
+    type: uri_folder
+    optional: true
+  logreg_hpo_manifest:
+    type: uri_folder
+    optional: true
+  rf_hpo_manifest:
+    type: uri_folder
+    optional: true
+  xgboost_hpo_manifest:
+    type: uri_folder
+    optional: true
+  logreg_model_output:
+    type: uri_folder
+    optional: true
+  rf_model_output:
+    type: uri_folder
+    optional: true
+  xgboost_model_output:
+    type: uri_folder
+    optional: true
+  logreg_mlflow_model:
+    type: uri_folder
+    optional: true
+  rf_mlflow_model:
+    type: uri_folder
+    optional: true
+  xgboost_mlflow_model:
+    type: uri_folder
+    optional: true
+  logreg_train_manifest:
+    type: uri_folder
+    optional: true
+  rf_train_manifest:
+    type: uri_folder
+    optional: true
+  xgboost_train_manifest:
+    type: uri_folder
+    optional: true
+
+outputs:
+  hpo_summary:
+    type: uri_folder
+  hpo_summary_report:
+    type: uri_folder
+  hpo_manifest:
+    type: uri_folder
+
+code: ../../src
+
+environment: azureml:bank-churn-env:1
+
+command: >-
+  python collect_hpo_results.py
+  --primary-metric ${{inputs.primary_metric}}
+  --summary-output ${{outputs.hpo_summary}}
+  --report-output ${{outputs.hpo_summary_report}}
+  --manifest-output ${{outputs.hpo_manifest}}
+  $[[--data-config ${{inputs.data_config}}]]
+  $[[--hpo-config ${{inputs.hpo_config}}]]
+  $[[--current-data-asset ${{inputs.current_data_asset}}]]
+  $[[--current-data-version ${{inputs.current_data_version}}]]
+  $[[--reference-data-asset ${{inputs.reference_data_asset}}]]
+  $[[--reference-data-version ${{inputs.reference_data_version}}]]
+  $[[--logreg-metrics ${{inputs.logreg_metrics}}]]
+  $[[--rf-metrics ${{inputs.rf_metrics}}]]
+  $[[--xgboost-metrics ${{inputs.xgboost_metrics}}]]
+  $[[--logreg-hpo-manifest ${{inputs.logreg_hpo_manifest}}]]
+  $[[--rf-hpo-manifest ${{inputs.rf_hpo_manifest}}]]
+  $[[--xgboost-hpo-manifest ${{inputs.xgboost_hpo_manifest}}]]
+  $[[--logreg-model-output ${{inputs.logreg_model_output}}]]
+  $[[--rf-model-output ${{inputs.rf_model_output}}]]
+  $[[--xgboost-model-output ${{inputs.xgboost_model_output}}]]
+  $[[--logreg-mlflow-model ${{inputs.logreg_mlflow_model}}]]
+  $[[--rf-mlflow-model ${{inputs.rf_mlflow_model}}]]
+  $[[--xgboost-mlflow-model ${{inputs.xgboost_mlflow_model}}]]
+  $[[--logreg-train-manifest ${{inputs.logreg_train_manifest}}]]
+  $[[--rf-train-manifest ${{inputs.rf_train_manifest}}]]
+  $[[--xgboost-train-manifest ${{inputs.xgboost_train_manifest}}]]

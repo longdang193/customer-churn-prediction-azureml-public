@@ -1,0 +1,46 @@
+experiment_name: "hpo-prod"
+sweep_display_name: "hpo-prod"
+
+metric: "f1"
+mode: "max"
+sampling_algorithm: "random"
+
+budget:
+  max_trials: 30
+  max_concurrent: 4
+
+timeouts:
+  total_minutes: 360
+  trial_minutes: 60
+
+early_stopping:
+  enabled: true
+  policy: "bandit"
+  evaluation_interval: 3
+  slack_factor: 0.15
+
+selection:
+  secondary_metric: "roc_auc"
+  family_priority: ["logreg", "rf", "xgboost"]
+
+search_space:
+  model_types: ["logreg", "rf", "xgboost"]
+  use_smote: ["true"]
+
+  logreg:
+    C: [0.01, 0.1, 1.0, 10.0]
+    solver: ["lbfgs", "liblinear"]
+
+  rf:
+    n_estimators: [100, 200, 300]
+    max_depth: [4, 6, 8, 10, 100]
+    min_samples_split: [2, 5, 10]
+    min_samples_leaf: [1, 2, 4]
+    max_features: ["sqrt"]
+
+  xgboost:
+    n_estimators: [100, 200, 300]
+    max_depth: [3, 4, 5, 6]
+    learning_rate: [0.01, 0.05, 0.1]
+    subsample: [0.6, 0.8, 1.0]
+    colsample_bytree: [0.6, 0.8, 1.0]

@@ -1,0 +1,18 @@
+training:
+  experiment_name: "train-smoke"
+  display_name: "train-smoke-run"
+  models:
+    - "logreg"
+  class_weight: "balanced"
+  random_state: 42
+  use_smote: "false"
+  hyperparameters:
+    logreg:
+      C: 1.0
+      max_iter: 200
+      solver: "lbfgs"
+
+promotion:
+  primary_metric: "f1"
+  minimum_improvement: -1.0
+  minimum_candidate_score: 0.0

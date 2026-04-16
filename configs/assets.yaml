@@ -1,0 +1,59 @@
+# Lightweight Azure ML asset ownership manifest.
+# This file documents canonical names for lineage tags; it does not replace config.env.
+
+data_assets:
+  production:
+    name: "churn-data"
+    version: "1"
+  reference:
+    name: "churn-data"
+    version: "1"
+  smoke:
+    name: "churn-data-smoke"
+    version: "2"
+  smoke_eval:
+    name: "churn-data-smoke-eval"
+    version: "1"
+
+components:
+  validate_data:
+    name: "validate_data"
+    version: "1"
+  data_prep:
+    name: "data_prep"
+    version: "1"
+  train:
+    name: "train_model"
+    version: "1"
+  promote:
+    name: "promote_model"
+    version: "1"
+
+environment:
+  name: "bank-churn-env"
+  version: "1"
+  image_repository: "bank-churn"
+  image_tag: "1"
+
+model:
+  name: "churn-prediction-model"
+  experiment_name: "churn-prediction-experiment"
+
+deployment:
+  endpoint_name: "churn-endpoint"
+  deployment_name: "churn-deployment"
+  instance_type: "Standard_D2as_v4"
+  instance_count: "1"
+  smoke_payload: "sample-data.json"
+  online_base_image: "mcr.microsoft.com/azureml/openmpi4.1.0-ubuntu22.04"
+  inference_capture:
+    enabled: false
+    mode: "workspaceblobstore_jsonl"
+    sample_rate: 1.0
+    max_rows_per_request: 5
+    capture_inputs: true
+    capture_outputs: true
+    redact_inputs: false
+    output_path: "monitoring/inference_capture"
+    storage_connection_string_env: "INFERENCE_CAPTURE_STORAGE_CONNECTION_STRING"
+    storage_container_env: "INFERENCE_CAPTURE_STORAGE_CONTAINER"

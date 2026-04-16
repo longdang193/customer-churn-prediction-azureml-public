@@ -1,0 +1,58 @@
+feature_id: notebook-hpo
+name: Hyperparameter optimization workflow
+version: 1
+status: active
+type: workflow
+summary: Run Azure ML HPO through either a direct sweep CLI or an end-to-end AML pipeline, then review the selected best configuration before optional export into `configs/train.yaml`.
+invariants:
+  - The HPO workflow remains distinct from the fixed production retraining workflow.
+  - '`run_hpo_pipeline.py` is the canonical end-to-end HPO submission path from raw data.'
+  - '`run_hpo.py` remains the canonical direct rerun path when processed data already exists.'
+  - '`notebooks/main.ipynb` remains the live review surface.'
+  - The exported best configuration becomes the input for the fixed training pipeline.
+domains:
+  - hyperparameter-optimization
+  - azure-ml
+depends_on:
+  - workspace-bootstrap
+  - churn-data-preparation
+capabilities:
+  - Submit an end-to-end Azure ML HPO parent pipeline from `run_hpo_pipeline.py` that reuses validation and data prep before fan-out into sweep branches.
+  - Build sweep definitions from `configs/hpo.yaml` or another selected HPO config profile.
+  - Submit or reload sweep jobs in Azure ML from `run_hpo.py`, including alternate config profiles such as `configs/hpo_smoke.yaml`, while preserving the same trial-level output contract used by the HPO pipeline.
+  - Emit HPO summary artifacts (`hpo_summary.json`, `hpo_summary.md`, `hpo_manifest/step_manifest.json`) that capture per-family results, artifact references, and the selected winner.
+  - Surface per-family `*_model_output`, `*_mlflow_model`, `*_candidate_metrics`, `*_train_manifest`, and `*_hpo_manifest` outputs from the HPO parent pipeline so operators can debug one branch without opening Azure-generated controller and trial jobs first.
+  - Materialize canonical winner outputs (`winner_model_output`, `winner_mlflow_model`, `winner_candidate_metrics`, `winner_train_manifest`, `winner_hpo_manifest`) at the HPO parent level for downstream handoff.
+  - Materialize `winner_train_config/train_config.yaml` at the HPO parent level so fixed training can consume the selected HPO winner without manual hyperparameter copy/paste.
+  - Inspect a downloaded or remote HPO parent run through `inspect_hpo_run.py` instead of manually stitching child-job downloads.
+  - Export the selected HPO winner into a fixed train-config YAML through `export_hpo_winner_config.py` so the standard train pipeline can retrain the chosen family without manual parameter copy/paste.
+  - Treat `inspect_hpo_run.py` and `export_hpo_winner_config.py` as operator-facing wrapper commands whose implementation ownership lives under `tools/hpo/`.
+  - Treat `configs/hpo_smoke.yaml` as a wiring/artifact profile and the default `configs/hpo.yaml` path as the heavier-weight ranking surface.
+  - Reuse the shared `src/azureml/` client and input adapters instead of wiring Azure ML SDK calls directly inside every orchestration path.
+  - Analyze completed sweep results and update `configs/train.yaml` with the chosen model configuration from the notebook review surface.
+  - Provide a review surface for periodic re-optimization without becoming the sole operational control plane.
+  - Keep `hpo_utils.py` as supporting shared utility code rather than treating it as an operator entrypoint.
+refs:
+  code:
+    - tools/hpo/inspect_hpo_run.py
+    - tools/hpo/export_hpo_winner_config.py
+    - run_hpo_pipeline.py
+    - run_hpo.py
+    - src/collect_hpo_results.py
+    - src/materialize_hpo_winner.py
+    - src/azureml/__init__.py
+    - src/azureml/client.py
+    - src/azureml/inputs.py
+    - src/config/runtime.py
+    - notebooks/main.ipynb
+    - src/run_sweep_trial.py
+    - hpo_utils.py
+    - aml/components/hpo_trial.yaml
+    - aml/components/collect_hpo_results.yaml
+    - aml/components/materialize_hpo_winner.yaml
+    - configs/hpo.yaml
+    - configs/hpo_smoke.yaml
+    - configs/train.yaml
+  docs:
+    - README.md
+    - docs/pipeline_guide.md

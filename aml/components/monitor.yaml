@@ -1,0 +1,38 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: monitor_release
+version: 1
+type: command
+
+inputs:
+  release_record:
+    type: uri_file
+  config:
+    type: uri_file
+  capture_evidence:
+    type: uri_folder
+    optional: true
+
+outputs:
+  monitor_summary:
+    type: uri_folder
+  monitor_report:
+    type: uri_folder
+  retraining_decision:
+    type: uri_folder
+  monitor_manifest:
+    type: uri_folder
+
+code: ../..
+
+environment: azureml:bank-churn-env:1
+
+command: >-
+  python run_monitor.py
+  --release-record ${{inputs.release_record}}
+  --config ${{inputs.config}}
+  $[[--capture-path ${{inputs.capture_evidence}}]]
+  --output-dir ${{outputs.monitor_summary}}
+  --summary-output ${{outputs.monitor_summary}}/monitor_summary.json
+  --report-output ${{outputs.monitor_report}}/monitor_report.md
+  --retraining-output ${{outputs.retraining_decision}}/retraining_decision.json
+  --manifest-output ${{outputs.monitor_manifest}}/step_manifest.json

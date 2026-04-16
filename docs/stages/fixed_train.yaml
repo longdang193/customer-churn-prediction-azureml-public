@@ -1,0 +1,40 @@
+stage_id: fixed_train
+name: Fixed training
+status: active
+purpose: Run the validation-aware AML pipeline with the selected training configuration to produce candidate model artifacts for promotion.
+inputs:
+  - Azure ML current and reference data asset references
+  - '`configs/data.yaml`'
+  - '`configs/train.yaml`'
+  - optional smoke data profile `configs/data_smoke.yaml`
+  - optional smoke training profile `configs/train_smoke.yaml`
+  - optional HPO parent output `winner_train_config/train_config.yaml`
+  - optional HPO continuation helper output `effective_train_config/train_config.yaml`
+  - AML component definitions
+outputs:
+  - AML pipeline run metadata
+  - Model artifact directory and parent run identifier
+  - MLflow model bundle
+  - Candidate metrics artifact
+  - Validation report and summary artifacts
+  - Promotion decision artifact
+  - Train manifest artifact that acts as release-lineage evidence for selected training config and best model
+  - Pipeline job lineage tags for data assets, selected configs, components, environment, and git commit
+feature_refs:
+  - model-training-pipeline
+code_refs:
+  - run_pipeline.py
+  - run_retraining_hpo_to_fixed_train.py
+  - src/azureml/client.py
+  - src/azureml/inputs.py
+  - src/azureml/registry.py
+  - aml/components/validate_data.yaml
+  - src/train.py
+  - aml/components/train.yaml
+  - aml/components/promote_model.yaml
+  - configs/data.yaml
+  - configs/train_smoke.yaml
+  - configs/assets.yaml
+doc_refs:
+  - docs/pipeline_guide.md
+  - docs/features/model-training-pipeline/model-training-pipeline.yaml

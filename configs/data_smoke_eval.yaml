@@ -1,0 +1,25 @@
+# Overlapping smoke profile for less biased end-to-end pipeline checks.
+data:
+  input_path: "data/smoke/eval/churn_smoke_eval.csv"
+  output_dir: "data/processed_smoke_eval"
+  target_column: "Exited"
+  columns_to_remove:
+    - "RowNumber"
+    - "CustomerId"
+    - "Surname"
+  categorical_columns:
+    - "Geography"
+    - "Gender"
+  test_size: 0.3
+  random_state: 42
+  stratify: true
+
+validation:
+  drift_share_threshold: 0.3
+  max_missing_fraction: 0.2
+  max_row_count_delta_fraction: 0.5
+  fail_on_drift: true
+  fail_on_schema_mismatch: true
+  fail_on_missing_fraction: true
+  fail_on_row_count_delta: false
+  gate_before_data_prep: true

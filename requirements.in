@@ -1,0 +1,25 @@
+# Core runtime dependencies
+pandas
+numpy
+scikit-learn
+imbalanced-learn
+pyyaml
+
+# Model libraries
+xgboost           # XGBoost model support
+
+# MLflow tracking
+mlflow            # experiment tracking
+azureml-mlflow    # Azure ML MLflow integration
+evidently         # batch data validation and drift reporting
+
+# Azure ML SDK
+azure-ai-ml       # Azure ML SDK
+azure-identity    # Azure identity for SDK
+
+# Environment configuration
+python-dotenv     # Load environment variables from config.env
+
+# Other dependencies
+fastapi           # serving API
+psutil            # system and process utilities (required for Jupyter kernels)

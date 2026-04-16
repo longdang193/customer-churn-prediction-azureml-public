@@ -1,0 +1,32 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: data_prep
+version: 1
+type: command
+
+inputs:
+  raw_data: 
+    type: uri_folder
+  config:
+    type: uri_file
+  validation_summary:
+    type: uri_folder
+    optional: true
+
+outputs:
+  processed_data:
+    type: uri_folder
+  data_prep_manifest:
+    type: uri_folder
+
+code: ../../src
+
+environment: azureml:bank-churn-env:1
+
+command: >-
+  python data_prep.py 
+  --input ${{inputs.raw_data}} 
+  --output ${{outputs.processed_data}}
+  --config ${{inputs.config}}
+  --manifest-output ${{outputs.data_prep_manifest}}
+  $[[--validation-summary ${{inputs.validation_summary}}]]
+

@@ -1,0 +1,5 @@
+$schema: https://azuremlschemas.azureedge.net/latest/environment.schema.json
+name: bank-churn-env
+version: "1"
+image: youracrname.azurecr.io/bank-churn:1
+description: Informational template only. Register the real AML environment with setup/register_environment.py, which resolves the image URI from configs/assets.yaml plus AZURE_ACR_NAME in config.env.

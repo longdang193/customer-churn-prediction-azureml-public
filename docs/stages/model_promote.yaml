@@ -1,0 +1,27 @@
+stage_id: model_promote
+name: Model promotion
+status: active
+purpose: Run the fixed-pipeline promotion gate or standalone promotion utility that compares the trained candidate against the approved baseline and emits release decision artifacts. Release-time metadata validation remains a separate `run_release.py` guardrail before registry/deployment mutation.
+inputs:
+  - Candidate metrics artifact
+  - Baseline metrics derived from the latest approved Azure ML model metadata or bootstrap fallback
+  - Promotion criteria
+  - Current approved model registry tags
+outputs:
+  - Promotion decision folder containing `promotion_decision.json`
+  - Promotion manifest folder containing `step_manifest.json`
+  - Candidate-vs-baseline comparison
+  - Release eligibility signal consumed by `run_release.py` before source-manifest lineage validation
+feature_refs:
+  - model-training-pipeline
+  - online-endpoint-deployment
+code_refs:
+  - src/azureml/registry.py
+  - src/promotion/promote_model.py
+  - src/release/workflow.py
+  - aml/components/promote_model.yaml
+  - configs/train.yaml
+  - run_pipeline.py
+doc_refs:
+  - docs/pipeline_guide.md
+  - docs/features/model-training-pipeline/model-training-pipeline.yaml

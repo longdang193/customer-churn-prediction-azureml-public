@@ -1,0 +1,19 @@
+training:
+  experiment_name: train-ranking-hpo-winner
+  display_name: train-ranking-hpo-winner
+  models:
+  - xgboost
+  class_weight: balanced
+  random_state: 42
+  use_smote: true
+  hyperparameters:
+    xgboost:
+      n_estimators: 200
+      max_depth: 3
+      learning_rate: 0.1
+      subsample: 0.8
+      colsample_bytree: 0.8
+promotion:
+  primary_metric: f1
+  minimum_improvement: 0.0
+  minimum_candidate_score: 0.7

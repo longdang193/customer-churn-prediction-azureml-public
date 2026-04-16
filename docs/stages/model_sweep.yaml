@@ -1,0 +1,50 @@
+stage_id: model_sweep
+name: Model sweep
+status: active
+purpose: Run Azure ML hyperparameter optimization from either the direct sweep workflow or the end-to-end HPO pipeline, then evaluate and summarize the best candidate configuration.
+inputs:
+  - Raw training data asset for the end-to-end HPO pipeline
+  - Processed training dataset for direct reruns
+  - '`configs/hpo.yaml`'
+  - optional alternate HPO config such as `configs/hpo_smoke.yaml`
+  - optional smoke data config such as `configs/data_smoke_eval.yaml`
+  - '`configs/train.yaml`'
+outputs:
+  - One Azure ML HPO parent pipeline or direct sweep jobs, depending on entrypoint
+  - Sweep jobs and trial metrics in Azure ML and MLflow
+  - HPO summary artifacts and step manifest for the pipeline path
+  - Per-family `*_model_output`, `*_mlflow_model`, `*_candidate_metrics`, `*_hpo_manifest`, and `*_train_manifest` outputs for operator debugging
+  - Canonical `winner_model_output`, `winner_mlflow_model`, `winner_candidate_metrics`, `winner_hpo_manifest`, `winner_train_manifest`, and `winner_manifest` outputs for handoff
+  - Canonical `winner_train_config/train_config.yaml` output for fixed-train handoff
+  - Optional continuation input for `run_retraining_hpo_to_fixed_train.py`, which validates the winner bundle and hands it back into fixed training
+  - Selected best-model settings reviewed and optionally written back to `configs/train.yaml`
+invariants:
+  - Winner family selection must remain deterministic across reruns with identical candidate metrics.
+  - Tied-family outcomes must be explained in operator artifacts instead of being implied by Python tuple ordering.
+  - Winner materialization must preserve the same selected family and tie-break metadata emitted by the HPO summary.
+notes:
+  - HPO config now exposes `selection.secondary_metric` and `selection.family_priority`.
+  - Parent-level `hpo_summary.json`, `hpo_summary_report.md`, `hpo_manifest`, and winner materialization surfaces now record `tie_break_reason` and the active selection policy when a tie occurs.
+feature_refs:
+  - notebook-hpo
+  - model-training-pipeline
+code_refs:
+  - tools/hpo/export_hpo_winner_config.py
+  - tools/hpo/inspect_hpo_run.py
+  - tools/retraining/run_retraining_hpo_to_fixed_train.py
+  - run_hpo_pipeline.py
+  - run_hpo.py
+  - src/collect_hpo_results.py
+  - src/materialize_hpo_winner.py
+  - src/azureml/client.py
+  - src/azureml/inputs.py
+  - notebooks/main.ipynb
+  - src/run_sweep_trial.py
+  - aml/components/hpo_trial.yaml
+  - aml/components/collect_hpo_results.yaml
+  - aml/components/materialize_hpo_winner.yaml
+  - hpo_utils.py
+doc_refs:
+  - docs/pipeline_guide.md
+  - docs/features/notebook-hpo/notebook-hpo.yaml
+  - docs/features/model-training-pipeline/model-training-pipeline.yaml

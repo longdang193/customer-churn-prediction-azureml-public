@@ -1,0 +1,32 @@
+stage_id: data_prep
+name: Data preparation
+status: active
+purpose: Convert validation-approved raw churn data assets into processed train and test artifacts for AML training workflows.
+inputs:
+  - Raw churn dataset folder or Azure ML data asset
+  - '`configs/data.yaml`'
+  - optional smoke profile `configs/data_smoke.yaml`
+  - optional evaluation smoke profile `configs/data_smoke_eval.yaml`
+  - selected data config passed as AML `uri_file`
+  - optional `validation_summary` guardrail output from the data validation stage
+outputs:
+  - Processed train and test CSV files
+  - Encoder, scaler, and metadata artifacts
+  - Data-prep manifest folder containing `step_manifest.json`
+notes:
+  - Current fixed-train and HPO pipeline paths pass validation output into data prep so failed validation can stop preprocessing before training.
+feature_refs:
+  - churn-data-preparation
+  - notebook-hpo
+  - model-training-pipeline
+code_refs:
+  - src/data_prep.py
+  - aml/components/data_prep.yaml
+  - configs/data_smoke.yaml
+  - configs/data_smoke_eval.yaml
+  - data/smoke/positive/churn_smoke.csv
+  - data/smoke/eval/churn_smoke_eval.csv
+  - data/smoke/negative/churn_validation_edge.csv
+doc_refs:
+  - docs/pipeline_guide.md
+  - docs/features/churn-data-preparation/churn-data-preparation.yaml

@@ -1,0 +1,20 @@
+training:
+  experiment_name: "train-smoke-hpo-winner-rf"
+  display_name: "train-smoke-hpo-winner-rf"
+  models:
+    - "rf"
+  class_weight: "balanced"
+  random_state: 42
+  use_smote: "true"
+  hyperparameters:
+    rf:
+      n_estimators: 200
+      max_depth: 4
+      min_samples_split: 2
+      min_samples_leaf: 2
+      max_features: "sqrt"
+
+promotion:
+  primary_metric: "f1"
+  minimum_improvement: -1.0
+  minimum_candidate_score: 0.0

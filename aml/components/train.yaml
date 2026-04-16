@@ -1,0 +1,36 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: train_model
+version: 1
+type: command
+
+inputs:
+  processed_data:
+    type: uri_folder
+  config:
+    type: uri_file
+
+outputs:
+  model_output:
+    type: uri_folder
+  parent_run_id:
+    type: uri_folder
+  candidate_metrics:
+    type: uri_folder
+  mlflow_model:
+    type: uri_folder
+  train_manifest:
+    type: uri_folder
+
+code: ../../src
+
+environment: azureml:bank-churn-env:1
+
+command: >-
+  python train.py
+  --data ${{inputs.processed_data}}
+  --config ${{inputs.config}}
+  --model-artifact-dir ${{outputs.model_output}}
+  --parent-run-id-output ${{outputs.parent_run_id}}
+  --candidate-metrics-output ${{outputs.candidate_metrics}}
+  --mlflow-model-output ${{outputs.mlflow_model}}
+  --manifest-output ${{outputs.train_manifest}}

@@ -1,0 +1,74 @@
+feature_id: release-monitoring-evaluator
+name: Release monitoring evaluator
+version: 1
+status: active
+type: workflow
+summary: Consume release evidence and optional sampled inference evidence to produce the first bounded monitor-stage report for deployed releases.
+invariants:
+  - The evaluator must treat `release_record.json` as the primary monitoring handoff artifact.
+  - Healthy monitoring must work when the only trustworthy cloud evidence is `release_evidence_only`.
+  - The evaluator must not assume repo-owned scoring hooks executed unless `deployment.repo_owned_scoring_status` proves that.
+  - Monitor outputs must stay bounded and operator-readable; they summarize evidence and findings rather than storing raw production traffic.
+  - Monitor-triggered retraining remains advisory; the evaluator may open a retraining candidate, but it must not auto-start train, HPO, promotion, or release.
+  - Release-plus-monitor smoke automation may orchestrate this evaluator, but `run_monitor.py` remains the authoritative monitoring surface.
+  - '`capture_backed` must explicitly identify caller-side evidence; it must not imply that endpoint-side deployment capture was enabled.'
+  - Repeatable monitoring handoff must start from a saved `release_record.json` and layer new caller-side evidence on top of release truth instead of rebuilding release state from ad hoc operator inputs.
+domains:
+  - monitoring
+  - deployment
+  - azure-ml
+depends_on:
+  - online-endpoint-deployment
+  - model-training-pipeline
+capabilities:
+  - Load and validate release records produced by `run_release.py`.
+  - Classify monitoring outcomes as `limited_but_healthy`, `capture_backed`, `degraded`, or `blocked`.
+  - Evaluate always-on release-evidence checks even when capture-backed evidence is unavailable.
+  - Optionally consume externally retrievable sampled inference records from a file or directory tree for bounded capture-backed checks.
+  - Provide a caller-side inference capture wrapper that invokes the managed online endpoint and writes bounded JSONL evidence outside Azure managed-online scoring internals.
+  - Support one thin release-plus-monitor automation that resolves release outputs, invokes caller capture, downloads the exact capture records written by that run, and then feeds them back into `run_monitor.py`.
+  - Support one thin monitoring-first automation that consumes a saved release record, reruns bounded caller-side capture, downloads the exact records referenced by that run, and then feeds them back into `run_monitor.py`.
+  - 'Treat Blob-backed caller capture as exact-path evidence: manifests record `azureblob://<account>/<container>/<blob>`, the downloader resolves that exact blob with bounded retry for fresh-write visibility, and healthy `capture_backed` status requires real downloads rather than manifest-only claims.'
+  - Support a `--capture-path` override so scheduled or operator-driven runs can evaluate retrieved production evidence without editing release artifacts.
+  - Emit bounded monitoring artifacts such as `monitor_summary.json`, `monitor_report.md`, and `monitor_manifest/step_manifest.json`.
+  - Emit `retraining_decision.json` plus an embedded `retraining_policy` block that distinguishes `no_retraining_signal`, `retraining_candidate`, and `investigate_before_retraining`.
+  - Enrich `retraining_policy` with bounded path recommendation evidence such as `path_recommendation`, `path_recommendation_reason_codes`, `drift_severity`, `signal_persistence`, and `policy_confidence` so operators can tell why monitor stayed with `fixed_train`, escalated toward `model_sweep`, or declined to recommend retraining.
+  - Recommend bounded next steps such as dataset freeze, `validate_data`, and fixed-train refresh without bypassing later promotion and release gates.
+  - Support a thin post-monitor bridge that freezes explicit `current_data` and `reference_data` identifiers into a retraining-candidate contract and prepares a `validate_data` handoff without inventing the training dataset from capture records.
+  - Support a second thin bridge that can take a passed retraining candidate validation into the smoke fixed-train path while preserving release, decision, candidate, and validation lineage.
+  - Support a third thin bridge that selects the next retraining path only after candidate validation passes, then delegates to either the fixed-train or HPO smoke bridge while preserving explicit selected-path lineage.
+  - Support a thin phase-1 loop orchestrator that composes the existing monitor-to-train bridges through explicit stop modes such as `freeze_only`, `freeze_and_validate`, `validate_and_select_path`, and `submit_selected_path`.
+  - Allow the thin retraining-loop orchestrator to continue into `run_release.py` only after downstream promotion-facing evidence is proven promotable, while keeping release truth owned by `release_record.json` instead of the loop wrapper.
+  - Allow the same opt-in retraining-loop continuation to compose `run_monitor_handoff.py` after release, but only as a post-release child surface whose evidence and status stay separate from release truth.
+  - Enforce bounded production checks including minimum sample count, feature-count consistency, prediction-distribution availability, and max single-class share.
+  - Preserve truthful monitoring semantics whether the release record reports `repo_owned_scoring_proven` or an older fallback runtime classification.
+  - Expose deployment-owned capture truth, caller-side capture evidence, and the final evaluator evidence source as separate fields so operators do not have to infer why monitoring was classified as healthy or degraded.
+  - Negative scorer probes may produce intentional Azure scoring failures, but those probes must not retroactively downgrade healthy release-monitoring handoff truth from the original release artifact.
+refs:
+  code:
+    - tools/monitoring/run_inference_capture.py
+    - tools/monitoring/run_monitor_handoff.py
+    - run_monitor.py
+    - tools/retraining/run_retraining_candidate.py
+    - tools/retraining/run_retraining_path_selection.py
+    - tools/retraining/run_retraining_fixed_train_smoke.py
+    - tools/retraining/run_retraining_hpo_smoke.py
+    - run_retraining_loop.py
+    - tools/monitoring/run_release_monitor_smoke.py
+    - aml/components/monitor.yaml
+    - configs/monitor.yaml
+    - src/inference/client_capture.py
+    - src/inference/capture.py
+    - src/monitoring/download_capture_blob.py
+    - src/monitoring/evaluate_release.py
+    - src/monitoring/handoff_helpers.py
+    - src/release/workflow.py
+    - src/utils/step_manifest.py
+    - configs/inference_capture.yaml
+    - configs/inference_capture_blob.yaml
+  docs:
+    - README.md
+    - docs/pipeline_guide.md
+    - docs/stages/monitor.yaml
+    - docs/stages/online_deploy.yaml
+    - docs/features/online-endpoint-deployment/release-validation.md

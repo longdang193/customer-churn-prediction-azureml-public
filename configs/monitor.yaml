@@ -1,0 +1,30 @@
+monitor:
+  evidence:
+    require_release_record: true
+    allow_release_evidence_only: true
+    require_capture_for_capture_checks: true
+  thresholds:
+    min_capture_records: 1
+    expected_feature_count: 10
+    max_single_class_share: 0.98
+  retraining_policy:
+    enabled: true
+    policy_version: 1
+    candidate_capture_statuses:
+      - class_balance_exceeded
+    investigate_monitor_statuses:
+      - degraded
+      - blocked
+    default_training_path: fixed_train
+    path_recommendation:
+      enabled: true
+      fixed_train_for_drift_severity:
+        - low
+        - medium
+      model_sweep_for_drift_severity:
+        - high
+      repeated_signal_training_path: model_sweep
+      candidate_default_training_path: fixed_train
+  output:
+    write_json_summary: true
+    write_markdown_report: true

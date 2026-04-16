@@ -1,0 +1,103 @@
+$schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
+name: hpo_trial
+version: 1
+type: command
+
+inputs:
+  processed_data:
+    type: uri_folder
+  config:
+    type: uri_file
+  hpo_config:
+    type: uri_file
+    optional: true
+  model_type:
+    type: string
+  use_smote:
+    type: string
+    optional: true
+  class_weight:
+    type: string
+    optional: true
+  random_state:
+    type: integer
+    optional: true
+  rf_n_estimators:
+    type: integer
+    optional: true
+  rf_max_depth:
+    type: integer
+    optional: true
+  rf_min_samples_split:
+    type: integer
+    optional: true
+  rf_min_samples_leaf:
+    type: integer
+    optional: true
+  rf_max_features:
+    type: string
+    optional: true
+  logreg_C:
+    type: number
+    optional: true
+  logreg_solver:
+    type: string
+    optional: true
+  xgboost_n_estimators:
+    type: integer
+    optional: true
+  xgboost_max_depth:
+    type: integer
+    optional: true
+  xgboost_learning_rate:
+    type: number
+    optional: true
+  xgboost_subsample:
+    type: number
+    optional: true
+  xgboost_colsample_bytree:
+    type: number
+    optional: true
+
+outputs:
+  model_output:
+    type: uri_folder
+  candidate_metrics:
+    type: uri_folder
+  mlflow_model:
+    type: uri_folder
+  train_manifest:
+    type: uri_folder
+  hpo_manifest:
+    type: uri_folder
+
+code: ../../src
+
+environment: azureml:bank-churn-env:1
+
+command: >-
+  python run_sweep_trial.py
+  --data ${{inputs.processed_data}}
+  --config ${{inputs.config}}
+  $[[--hpo-config ${{inputs.hpo_config}}]]
+  --model-type ${{inputs.model_type}}
+  --model-output ${{outputs.model_output}}
+  --candidate-metrics-output ${{outputs.candidate_metrics}}
+  --mlflow-model-output ${{outputs.mlflow_model}}
+  --manifest-output ${{outputs.train_manifest}}
+  --hpo-manifest-output ${{outputs.hpo_manifest}}
+  $[[--use_smote ${{inputs.use_smote}}]]
+  $[[--class_weight ${{inputs.class_weight}}]]
+  $[[--random_state ${{inputs.random_state}}]]
+  $[[--rf_n_estimators ${{inputs.rf_n_estimators}}]]
+  $[[--rf_max_depth ${{inputs.rf_max_depth}}]]
+  $[[--rf_min_samples_split ${{inputs.rf_min_samples_split}}]]
+  $[[--rf_min_samples_leaf ${{inputs.rf_min_samples_leaf}}]]
+  $[[--rf_max_features ${{inputs.rf_max_features}}]]
+  $[[--logreg_C ${{inputs.logreg_C}}]]
+  $[[--logreg_solver ${{inputs.logreg_solver}}]]
+  $[[--xgboost_n_estimators ${{inputs.xgboost_n_estimators}}]]
+  $[[--xgboost_max_depth ${{inputs.xgboost_max_depth}}]]
+  $[[--xgboost_learning_rate ${{inputs.xgboost_learning_rate}}]]
+  $[[--xgboost_subsample ${{inputs.xgboost_subsample}}]]
+  $[[--xgboost_colsample_bytree ${{inputs.xgboost_colsample_bytree}}]]

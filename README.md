@@ -47,12 +47,6 @@ The repo root now stays intentionally smaller:
 - non-entrypoint utilities such as `hpo_utils.py` are a separate code-organization question, not part of the root command surface
 - new local proof bundles should prefer a bounded local artifacts area such as `.tmp-tests/` instead of accumulating at repo root by default
 
-For Codex-facing repo internals, the current ownership model is:
-
-- `.codex/agents/` for optional narrow specialist subagents
-
-This repo now uses `.codex/` as the active Codex config/generated root while
-
 ## Key Pipeline Stages
 
 - `data_validate`
@@ -151,7 +145,7 @@ Data prep
 Operational invariants:
 
 - source-of-truth policy stays in `configs/` and `docs/features/` / `docs/stages/`
-- repo/system config stays in `repo_config/`, while runtime/workflow config stays in `configs/`
+- runtime/workflow config stays in `configs/`, while publication and other repo-governance config stay separate from the public product surface
 - release and monitoring truth are artifact-driven, not log-guess-driven
 - wrapper scripts stay thin and compose authoritative child surfaces instead of duplicating domain logic
 - smoke evidence is bounded and explicit
@@ -211,10 +205,9 @@ Operational invariants:
 
 ```text
 aml/                  Azure ML component and environment definitions
-repo_config/          repo/system configuration for publication and adapter generation
 configs/              asset, data, training, HPO, release, and monitor config
 data/                 local data, smoke fixtures, and sample payloads
-docs/                 workflow docs, feature contracts, stage contracts, archive
+docs/                 workflow docs, feature contracts, and stage contracts
 notebooks/            EDA, HPO review, and deployment notebooks
 tools/                helper implementations for HPO inspection, monitoring, release proofs, and retraining bridges
 setup/                workspace, environment, and asset setup scripts
