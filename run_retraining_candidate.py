@@ -1,4 +1,18 @@
-"""Compatibility wrapper for the moved retraining candidate helper."""
+"""Compatibility wrapper for the moved retraining candidate helper.
+
+@meta
+name: run_retraining_candidate
+type: script
+domain: retraining
+responsibility:
+  - Provide retraining behavior for `run_retraining_candidate.py`.
+inputs: []
+outputs: []
+tags:
+  - retraining
+lifecycle:
+  status: active
+"""
 
 from tools.retraining import run_retraining_candidate as _impl
 

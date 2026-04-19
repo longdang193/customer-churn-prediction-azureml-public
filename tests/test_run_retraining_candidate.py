@@ -57,6 +57,10 @@ def _release_record() -> dict[str, object]:
 
 
 def test_main_opens_candidate_manifest_for_retraining_candidate(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    @proves online-deploy.provide-enough-release-monitor-provenance-later-retraining-candidate
+    @proves monitor.support-thin-post-monitor-bridge-freezes-explicit-current
+    """
     import run_retraining_candidate
 
     temp_dir = _make_temp_dir()

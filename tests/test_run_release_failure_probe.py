@@ -44,6 +44,10 @@ def _completed(command: list[str]) -> subprocess.CompletedProcess[str]:
 
 
 def test_main_writes_intentional_failure_summary_when_cloud_probe_hits_scorer_error(monkeypatch) -> None:
+    """
+    @proves online-deploy.support-one-bounded-negative-cloud-probe-intentionally-bypasses
+    @proves monitor.negative-scorer-probes-may-produce-intentional-azure-scoring
+    """
     import run_release_failure_probe
 
     temp_dir = _make_temp_dir()
@@ -93,6 +97,15 @@ def test_main_writes_intentional_failure_summary_when_cloud_probe_hits_scorer_er
             )
 
         monkeypatch.setattr(run_release_failure_probe.subprocess, "run", fake_run)
+        monkeypatch.setattr(
+            run_release_failure_probe,
+            "load_azure_config",
+            lambda _path: {
+                "resource_group": "rg-test",
+                "workspace_name": "ws-test",
+                "subscription_id": "sub-test",
+            },
+        )
         monkeypatch.setattr(
             "sys.argv",
             [
@@ -155,6 +168,15 @@ def test_main_fails_when_probe_returns_success(monkeypatch) -> None:
             run_release_failure_probe.subprocess,
             "run",
             lambda command, check, text=True, capture_output=True: _completed(command),
+        )
+        monkeypatch.setattr(
+            run_release_failure_probe,
+            "load_azure_config",
+            lambda _path: {
+                "resource_group": "rg-test",
+                "workspace_name": "ws-test",
+                "subscription_id": "sub-test",
+            },
         )
         monkeypatch.setattr(
             "sys.argv",

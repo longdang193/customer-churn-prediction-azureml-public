@@ -21,6 +21,15 @@ tags:
   - retraining
   - training
   - cli
+features:
+  - model-training-pipeline
+  - online-endpoint-deployment
+  - release-monitoring-evaluator
+capabilities:
+  - fixed-train.accept-path-selection-artifact
+  - fixed-train.path-selection-invokes-bridges
+  - online-deploy.provide-enough-release-monitor-provenance-later-post-validation
+  - monitor.support-third-thin-bridge-selects-next-retraining-path
 lifecycle:
   status: active
 """
@@ -278,6 +287,9 @@ def _build_hpo_handoff_payload(
 
 
 def main() -> None:
+    """
+    @capability monitor.support-third-thin-bridge-selects-next-retraining-path
+    """
     parser = argparse.ArgumentParser(
         description="Select the next retraining path after candidate validation passes.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

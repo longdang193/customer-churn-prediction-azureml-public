@@ -1,4 +1,18 @@
-"""MLflow utilities for run context management and Azure ML detection."""
+"""MLflow utilities for run context management and Azure ML detection.
+
+@meta
+name: mlflow_utils
+type: module
+domain: utils
+responsibility:
+  - Provide utils behavior for `src/utils/mlflow_utils.py`.
+inputs: []
+outputs: []
+tags:
+  - utils
+lifecycle:
+  status: active
+"""
 
 import os
 from typing import Any

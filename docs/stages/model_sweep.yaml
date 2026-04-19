@@ -1,50 +1,86 @@
+# GENERATED FILE - do not edit directly.
+# Source: docs/stages/model_sweep.source.yaml
 stage_id: model_sweep
 name: Model sweep
 status: active
 purpose: Run Azure ML hyperparameter optimization from either the direct sweep workflow or the end-to-end HPO pipeline, then evaluate and summarize the best candidate configuration.
+workflow_position: training_optimization
+depends_on:
+  - data_validate
+  - data_prep
+hands_off_to:
+  - fixed_train
 inputs:
   - Raw training data asset for the end-to-end HPO pipeline
   - Processed training dataset for direct reruns
-  - '`configs/hpo.yaml`'
-  - optional alternate HPO config such as `configs/hpo_smoke.yaml`
-  - optional smoke data config such as `configs/data_smoke_eval.yaml`
-  - '`configs/train.yaml`'
+  - HPO config
+  - Optional smoke HPO and data configs
+  - Base training config
 outputs:
-  - One Azure ML HPO parent pipeline or direct sweep jobs, depending on entrypoint
-  - Sweep jobs and trial metrics in Azure ML and MLflow
-  - HPO summary artifacts and step manifest for the pipeline path
-  - Per-family `*_model_output`, `*_mlflow_model`, `*_candidate_metrics`, `*_hpo_manifest`, and `*_train_manifest` outputs for operator debugging
-  - Canonical `winner_model_output`, `winner_mlflow_model`, `winner_candidate_metrics`, `winner_hpo_manifest`, `winner_train_manifest`, and `winner_manifest` outputs for handoff
-  - Canonical `winner_train_config/train_config.yaml` output for fixed-train handoff
-  - Optional continuation input for `run_retraining_hpo_to_fixed_train.py`, which validates the winner bundle and hands it back into fixed training
-  - Selected best-model settings reviewed and optionally written back to `configs/train.yaml`
+  - Azure ML HPO parent pipeline or direct sweep jobs
+  - Trial metrics in Azure ML and MLflow
+  - HPO summary artifacts and step manifest
+  - Per-family candidate artifacts for debugging
+  - Canonical winner artifacts for fixed-train handoff
+  - Winner train config for fixed-train continuation
 invariants:
   - Winner family selection must remain deterministic across reruns with identical candidate metrics.
-  - Tied-family outcomes must be explained in operator artifacts instead of being implied by Python tuple ordering.
-  - Winner materialization must preserve the same selected family and tie-break metadata emitted by the HPO summary.
-notes:
-  - HPO config now exposes `selection.secondary_metric` and `selection.family_priority`.
-  - Parent-level `hpo_summary.json`, `hpo_summary_report.md`, `hpo_manifest`, and winner materialization surfaces now record `tie_break_reason` and the active selection policy when a tie occurs.
+  - Tied-family outcomes must be explained in operator artifacts.
+  - Winner materialization must preserve selected family and tie-break metadata.
 feature_refs:
   - notebook-hpo
   - model-training-pipeline
-code_refs:
-  - tools/hpo/export_hpo_winner_config.py
-  - tools/hpo/inspect_hpo_run.py
-  - tools/retraining/run_retraining_hpo_to_fixed_train.py
-  - run_hpo_pipeline.py
-  - run_hpo.py
-  - src/collect_hpo_results.py
-  - src/materialize_hpo_winner.py
-  - src/azureml/client.py
-  - src/azureml/inputs.py
-  - notebooks/main.ipynb
-  - src/run_sweep_trial.py
-  - aml/components/hpo_trial.yaml
-  - aml/components/collect_hpo_results.yaml
-  - aml/components/materialize_hpo_winner.yaml
-  - hpo_utils.py
+capability_refs:
+  - fixed-train.accept-hpo-smoke-bridge
+  - fixed-train.accept-hpo-to-fixed-continuation
+  - fixed-train.accept-hpo-winner-train-config
+  - fixed-train.carry-manifest-lineage
+  - fixed-train.deterministic-hpo-family-selection
+  - fixed-train.preserve-train-config-identity
+  - fixed-train.support-hpo-dataset-overrides
+  - fixed-train.surface-hpo-tie-break-metadata
+  - hpo.analyze-completed-sweep-results-update-configs-train-yaml
+  - hpo.build-sweep-definitions-configs-hpo-yaml-another-selected
+  - hpo.emit-hpo-summary-artifacts-hpo-summary-json-hpo
+  - hpo.export-selected-hpo-winner-fixed-train-config-yaml
+  - hpo.inspect-downloaded-remote-hpo-parent-run-through-inspect
+  - hpo.keep-hpo-utils-py-supporting-shared-utility-code
+  - hpo.materialize-canonical-winner-outputs-winner-model-output-winner
+  - hpo.materialize-winner-train-config-train-config-yaml-hpo
+  - hpo.provide-review-surface-periodic-re-optimization-becoming-sole
+  - hpo.reuse-shared-src-azureml-client-input-adapters-instead
+  - hpo.submit-end-end-azure-ml-hpo-parent-pipeline
+  - hpo.submit-reload-sweep-jobs-azure-ml-run-hpo
+  - hpo.surface-per-family-model-output-mlflow-model-candidate
+  - hpo.treat-configs-hpo-smoke-yaml-wiring-artifact-profile
+  - hpo.treat-inspect-hpo-run-py-export-hpo-winner
+code_refs: []
+test_refs:
+  - tests/test_azureml_adapters.py
+  - tests/test_collect_hpo_results.py
+  - tests/test_export_hpo_winner_config.py
+  - tests/test_inspect_hpo_run.py
+  - tests/test_materialize_hpo_winner.py
+  - tests/test_release_workflow.py
+  - tests/test_run_hpo_config.py
+  - tests/test_run_hpo_pipeline.py
+  - tests/test_run_retraining_hpo_smoke.py
+  - tests/test_run_retraining_hpo_to_fixed_train.py
 doc_refs:
   - docs/pipeline_guide.md
-  - docs/features/notebook-hpo/notebook-hpo.yaml
-  - docs/features/model-training-pipeline/model-training-pipeline.yaml
+  - docs/portfolio_architecture_spec.md
+  - docs/setup_guide.md
+config_refs:
+  - configs/data.yaml
+  - configs/data_smoke.yaml
+  - configs/data_smoke_eval.yaml
+  - configs/hpo.yaml
+  - configs/hpo_smoke.yaml
+  - configs/train_ranking_hpo_winner.yaml
+  - configs/train_smoke_hpo_winner_rf.yaml
+component_refs:
+  - aml/components/collect_hpo_results.yaml
+  - aml/components/hpo_trial.yaml
+  - aml/components/materialize_hpo_winner.yaml
+human_notes:
+  - HPO config exposes secondary metric and family priority for deterministic selection.

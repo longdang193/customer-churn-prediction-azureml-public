@@ -1,15 +1,26 @@
+# GENERATED FILE - do not edit directly.
+# Source: docs/features/model-training-pipeline/feature.source.yaml
 feature_id: model-training-pipeline
 name: Fixed-hyperparameter training pipeline
-version: 1
 status: active
 type: workflow
 summary: Run the AML data prep and training components end to end using the selected training configuration and data asset settings.
 invariants:
-  - The pipeline always runs validation before data preparation and training.
-  - The pipeline consumes the active data-asset identifiers from environment-backed configuration.
-  - Training behavior is controlled by `configs/train.yaml` and the AML train component.
-  - Production retraining remains distinct from the optimization workflow.
-  - Monitor-triggered retraining candidates must still pass through `validate_data` before fixed training or HPO can start.
+  - invariant_id: fixed-train.validation-first
+    statement: The pipeline always runs validation before data preparation and training.
+    state: active
+  - invariant_id: fixed-train.env-backed-assets
+    statement: The pipeline consumes the active data-asset identifiers from environment-backed configuration.
+    state: active
+  - invariant_id: fixed-train.train-config-controls-behavior
+    statement: Training behavior is controlled by `configs/train.yaml` and the AML train component.
+    state: active
+  - invariant_id: fixed-train.production-retraining-distinct
+    statement: Production retraining remains distinct from the optimization workflow.
+    state: active
+  - invariant_id: fixed-train.monitor-candidates-validate-first
+    statement: Monitor-triggered retraining candidates must still pass through `validate_data` before fixed training or HPO can start.
+    state: active
 domains:
   - training
   - azure-ml
@@ -18,62 +29,143 @@ depends_on:
   - workspace-bootstrap
   - churn-data-preparation
 capabilities:
-  - Load AML components and submit the fixed training pipeline job.
-  - Apply experiment and display metadata from `configs/train.yaml`.
-  - Accept an explicit data config path so validation and data prep can use smoke or future strict profiles without changing component YAML policy.
-  - Accept an explicit training config path so smoke runs can use `configs/train_smoke.yaml` without changing production defaults.
-  - Share the same validation and data-prep component contracts with the HPO pipeline so optimization and fixed retraining stay aligned on raw-data gating and preprocessing semantics.
-  - 'Share a common training artifact vocabulary with HPO: `model_output`, `mlflow_model`, `candidate_metrics`, and `train_manifest`.'
-  - Accept fixed train configs exported from HPO winner artifacts or surfaced directly as `winner_train_config/train_config.yaml` from the HPO parent pipeline so the optimization and retraining paths share one parameter handoff contract.
-  - Preserve a canonical repo-facing train-config identity through exported HPO winner configs so fixed-train manifests and later release validation do not collapse to the generic AML runtime filename.
-  - Carry enough fixed-train manifest lineage forward that release can validate HPO-exported train configs without forcing operators to reference AML-downloaded `train_config.yaml` artifact paths.
-  - Use the shared `src/azureml/` adapter layer for AML client and input construction rather than rebuilding Azure SDK wiring inside each entrypoint.
-  - Use the shared quiet AML submission helper so benign Azure SDK warnings do not dominate local operator consoles.
-  - Attach lightweight data/config/component lineage tags to submitted Azure ML pipeline jobs.
-  - Emit model artifacts, a deployable MLflow bundle, candidate metrics, and AML run metadata for downstream release decisions.
-  - Emit declared AML manifest output folders (`validation_manifest`, `data_prep_manifest`, `train_manifest`, `promotion_manifest`) containing `step_manifest.json` while preserving nested download fallbacks for local smoke and AML-backed debugging.
-  - Treat declared AML manifest output folders as the canonical operator paths while keeping nested fallback manifests as compatibility/download surfaces.
-  - Treat the fixed-train `train_manifest` and validation manifest as release-lineage evidence so `run_release.py` can validate operator-declared configs before registry mutation.
-  - Execute the promotion utility inside the fixed pipeline before deployment.
-  - Expose promotion thresholds from `configs/train.yaml` and compare against baseline metrics derived from the latest approved Azure ML model metadata.
-  - Accept monitor-stage retraining candidates as advisory upstream signals only; dataset freeze, validation, and train-path choice remain explicit operator or workflow steps.
-  - Accept frozen retraining candidate manifests and validation handoff artifacts as upstream operator inputs without treating them as implicit training approval.
-  - Accept a validated retraining candidate through the thin `run_retraining_fixed_train_smoke.py` bridge, which preserves candidate and validation lineage while feeding explicit current/reference dataset overrides into the existing fixed-train pipeline.
-  - Accept an explicit post-validation retraining path-selection artifact so monitor-triggered retraining can choose `fixed_train` or `model_sweep` without merging those downstream surfaces into one opaque workflow.
-  - Allow `run_retraining_path_selection.py` to invoke the fixed-train smoke bridge or hand off a `model_sweep` selection into `run_retraining_hpo_smoke.py` without merging the downstream surfaces into one opaque workflow.
-  - Accept a thin phase-1 loop orchestrator that composes candidate freeze, validation, path selection, and exactly one downstream smoke bridge while keeping `run_pipeline.py` and `run_hpo_pipeline.py` as the authoritative submission surfaces.
-  - Accept a validated retraining candidate selected for `model_sweep` through the thin `run_retraining_hpo_smoke.py` bridge, which preserves candidate, validation, and path-selection lineage while feeding explicit current/reference dataset overrides into the existing HPO pipeline.
-  - Accept a completed retraining HPO smoke run through the thin `run_retraining_hpo_to_fixed_train.py` continuation helper, which validates winner consistency, reuses or exports one effective winner train config, and then invokes the fixed-train smoke bridge instead of treating HPO outputs as release-ready directly.
-  - Allow the thin retraining-loop orchestrator to continue beyond the selected training bridge only after promotion-facing evidence exists, while keeping release as an explicit downstream gate delegated to `run_release.py`.
-  - Support explicit current/reference dataset override inputs in `run_pipeline.py` for smoke-scoped retraining proofs without mutating the environment-backed production asset defaults.
-  - Support explicit current/reference dataset override inputs in `run_hpo_pipeline.py` for smoke-scoped retraining HPO proofs without mutating the environment-backed production asset defaults.
-  - Apply an explicit deterministic HPO family-selection policy using primary metric, configured secondary metric, configured family priority, and a stable final fallback instead of incidental string ordering.
-  - Surface HPO tie-break metadata in `hpo_summary.json`, the summary report, `hpo_manifest`, and winner materialization artifacts so tied-family outcomes stay operator-readable.
+  - capability_id: fixed-train.submit-pipeline-job
+    statement: Load AML components and submit the fixed training pipeline job.
+    state: active
+    satisfies:
+      - fixed-train.validation-first
+  - capability_id: fixed-train.apply-train-metadata
+    statement: Apply experiment and display metadata from `configs/train.yaml`.
+    state: active
+  - capability_id: fixed-train.accept-data-config-path
+    statement: Accept an explicit data config path so validation and data prep can use smoke or future strict profiles without changing component YAML policy.
+    state: active
+  - capability_id: fixed-train.accept-train-config-path
+    statement: Accept an explicit training config path so smoke runs can use `configs/train_smoke.yaml` without changing production defaults.
+    state: active
+  - capability_id: fixed-train.share-validation-prep-contracts
+    statement: Share the same validation and data-prep component contracts with the HPO pipeline so optimization and fixed retraining stay aligned on raw-data gating and preprocessing semantics.
+    state: active
+  - capability_id: fixed-train.share-training-artifact-vocabulary
+    statement: 'Share a common training artifact vocabulary with HPO: `model_output`, `mlflow_model`, `candidate_metrics`, and `train_manifest`.'
+    state: active
+  - capability_id: fixed-train.accept-hpo-winner-train-config
+    statement: Accept fixed train configs exported from HPO winner artifacts or surfaced directly as `winner_train_config/train_config.yaml` from the HPO parent pipeline so the optimization and retraining paths share one parameter handoff contract.
+    state: active
+  - capability_id: fixed-train.preserve-train-config-identity
+    statement: Preserve a canonical repo-facing train-config identity through exported HPO winner configs so fixed-train manifests and later release validation do not collapse to the generic AML runtime filename.
+    state: active
+  - capability_id: fixed-train.carry-manifest-lineage
+    statement: Carry enough fixed-train manifest lineage forward that release can validate HPO-exported train configs without forcing operators to reference AML-downloaded `train_config.yaml` artifact paths.
+    state: active
+  - capability_id: fixed-train.use-azureml-adapters
+    statement: Use the shared `src/azureml/` adapter layer for AML client and input construction rather than rebuilding Azure SDK wiring inside each entrypoint.
+    state: active
+  - capability_id: fixed-train.use-quiet-submission
+    statement: Use the shared quiet AML submission helper so benign Azure SDK warnings do not dominate local operator consoles.
+    state: active
+  - capability_id: fixed-train.attach-lineage-tags
+    statement: Attach lightweight data/config/component lineage tags to submitted Azure ML pipeline jobs.
+    state: active
+  - capability_id: fixed-train.emit-release-artifacts
+    statement: Emit model artifacts, a deployable MLflow bundle, candidate metrics, and AML run metadata for downstream release decisions.
+    state: active
+  - capability_id: fixed-train.emit-declared-manifest-folders
+    statement: Emit declared AML manifest output folders (`validation_manifest`, `data_prep_manifest`, `train_manifest`, `promotion_manifest`) containing `step_manifest.json` while preserving nested download fallbacks for local smoke and AML-backed debugging.
+    state: active
+  - capability_id: fixed-train.canonical-manifest-paths
+    statement: Treat declared AML manifest output folders as the canonical operator paths while keeping nested fallback manifests as compatibility/download surfaces.
+    state: active
+  - capability_id: fixed-train.release-lineage-evidence
+    statement: Treat the fixed-train `train_manifest` and validation manifest as release-lineage evidence so `run_release.py` can validate operator-declared configs before registry mutation.
+    state: active
+  - capability_id: fixed-train.execute-promotion-utility
+    statement: Execute the promotion utility inside the fixed pipeline before deployment.
+    state: active
+  - capability_id: fixed-train.expose-promotion-thresholds
+    statement: Expose promotion thresholds from `configs/train.yaml` and compare against baseline metrics derived from the latest approved Azure ML model metadata.
+    state: active
+  - capability_id: fixed-train.monitor-candidates-advisory
+    statement: Accept monitor-stage retraining candidates as advisory upstream signals only; dataset freeze, validation, and train-path choice remain explicit operator or workflow steps.
+    state: active
+  - capability_id: fixed-train.accept-frozen-candidate-manifests
+    statement: Accept frozen retraining candidate manifests and validation handoff artifacts as upstream operator inputs without treating them as implicit training approval.
+    state: active
+  - capability_id: fixed-train.accept-fixed-train-bridge
+    statement: Accept a validated retraining candidate through the thin `run_retraining_fixed_train_smoke.py` bridge, which preserves candidate and validation lineage while feeding explicit current/reference dataset overrides into the existing fixed-train pipeline.
+    state: active
+  - capability_id: fixed-train.accept-path-selection-artifact
+    statement: Accept an explicit post-validation retraining path-selection artifact so monitor-triggered retraining can choose `fixed_train` or `model_sweep` without merging those downstream surfaces into one opaque workflow.
+    state: active
+  - capability_id: fixed-train.path-selection-invokes-bridges
+    statement: Allow `run_retraining_path_selection.py` to invoke the fixed-train smoke bridge or hand off a `model_sweep` selection into `run_retraining_hpo_smoke.py` without merging the downstream surfaces into one opaque workflow.
+    state: active
+  - capability_id: fixed-train.accept-phase-one-loop
+    statement: Accept a thin phase-1 loop orchestrator that composes candidate freeze, validation, path selection, and exactly one downstream smoke bridge while keeping `run_pipeline.py` and `run_hpo_pipeline.py` as the authoritative submission surfaces.
+    state: active
+  - capability_id: fixed-train.accept-hpo-smoke-bridge
+    statement: Accept a validated retraining candidate selected for `model_sweep` through the thin `run_retraining_hpo_smoke.py` bridge, which preserves candidate, validation, and path-selection lineage while feeding explicit current/reference dataset overrides into the existing HPO pipeline.
+    state: active
+  - capability_id: fixed-train.accept-hpo-to-fixed-continuation
+    statement: Accept a completed retraining HPO smoke run through the thin `run_retraining_hpo_to_fixed_train.py` continuation helper, which validates winner consistency, reuses or exports one effective winner train config, and then invokes the fixed-train smoke bridge instead of treating HPO outputs as release-ready directly.
+    state: active
+  - capability_id: fixed-train.continue-loop-after-promotion-evidence
+    statement: Allow the thin retraining-loop orchestrator to continue beyond the selected training bridge only after promotion-facing evidence exists, while keeping release as an explicit downstream gate delegated to `run_release.py`.
+    state: active
+  - capability_id: fixed-train.support-fixed-dataset-overrides
+    statement: Support explicit current/reference dataset override inputs in `run_pipeline.py` for smoke-scoped retraining proofs without mutating the environment-backed production asset defaults.
+    state: active
+  - capability_id: fixed-train.support-hpo-dataset-overrides
+    statement: Support explicit current/reference dataset override inputs in `run_hpo_pipeline.py` for smoke-scoped retraining HPO proofs without mutating the environment-backed production asset defaults.
+    state: active
+  - capability_id: fixed-train.deterministic-hpo-family-selection
+    statement: Apply an explicit deterministic HPO family-selection policy using primary metric, configured secondary metric, configured family priority, and a stable final fallback instead of incidental string ordering.
+    state: active
+  - capability_id: fixed-train.surface-hpo-tie-break-metadata
+    statement: Surface HPO tie-break metadata in `hpo_summary.json`, the summary report, `hpo_manifest`, and winner materialization artifacts so tied-family outcomes stay operator-readable.
+    state: active
 refs:
   code:
     - run_pipeline.py
-    - run_hpo_pipeline.py
-    - tools/retraining/run_retraining_path_selection.py
-    - tools/retraining/run_retraining_fixed_train_smoke.py
-    - tools/retraining/run_retraining_hpo_smoke.py
-    - tools/retraining/run_retraining_hpo_to_fixed_train.py
-    - run_retraining_loop.py
-    - tools/hpo/export_hpo_winner_config.py
-    - run_release.py
-    - src/azureml/__init__.py
-    - src/azureml/client.py
-    - src/azureml/inputs.py
-    - src/azureml/registry.py
-    - src/config/runtime.py
-    - src/config/assets.py
-    - src/train.py
-    - src/promotion/promote_model.py
-    - aml/components/train.yaml
-    - aml/components/promote_model.yaml
-    - configs/train.yaml
-    - configs/train_smoke.yaml
-    - configs/assets.yaml
+  tests:
+    - tests/test_asset_manifest.py
+    - tests/test_azureml_adapters.py
+    - tests/test_collect_hpo_results.py
+    - tests/test_export_hpo_winner_config.py
+    - tests/test_release_workflow.py
+    - tests/test_run_hpo_pipeline.py
+    - tests/test_run_pipeline_config.py
+    - tests/test_run_retraining_fixed_train_smoke.py
+    - tests/test_run_retraining_hpo_smoke.py
+    - tests/test_run_retraining_hpo_to_fixed_train.py
+    - tests/test_run_retraining_loop.py
+    - tests/test_run_retraining_path_selection.py
+    - tests/test_training_runtime_config.py
   docs:
-    - README.md
+    - docs/asset_management_examples.md
     - docs/pipeline_guide.md
-    - src/README.md
+    - docs/portfolio_architecture_spec.md
+  configs:
+    - configs/assets.yaml
+    - configs/data.yaml
+    - configs/data_smoke.yaml
+    - configs/hpo.yaml
+    - configs/hpo_smoke.yaml
+    - configs/mlflow.yaml
+    - configs/train.yaml
+    - configs/train_ranking_hpo_winner.yaml
+    - configs/train_smoke.yaml
+    - configs/train_smoke_hpo_winner_rf.yaml
+  components:
+    - aml/components/collect_hpo_results.yaml
+    - aml/components/data_prep.yaml
+    - aml/components/hpo_trial.yaml
+    - aml/components/materialize_hpo_winner.yaml
+    - aml/components/promote_model.yaml
+    - aml/components/train.yaml
+    - aml/components/validate_data.yaml
+  specs:
+  plans:
+revision: 16
+latest_change_id: 2026-04-18-feature-freshness-metadata
+last_updated_at: '2026-04-19T00:00:40+02:00'

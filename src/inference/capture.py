@@ -16,6 +16,12 @@ tags:
   - inference
   - monitoring
   - deployment
+features:
+  - release-monitoring-evaluator
+  - online-endpoint-deployment
+capabilities:
+  - monitor.provide-caller-side-inference-capture-wrapper-invokes-managed
+  - online-deploy.externalize-repo-owned-inference-capture-azure-accessible-jsonl
 lifecycle:
   status: active
 """

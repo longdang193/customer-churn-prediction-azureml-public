@@ -1,4 +1,18 @@
-"""Environment variable loading utilities."""
+"""Environment variable loading utilities.
+
+@meta
+name: env_loader
+type: module
+domain: utils
+responsibility:
+  - Provide utils behavior for `src/utils/env_loader.py`.
+inputs: []
+outputs: []
+tags:
+  - utils
+lifecycle:
+  status: active
+"""
 
 import os
 from pathlib import Path

@@ -1,4 +1,18 @@
-"""Data loading and preprocessing utilities."""
+"""Data loading and preprocessing utilities.
+
+@meta
+name: data_utils
+type: module
+domain: data-prep
+responsibility:
+  - Provide data-prep behavior for `src/data/data_utils.py`.
+inputs: []
+outputs: []
+tags:
+  - data-prep
+lifecycle:
+  status: active
+"""
 
 from pathlib import Path
 from typing import Tuple

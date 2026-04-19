@@ -1,3 +1,17 @@
+"""
+@meta
+name: test_training_manifest
+type: test
+scope: unit
+domain: tests
+covers:
+  - tests/test_training_manifest.py
+tags:
+  - ci-safe
+lifecycle:
+  status: active
+"""
+
 from __future__ import annotations
 
 import json

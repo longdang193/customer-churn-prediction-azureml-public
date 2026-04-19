@@ -32,6 +32,9 @@ def _make_temp_dir() -> Path:
 
 
 def test_finalize_manifest_prefers_declared_output_path(monkeypatch) -> None:
+    """
+    @proves data-prep.emit-structured-step-manifest-json-artifact-validation-data
+    """
     from src.utils import step_manifest
 
     monkeypatch.setattr(step_manifest, "_log_manifest_artifact", lambda _path: None)

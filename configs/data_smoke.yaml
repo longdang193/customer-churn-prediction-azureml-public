@@ -1,3 +1,16 @@
+# @architecture
+# owner: churn-data-preparation
+# features:
+#   - churn-data-preparation
+#   - model-training-pipeline
+#   - notebook-hpo
+# stages:
+#   - data_validate
+#   - data_prep
+#   - fixed_train
+#   - model_sweep
+# role: config
+# canonical: true
 # Data smoke profile for local preflight and low-cost Azure ML data asset checks.
 data:
   input_path: "data/smoke/positive/churn_smoke.csv"

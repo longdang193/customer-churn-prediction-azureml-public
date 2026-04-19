@@ -1,4 +1,18 @@
-"""Promotion utilities for model release decisions."""
+"""Promotion utilities for model release decisions.
+
+@meta
+name: promotion
+type: module
+domain: promotion
+responsibility:
+  - Provide promotion behavior for `src/promotion/__init__.py`.
+inputs: []
+outputs: []
+tags:
+  - promotion
+lifecycle:
+  status: active
+"""
 
 from __future__ import annotations
 

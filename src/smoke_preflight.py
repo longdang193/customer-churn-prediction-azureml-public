@@ -16,6 +16,10 @@ tags:
   - smoke
   - preflight
   - local
+features:
+  - churn-data-preparation
+capabilities:
+  - data-prep.provide-positive-negative-smoke-fixtures-local-data-prep
 lifecycle:
   status: active
 """
@@ -76,7 +80,11 @@ def run_smoke_preflight(
     output_root: Path = DEFAULT_OUTPUT_ROOT,
     clean: bool = False,
 ) -> dict[str, Any]:
-    """Run local smoke prep, validation, and training using the smoke configs."""
+    """
+    Run local smoke prep, validation, and training using the smoke configs.
+
+    @capability data-prep.provide-positive-negative-smoke-fixtures-local-data-prep
+    """
     if clean and output_root.exists():
         shutil.rmtree(output_root)
 

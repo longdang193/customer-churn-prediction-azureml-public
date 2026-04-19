@@ -1,4 +1,18 @@
-"""Random Forest model configuration."""
+"""Random Forest model configuration.
+
+@meta
+name: random_forest
+type: module
+domain: models
+responsibility:
+  - Provide models behavior for `src/models/random_forest.py`.
+inputs: []
+outputs: []
+tags:
+  - models
+lifecycle:
+  status: active
+"""
 
 from sklearn.ensemble import RandomForestClassifier
 

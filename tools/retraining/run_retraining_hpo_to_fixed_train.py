@@ -25,6 +25,14 @@ tags:
   - hpo
   - training
   - cli
+features:
+  - model-training-pipeline
+  - notebook-hpo
+  - release-monitoring-evaluator
+capabilities:
+  - fixed-train.accept-hpo-to-fixed-continuation
+  - fixed-train.accept-hpo-winner-train-config
+  - hpo.export-selected-hpo-winner-fixed-train-config-yaml
 lifecycle:
   status: active
 """

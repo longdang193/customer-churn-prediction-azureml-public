@@ -16,6 +16,12 @@ tags:
   - inference
   - azure-blob
   - utility
+features:
+  - release-monitoring-evaluator
+  - online-endpoint-deployment
+capabilities:
+  - monitor.treat-blob-backed-caller-capture-exact-path-evidence
+  - online-deploy.support-exact-caller-side-blob-capture-retrieval-repeatable
 lifecycle:
   status: active
 """

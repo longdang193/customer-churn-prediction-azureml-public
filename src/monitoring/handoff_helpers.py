@@ -19,6 +19,10 @@ tags:
   - release-handoff
   - orchestration
   - utility
+features:
+  - release-monitoring-evaluator
+capabilities:
+  - monitor.treat-blob-backed-caller-capture-exact-path-evidence
 lifecycle:
   status: active
 """
@@ -87,6 +91,11 @@ def download_exact_capture(
     container_env: str = "INFERENCE_CAPTURE_STORAGE_CONTAINER",
     runner: Any = None,
 ) -> Path:
+    """
+    Download the exact caller-capture artifact referenced by the manifest.
+
+    @capability monitor.treat-blob-backed-caller-capture-exact-path-evidence
+    """
     destination_dir.mkdir(parents=True, exist_ok=True)
     candidate_path = Path(capture_uri)
     if candidate_path.exists():

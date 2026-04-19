@@ -21,6 +21,13 @@ tags:
   - retraining
   - hpo
   - cli
+features:
+  - model-training-pipeline
+  - notebook-hpo
+  - release-monitoring-evaluator
+capabilities:
+  - fixed-train.accept-hpo-smoke-bridge
+  - hpo.submit-end-end-azure-ml-hpo-parent-pipeline
 lifecycle:
   status: active
 """

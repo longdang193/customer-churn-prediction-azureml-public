@@ -1,3 +1,17 @@
+# @architecture
+# owner: workspace-bootstrap
+# features:
+#   - workspace-bootstrap
+#   - churn-data-preparation
+#   - model-training-pipeline
+#   - online-endpoint-deployment
+# stages:
+#   - data_validate
+#   - data_prep
+#   - fixed_train
+#   - online_deploy
+# role: config
+# canonical: true
 # Lightweight Azure ML asset ownership manifest.
 # This file documents canonical names for lineage tags; it does not replace config.env.
 

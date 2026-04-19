@@ -1,4 +1,18 @@
-"""Path resolution utilities."""
+"""Path resolution utilities.
+
+@meta
+name: path_utils
+type: module
+domain: utils
+responsibility:
+  - Provide utils behavior for `src/utils/path_utils.py`.
+inputs: []
+outputs: []
+tags:
+  - utils
+lifecycle:
+  status: active
+"""
 
 from pathlib import Path
 from typing import Optional

@@ -124,6 +124,9 @@ def test_main_stops_after_candidate_for_freeze_only(monkeypatch: pytest.MonkeyPa
 def test_main_stops_after_path_selection_for_validate_and_select_path(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    """
+    @proves fixed-train.accept-phase-one-loop
+    """
     import run_retraining_loop
 
     temp_dir = _make_temp_dir()
@@ -203,6 +206,9 @@ def test_main_stops_after_path_selection_for_validate_and_select_path(
 
 
 def test_main_submits_fixed_train_selected_bridge(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    @proves monitor.support-thin-phase-1-loop-orchestrator-composes-existing
+    """
     import run_retraining_loop
 
     temp_dir = _make_temp_dir()
@@ -288,6 +294,9 @@ def test_main_submits_fixed_train_selected_bridge(monkeypatch: pytest.MonkeyPatc
 
 
 def test_main_submits_hpo_selected_bridge(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    @proves monitor.support-thin-phase-1-loop-orchestrator-composes-existing
+    """
     import run_retraining_loop
 
     temp_dir = _make_temp_dir()
@@ -436,6 +445,11 @@ def test_main_blocks_before_candidate_when_monitor_does_not_open_candidate(
 def test_main_continues_to_release_after_fixed_train_when_promoted(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    """
+    @proves fixed-train.continue-loop-after-promotion-evidence
+    @proves online-deploy.accept-opt-retraining-loop-continuation-only-after-promotion
+    @proves monitor.allow-thin-retraining-loop-orchestrator-continue-run-release
+    """
     import run_retraining_loop
 
     temp_dir = _make_temp_dir()
@@ -749,6 +763,10 @@ def test_main_blocks_at_validation_before_path_selection(
 
 
 def test_main_continues_to_monitor_handoff_after_release(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    @proves online-deploy.accept-optional-post-release-monitoring-handoff-continuation-retraining
+    @proves monitor.allow-same-opt-retraining-loop-continuation-compose-run
+    """
     import run_retraining_loop
 
     temp_dir = _make_temp_dir()

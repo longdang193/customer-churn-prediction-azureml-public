@@ -1,4 +1,18 @@
-"""Build fixed training configs from HPO winner manifests."""
+"""Build fixed training configs from HPO winner manifests.
+
+@meta
+name: hpo_winner_config
+type: module
+domain: hpo
+responsibility:
+  - Provide hpo behavior for `src/hpo_winner_config.py`.
+inputs: []
+outputs: []
+tags:
+  - hpo
+lifecycle:
+  status: active
+"""
 
 from __future__ import annotations
 

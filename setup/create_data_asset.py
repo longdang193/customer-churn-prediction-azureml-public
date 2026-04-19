@@ -3,6 +3,24 @@
 This script registers a local data directory or file as a data asset in Azure ML.
 The data asset is registered as uri_folder type, which is required for the
 data_prep component to automatically load CSV files.
+
+@meta
+name: create_data_asset
+type: utility
+domain: setup
+responsibility:
+  - Provide setup behavior for `setup/create_data_asset.py`.
+inputs: []
+outputs: []
+tags:
+  - setup
+features:
+  - workspace-bootstrap
+capabilities:
+  - workspace-bootstrap.register-raw-dataset-azure-ml-data-asset
+  - workspace-bootstrap.register-smoke-dataset-separate-azure-ml-data-asset
+lifecycle:
+  status: active
 """
 
 import argparse
@@ -48,6 +66,9 @@ def create_data_asset(
     description: str = "Bank customer churn dataset",
 ) -> None:
     """Create and register a data asset in Azure ML.
+
+    @capability workspace-bootstrap.register-raw-dataset-azure-ml-data-asset
+    @capability workspace-bootstrap.register-smoke-dataset-separate-azure-ml-data-asset
 
     Args:
         data_path: Path to the data directory or file
@@ -112,7 +133,12 @@ def create_data_asset(
 
 
 def main() -> None:
-    """Main function to create data asset."""
+    """
+    Main function to create data asset.
+
+    @capability workspace-bootstrap.register-raw-dataset-azure-ml-data-asset
+    @capability workspace-bootstrap.register-smoke-dataset-separate-azure-ml-data-asset
+    """
     parser = argparse.ArgumentParser(
         description="Create Azure ML data asset from local data directory",
         formatter_class=argparse.RawDescriptionHelpFormatter,

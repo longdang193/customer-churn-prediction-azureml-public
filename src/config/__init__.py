@@ -1,4 +1,18 @@
-"""Runtime configuration helpers for orchestration and training flows."""
+"""Runtime configuration helpers for orchestration and training flows.
+
+@meta
+name: config
+type: module
+domain: config
+responsibility:
+  - Provide config behavior for `src/config/__init__.py`.
+inputs: []
+outputs: []
+tags:
+  - config
+lifecycle:
+  status: active
+"""
 
 from .assets import (
     build_asset_lineage_tags,

@@ -21,6 +21,12 @@ tags:
   - retraining
   - validation
   - cli
+features:
+  - online-endpoint-deployment
+  - release-monitoring-evaluator
+capabilities:
+  - online-deploy.provide-enough-release-monitor-provenance-later-retraining-candidate
+  - monitor.support-thin-post-monitor-bridge-freezes-explicit-current
 lifecycle:
   status: active
 """
@@ -242,6 +248,9 @@ def _build_candidate_summary(
 
 
 def main() -> None:
+    """
+    @capability monitor.support-thin-post-monitor-bridge-freezes-explicit-current
+    """
     parser = argparse.ArgumentParser(
         description="Freeze a retraining candidate and optionally run validate_data.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

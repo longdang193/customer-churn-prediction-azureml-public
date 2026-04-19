@@ -43,6 +43,9 @@ def _write_payload(path: Path) -> None:
 
 
 def test_invoke_with_capture_writes_redacted_local_jsonl_record() -> None:
+    """
+    @proves monitor.provide-caller-side-inference-capture-wrapper-invokes-managed
+    """
     from src.inference.client_capture import (
         CallerCaptureRequest,
         CallerInferenceCaptureSettings,
@@ -378,6 +381,9 @@ def test_caller_written_records_feed_monitor_capture_backed() -> None:
 def test_run_inference_capture_writes_manifest_with_response_preview(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    """
+    @proves monitor.provide-caller-side-inference-capture-wrapper-invokes-managed
+    """
     import run_inference_capture
 
     temp_dir = _make_temp_dir()

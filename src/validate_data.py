@@ -17,6 +17,12 @@ tags:
   - evidently
   - data-quality
   - drift
+features:
+  - churn-data-preparation
+capabilities:
+  - data-prep.support-pre-training-validation-drift-analysis-against-baseline
+  - data-prep.accept-selected-data-config-files-through-aml-validation
+  - data-prep.emit-structured-step-manifest-json-artifact-validation-data
 lifecycle:
   status: active
 """
@@ -268,7 +274,12 @@ def run_validation(
     manifest_output_path: Path | None = None,
     report_factory: Callable[[], Any] | None = None,
 ) -> dict[str, Any]:
-    """Run validation, persist artifacts, and return the summary."""
+    """
+    Run validation, persist artifacts, and return the summary.
+
+    @capability data-prep.support-pre-training-validation-drift-analysis-against-baseline
+    @capability data-prep.emit-structured-step-manifest-json-artifact-validation-data
+    """
     summary_path = resolve_named_output_file(summary_path, DEFAULT_VALIDATION_SUMMARY_NAME)
     manifest = build_step_manifest(step_name="validate_data", stage_name="data_validate")
     manifest_path = manifest_path_for_dir(output_dir)
@@ -462,7 +473,11 @@ def run_validation(
 
 
 def main() -> None:
-    """CLI entry-point."""
+    """
+    CLI entry-point.
+
+    @capability data-prep.accept-selected-data-config-files-through-aml-validation
+    """
     parser = argparse.ArgumentParser(
         description="Validate batch input data before Azure ML training.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

@@ -54,6 +54,10 @@ def test_environment_image_defaults_come_from_asset_manifest() -> None:
 
 
 def test_build_asset_lineage_tags_includes_configs_components_and_git_fallback() -> None:
+    """
+    @proves fixed-train.attach-lineage-tags
+    @proves online-deploy.stamp-approved-registered-models-lightweight-data-config-component
+    """
     from src.config.assets import build_asset_lineage_tags, load_asset_manifest
 
     tags = build_asset_lineage_tags(
@@ -88,6 +92,9 @@ def test_load_asset_manifest_falls_back_when_manifest_is_missing() -> None:
 
 
 def test_deployment_inference_capture_settings_come_from_asset_manifest() -> None:
+    """
+    @proves online-deploy.invoke-endpoint-deployment-smoke-payload-path-configs-assets
+    """
     from src.config.assets import (
         deployment_inference_capture_settings,
         load_asset_manifest,

@@ -1,4 +1,18 @@
-"""Configuration loader for YAML config files."""
+"""Configuration loader for YAML config files.
+
+@meta
+name: config_loader
+type: module
+domain: utils
+responsibility:
+  - Provide utils behavior for `src/utils/config_loader.py`.
+inputs: []
+outputs: []
+tags:
+  - utils
+lifecycle:
+  status: active
+"""
 
 from collections.abc import Mapping
 from pathlib import Path

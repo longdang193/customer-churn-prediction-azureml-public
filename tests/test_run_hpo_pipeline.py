@@ -60,6 +60,10 @@ def test_build_hpo_lineage_tags_includes_hpo_config_path() -> None:
 
 
 def test_hpo_component_contracts_support_pipeline_sweeps_and_summary() -> None:
+    """
+    @proves hpo.submit-end-end-azure-ml-hpo-parent-pipeline
+    @proves hpo.reuse-shared-src-azureml-client-input-adapters-instead
+    """
     project_root = Path(__file__).resolve().parents[1]
     hpo_trial_component = yaml.safe_load(
         (project_root / "aml" / "components" / "hpo_trial.yaml").read_text(encoding="utf-8")
@@ -137,6 +141,9 @@ def test_hpo_component_contracts_support_pipeline_sweeps_and_summary() -> None:
 
 
 def test_define_hpo_pipeline_builds_expected_graph() -> None:
+    """
+    @proves hpo.submit-end-end-azure-ml-hpo-parent-pipeline
+    """
     import hpo_utils
     from run_hpo import build_model_sweep_specs
     from run_hpo_pipeline import define_hpo_pipeline, load_hpo_pipeline_components
@@ -226,6 +233,9 @@ def test_resolve_hpo_config_path_defaults_and_accepts_override() -> None:
 
 
 def test_resolve_hpo_data_inputs_stages_local_csv_overrides() -> None:
+    """
+    @proves fixed-train.support-hpo-dataset-overrides
+    """
     from run_hpo_pipeline import (
         HPODataInputOverrides,
         _resolve_hpo_data_inputs,
@@ -267,6 +277,9 @@ def test_resolve_hpo_data_inputs_stages_local_csv_overrides() -> None:
 def test_main_accepts_explicit_current_and_reference_data_overrides(
     monkeypatch,
 ) -> None:
+    """
+    @proves fixed-train.support-hpo-dataset-overrides
+    """
     import run_hpo_pipeline
 
     observed: dict[str, object] = {}
@@ -380,6 +393,9 @@ def test_main_accepts_explicit_current_and_reference_data_overrides(
 
 
 def test_get_hpo_pipeline_metadata_reads_hpo_config() -> None:
+    """
+    @proves hpo.provide-review-surface-periodic-re-optimization-becoming-sole
+    """
     from run_hpo_pipeline import get_hpo_pipeline_metadata
 
     temp_dir = _make_temp_dir()

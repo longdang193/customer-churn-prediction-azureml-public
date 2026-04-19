@@ -20,7 +20,7 @@ import shutil
 import uuid
 
 
-TEST_TEMP_ROOT = Path(__file__).resolve().parents[3] / ".tmp-tests"
+TEST_TEMP_ROOT = Path(__file__).resolve().parents[1] / ".tmp-tests"
 TEST_TEMP_ROOT.mkdir(exist_ok=True)
 
 
@@ -31,6 +31,9 @@ def _make_temp_dir() -> Path:
 
 
 def test_load_training_runtime_defaults_prefers_training_experiment_name() -> None:
+    """
+    @proves fixed-train.apply-train-metadata
+    """
     from src.config.runtime import load_training_runtime_defaults
 
     temp_dir = _make_temp_dir()
@@ -72,6 +75,9 @@ def test_load_training_runtime_defaults_prefers_training_experiment_name() -> No
 
 
 def test_load_promotion_config_reads_thresholds_from_train_yaml() -> None:
+    """
+    @proves fixed-train.expose-promotion-thresholds
+    """
     from src.config.runtime import load_promotion_config
 
     temp_dir = _make_temp_dir()

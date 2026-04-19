@@ -1,4 +1,18 @@
-"""Release orchestration helpers."""
+"""Release orchestration helpers.
+
+@meta
+name: release
+type: module
+domain: release
+responsibility:
+  - Provide release behavior for `src/release/__init__.py`.
+inputs: []
+outputs: []
+tags:
+  - release
+lifecycle:
+  status: active
+"""
 
 from .workflow import (
     ApprovedModelBaseline,

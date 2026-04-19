@@ -33,6 +33,10 @@ def _make_temp_dir() -> Path:
 
 
 def test_parse_capture_blob_path_supports_azureml_uri() -> None:
+    """
+    @proves monitor.treat-blob-backed-caller-capture-exact-path-evidence
+    @proves online-deploy.support-exact-caller-side-blob-capture-retrieval-repeatable
+    """
     from src.monitoring.download_capture_blob import parse_capture_blob_path
 
     assert parse_capture_blob_path(
@@ -41,6 +45,10 @@ def test_parse_capture_blob_path_supports_azureml_uri() -> None:
 
 
 def test_parse_capture_blob_path_supports_azureblob_uri() -> None:
+    """
+    @proves monitor.treat-blob-backed-caller-capture-exact-path-evidence
+    @proves online-deploy.support-exact-caller-side-blob-capture-retrieval-repeatable
+    """
     from src.monitoring.download_capture_blob import parse_capture_blob_path
 
     assert parse_capture_blob_path(
@@ -49,6 +57,10 @@ def test_parse_capture_blob_path_supports_azureblob_uri() -> None:
 
 
 def test_download_capture_blob_copies_local_file() -> None:
+    """
+    @proves monitor.treat-blob-backed-caller-capture-exact-path-evidence
+    @proves online-deploy.support-exact-caller-side-blob-capture-retrieval-repeatable
+    """
     from src.monitoring.download_capture_blob import download_capture_blob
 
     temp_dir = _make_temp_dir()
@@ -71,6 +83,10 @@ def test_download_capture_blob_copies_local_file() -> None:
 
 
 def test_download_capture_blob_retries_blob_not_found_then_succeeds(monkeypatch) -> None:
+    """
+    @proves monitor.treat-blob-backed-caller-capture-exact-path-evidence
+    @proves online-deploy.support-exact-caller-side-blob-capture-retrieval-repeatable
+    """
     from azure.core.exceptions import ResourceNotFoundError
     from src.monitoring.download_capture_blob import download_capture_blob
 
@@ -126,6 +142,10 @@ def test_download_capture_blob_retries_blob_not_found_then_succeeds(monkeypatch)
 
 
 def test_download_capture_blob_raises_after_retry_budget_exhausted(monkeypatch) -> None:
+    """
+    @proves monitor.treat-blob-backed-caller-capture-exact-path-evidence
+    @proves online-deploy.support-exact-caller-side-blob-capture-retrieval-repeatable
+    """
     from azure.core.exceptions import ResourceNotFoundError
     from src.monitoring.download_capture_blob import download_capture_blob
 

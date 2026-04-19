@@ -21,6 +21,18 @@ tags:
   - release-handoff
   - orchestration
   - azure-ml
+features:
+  - online-endpoint-deployment
+  - release-monitoring-evaluator
+capabilities:
+  - online-deploy.hand-off-saved-release-truth-repeatable-monitoring-first
+  - online-deploy.support-exact-caller-side-blob-capture-retrieval-repeatable
+  - online-deploy.provide-release-evidence-monitor-stage-retraining-policy-can
+  - online-deploy.provide-enough-release-monitor-provenance-later-retraining-candidate
+  - online-deploy.provide-enough-release-monitor-provenance-later-post-validation
+  - online-deploy.accept-optional-post-release-monitoring-handoff-continuation-retraining
+  - monitor.support-one-thin-monitoring-first-automation-consumes-saved
+  - monitor.treat-blob-backed-caller-capture-exact-path-evidence
 lifecycle:
   status: active
 """
@@ -146,6 +158,10 @@ def _build_handoff_summary(
 
 
 def main() -> None:
+    """
+    @capability monitor.support-one-thin-monitoring-first-automation-consumes-saved
+    @capability monitor.treat-blob-backed-caller-capture-exact-path-evidence
+    """
     parser = argparse.ArgumentParser(
         description="Re-run bounded monitoring handoff from a saved release record.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

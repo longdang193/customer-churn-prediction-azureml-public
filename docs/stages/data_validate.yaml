@@ -1,35 +1,62 @@
+# GENERATED FILE - do not edit directly.
+# Source: docs/stages/data_validate.source.yaml
 stage_id: data_validate
 name: Data validation
 status: active
 purpose: Validate new datasets and measure data drift against a training baseline before sweep or fixed training execution.
+workflow_position: pre_training
+hands_off_to:
+  - data_prep
+  - model_sweep
+  - fixed_train
 inputs:
   - Raw or processed churn dataset
   - Validation and drift thresholds
   - Reference baseline dataset
-  - optional smoke and validation-edge fixtures
-  - selected data config passed as AML `uri_file`
+  - Optional smoke and validation-edge fixtures
+  - Selected data config passed as AML `uri_file`
 outputs:
   - Validation report artifact
   - Validation summary JSON
   - Proceed, warn, or fail decision signal
-  - Data-safety gate for any monitor-triggered retraining candidate before fixed training or HPO
-  - Validation result for a frozen retraining candidate handoff
-  - Validation result for the explicit post-validation retraining path selector
-  - Validation result for the smoke fixed-train handoff bridge driven by a frozen retraining candidate
+  - Validation result for frozen retraining candidate handoffs
 feature_refs:
   - churn-data-preparation
-  - notebook-hpo
   - model-training-pipeline
+  - notebook-hpo
+capability_refs:
+  - data-prep.accept-selected-data-config-files-through-aml-validation
+  - data-prep.emit-structured-step-manifest-json-artifact-validation-data
+  - data-prep.provide-positive-negative-smoke-fixtures-local-data-prep
+  - data-prep.support-pre-training-validation-drift-analysis-against-baseline
+  - fixed-train.accept-data-config-path
+  - fixed-train.accept-frozen-candidate-manifests
+  - fixed-train.share-validation-prep-contracts
+  - hpo.submit-end-end-azure-ml-hpo-parent-pipeline
 code_refs:
-  - run_retraining_candidate.py
-  - run_retraining_path_selection.py
+  - src/data/config.py
+  - src/data_prep.py
+  - src/smoke_preflight.py
   - src/validate_data.py
-  - aml/components/validate_data.yaml
+test_refs:
+  - tests/test_data_prep.py
+  - tests/test_data_prep_manifest.py
+  - tests/test_run_hpo_pipeline.py
+  - tests/test_run_pipeline_config.py
+  - tests/test_run_retraining_fixed_train_smoke.py
+  - tests/test_run_retraining_hpo_smoke.py
+  - tests/test_smoke_assets.py
+  - tests/test_step_manifest.py
+  - tests/test_validate_data.py
+doc_refs:
+  - docs/asset_management_examples.md
+  - docs/pipeline_guide.md
+  - docs/portfolio_architecture_spec.md
+  - docs/setup_guide.md
+config_refs:
+  - configs/assets.yaml
   - configs/data.yaml
   - configs/data_smoke.yaml
-  - data/smoke/positive/churn_smoke.csv
-  - data/smoke/eval/churn_smoke_eval.csv
-  - data/smoke/negative/churn_validation_edge.csv
-doc_refs:
-  - docs/pipeline_guide.md
-  - docs/features/churn-data-preparation/churn-data-preparation.yaml
+  - configs/data_smoke_eval.yaml
+component_refs:
+  - aml/components/validate_data.yaml

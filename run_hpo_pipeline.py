@@ -18,6 +18,16 @@ tags:
   - azure-ml
   - hpo
   - orchestration
+features:
+  - notebook-hpo
+  - model-training-pipeline
+capabilities:
+  - hpo.submit-end-end-azure-ml-hpo-parent-pipeline
+  - hpo.reuse-shared-src-azureml-client-input-adapters-instead
+  - hpo.provide-review-surface-periodic-re-optimization-becoming-sole
+  - fixed-train.support-hpo-dataset-overrides
+invariants:
+  - hpo.run-hpo-pipeline-py-canonical-end-end
 lifecycle:
   status: active
 """

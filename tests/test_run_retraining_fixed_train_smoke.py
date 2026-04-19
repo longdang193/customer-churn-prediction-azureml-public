@@ -74,6 +74,13 @@ def _candidate_manifest(current_data: str, reference_data: str) -> dict[str, obj
 
 
 def test_main_writes_dry_run_handoff_for_passed_validation(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    @proves fixed-train.accept-fixed-train-bridge
+    @proves fixed-train.monitor-candidates-advisory
+    @proves fixed-train.accept-frozen-candidate-manifests
+    @proves online-deploy.provide-enough-release-provenance-later-validated-retraining-candidate
+    @proves monitor.support-second-thin-bridge-can-take-passed-retraining
+    """
     import run_retraining_fixed_train_smoke
 
     temp_dir = _make_temp_dir()
@@ -180,6 +187,11 @@ def test_main_blocks_when_validation_did_not_pass(monkeypatch: pytest.MonkeyPatc
 
 
 def test_main_submits_fixed_train_when_explicitly_requested(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    @proves fixed-train.accept-fixed-train-bridge
+    @proves fixed-train.monitor-candidates-advisory
+    @proves monitor.support-second-thin-bridge-can-take-passed-retraining
+    """
     import run_retraining_fixed_train_smoke
 
     temp_dir = _make_temp_dir()

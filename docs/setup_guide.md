@@ -1,3 +1,22 @@
+---
+doc_id: project-setup-guide
+doc_type: operator-guide
+explains:
+  features:
+    - workspace-bootstrap
+  stages:
+    - data_validate
+    - data_prep
+    - fixed_train
+    - model_sweep
+    - online_deploy
+  configs:
+    - configs/assets.yaml
+    - configs/data.yaml
+    - configs/data_smoke.yaml
+    - configs/train.yaml
+---
+
 # Project Setup Guide
 
 This guide covers the setup for both local development and Azure Machine Learning.

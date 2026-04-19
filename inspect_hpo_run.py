@@ -1,4 +1,18 @@
-"""Compatibility wrapper for the moved HPO inspection helper."""
+"""Compatibility wrapper for the moved HPO inspection helper.
+
+@meta
+name: inspect_hpo_run
+type: script
+domain: hpo
+responsibility:
+  - Provide hpo behavior for `inspect_hpo_run.py`.
+inputs: []
+outputs: []
+tags:
+  - hpo
+lifecycle:
+  status: active
+"""
 
 from tools.hpo import inspect_hpo_run as _impl
 

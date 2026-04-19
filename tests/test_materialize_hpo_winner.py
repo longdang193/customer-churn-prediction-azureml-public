@@ -34,6 +34,10 @@ def _make_temp_dir() -> Path:
 
 
 def test_materialize_winner_artifacts_copies_selected_family_outputs() -> None:
+    """
+    @proves hpo.materialize-canonical-winner-outputs-winner-model-output-winner
+    @proves hpo.materialize-winner-train-config-train-config-yaml-hpo
+    """
     from src.materialize_hpo_winner import materialize_winner_artifacts
 
     temp_dir = _make_temp_dir()

@@ -1,4 +1,25 @@
-"""Lightweight asset manifest and lineage tag helpers."""
+"""Lightweight asset manifest and lineage tag helpers.
+
+@meta
+name: assets
+type: module
+domain: config
+responsibility:
+  - Provide config behavior for `src/config/assets.py`.
+inputs: []
+outputs: []
+tags:
+  - config
+features:
+  - model-training-pipeline
+  - online-endpoint-deployment
+capabilities:
+  - fixed-train.attach-lineage-tags
+  - online-deploy.invoke-endpoint-deployment-smoke-payload-path-configs-assets
+  - online-deploy.stamp-approved-registered-models-lightweight-data-config-component
+lifecycle:
+  status: active
+"""
 
 from __future__ import annotations
 

@@ -1,4 +1,18 @@
-"""Type conversion and parsing utilities."""
+"""Type conversion and parsing utilities.
+
+@meta
+name: type_utils
+type: module
+domain: utils
+responsibility:
+  - Provide utils behavior for `src/utils/type_utils.py`.
+inputs: []
+outputs: []
+tags:
+  - utils
+lifecycle:
+  status: active
+"""
 
 from typing import Any
 

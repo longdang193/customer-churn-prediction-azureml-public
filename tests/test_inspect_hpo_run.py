@@ -38,6 +38,10 @@ def _write_json(path: Path, payload: dict[str, object]) -> None:
 
 
 def test_inspect_downloaded_hpo_run_summarizes_family_artifacts() -> None:
+    """
+    @proves hpo.inspect-downloaded-remote-hpo-parent-run-through-inspect
+    @proves hpo.treat-inspect-hpo-run-py-export-hpo-winner
+    """
     from inspect_hpo_run import inspect_downloaded_hpo_run
 
     temp_dir = _make_temp_dir()

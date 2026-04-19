@@ -33,6 +33,10 @@ def _make_temp_dir() -> Path:
 
 
 def test_write_hpo_summary_artifacts_selects_best_candidate() -> None:
+    """
+    @proves hpo.emit-hpo-summary-artifacts-hpo-summary-json-hpo
+    @proves hpo.surface-per-family-model-output-mlflow-model-candidate
+    """
     from src.collect_hpo_results import write_hpo_summary_artifacts
 
     temp_dir = _make_temp_dir()
@@ -167,6 +171,10 @@ def test_write_hpo_summary_artifacts_fails_when_no_candidates_exist() -> None:
 
 
 def test_write_hpo_summary_artifacts_breaks_primary_metric_ties_with_roc_auc() -> None:
+    """
+    @proves fixed-train.deterministic-hpo-family-selection
+    @proves fixed-train.surface-hpo-tie-break-metadata
+    """
     from src.collect_hpo_results import write_hpo_summary_artifacts
 
     temp_dir = _make_temp_dir()
@@ -222,6 +230,10 @@ def test_write_hpo_summary_artifacts_breaks_primary_metric_ties_with_roc_auc() -
 
 
 def test_write_hpo_summary_artifacts_breaks_full_metric_ties_with_family_priority() -> None:
+    """
+    @proves fixed-train.deterministic-hpo-family-selection
+    @proves fixed-train.surface-hpo-tie-break-metadata
+    """
     from src.collect_hpo_results import write_hpo_summary_artifacts
 
     temp_dir = _make_temp_dir()

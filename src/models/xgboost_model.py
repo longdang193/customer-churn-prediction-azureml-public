@@ -1,4 +1,18 @@
-"""XGBoost model configuration."""
+"""XGBoost model configuration.
+
+@meta
+name: xgboost_model
+type: module
+domain: models
+responsibility:
+  - Provide models behavior for `src/models/xgboost_model.py`.
+inputs: []
+outputs: []
+tags:
+  - models
+lifecycle:
+  status: active
+"""
 
 try:
     from xgboost import XGBClassifier

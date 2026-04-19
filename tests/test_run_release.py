@@ -168,6 +168,12 @@ def test_deployment_metadata_from_result_preserves_repo_owned_scoring_fields() -
 
 
 def test_main_uses_configured_smoke_payload_for_deploy(monkeypatch) -> None:
+    """
+    @proves online-deploy.register-selected-promoted-model-bundle-azure-ml
+    @proves online-deploy.create-update-managed-online-endpoint-deployment-approved-registered
+    @proves online-deploy.validate-configured-endpoint-smoke-payload-before-invoking-managed
+    @proves online-deploy.invoke-endpoint-deployment-smoke-payload-path-configs-assets
+    """
     import run_release
 
     captured: dict[str, object] = {}
@@ -288,6 +294,9 @@ def test_main_uses_configured_smoke_payload_for_deploy(monkeypatch) -> None:
 
 
 def test_main_blocks_lineage_mismatch_before_registration(monkeypatch) -> None:
+    """
+    @proves online-deploy.validate-release-time-data-train-config-lineage-against
+    """
     import run_release
 
     temp_dir = _make_temp_dir()
@@ -463,6 +472,9 @@ def test_main_accepts_canonical_train_config_even_when_runtime_filename_is_gener
 
 
 def test_main_reuses_matching_registered_model_by_default(monkeypatch) -> None:
+    """
+    @proves online-deploy.reuse-matching-approved-registered-model-version-default-run
+    """
     import run_release
 
     temp_dir = _make_temp_dir()
@@ -494,6 +506,9 @@ def test_main_reuses_matching_registered_model_by_default(monkeypatch) -> None:
 
 
 def test_main_force_reregister_skips_matching_reuse(monkeypatch) -> None:
+    """
+    @proves online-deploy.register-selected-promoted-model-bundle-azure-ml
+    """
     import run_release
 
     temp_dir = _make_temp_dir()
@@ -582,6 +597,9 @@ def test_main_writes_failed_release_record_when_deployment_fails_after_registrat
 def test_main_preserves_structured_deployment_metadata_for_payload_validation_failure(
     monkeypatch,
 ) -> None:
+    """
+    @proves online-deploy.preserve-truthful-deployment-state-metadata-release-record-when
+    """
     import run_release
 
     temp_dir = _make_temp_dir()
@@ -651,6 +669,9 @@ def test_default_release_payload_fixture_still_fails_local_validation_for_wrong_
 def test_main_writes_failed_release_record_for_deployment_finalization_timeout(
     monkeypatch,
 ) -> None:
+    """
+    @proves online-deploy.distinguish-delayed-azure-success-terminal-deployment-failure-deployment
+    """
     import run_release
 
     temp_dir = _make_temp_dir()

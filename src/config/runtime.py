@@ -1,4 +1,23 @@
-"""Central runtime configuration ownership for Azure, training, and promotion."""
+"""Central runtime configuration ownership for Azure, training, and promotion.
+
+@meta
+name: runtime
+type: module
+domain: config
+responsibility:
+  - Provide config behavior for `src/config/runtime.py`.
+inputs: []
+outputs: []
+tags:
+  - config
+features:
+  - model-training-pipeline
+capabilities:
+  - fixed-train.apply-train-metadata
+  - fixed-train.expose-promotion-thresholds
+lifecycle:
+  status: active
+"""
 
 from __future__ import annotations
 

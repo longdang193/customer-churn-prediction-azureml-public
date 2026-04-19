@@ -16,6 +16,17 @@ tags:
   - training
   - handoff
   - config
+features:
+  - notebook-hpo
+  - model-training-pipeline
+capabilities:
+  - hpo.export-selected-hpo-winner-fixed-train-config-yaml
+  - hpo.materialize-winner-train-config-train-config-yaml-hpo
+  - hpo.treat-inspect-hpo-run-py-export-hpo-winner
+  - hpo.analyze-completed-sweep-results-update-configs-train-yaml
+  - fixed-train.accept-hpo-winner-train-config
+  - fixed-train.preserve-train-config-identity
+  - fixed-train.carry-manifest-lineage
 lifecycle:
   status: active
 """

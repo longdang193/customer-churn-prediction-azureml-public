@@ -56,6 +56,9 @@ MODEL_INPUT_COLUMNS = [
 
 
 def test_positive_smoke_data_matches_raw_schema_and_supports_stratified_split() -> None:
+    """
+    @proves data-prep.provide-positive-negative-smoke-fixtures-local-data-prep
+    """
     smoke_path = PROJECT_ROOT / "data" / "smoke" / "positive" / "churn_smoke.csv"
 
     frame = pd.read_csv(smoke_path)
@@ -67,6 +70,9 @@ def test_positive_smoke_data_matches_raw_schema_and_supports_stratified_split() 
 
 
 def test_negative_smoke_data_has_documented_validation_gate_difference() -> None:
+    """
+    @proves data-prep.provide-positive-negative-smoke-fixtures-local-data-prep
+    """
     edge_path = PROJECT_ROOT / "data" / "smoke" / "negative" / "churn_validation_edge.csv"
 
     frame = pd.read_csv(edge_path)
@@ -76,6 +82,10 @@ def test_negative_smoke_data_has_documented_validation_gate_difference() -> None
 
 
 def test_data_smoke_config_points_at_smoke_paths() -> None:
+    """
+    @proves data-prep.accept-selected-data-config-files-through-aml-validation
+    @proves data-prep.provide-positive-negative-smoke-fixtures-local-data-prep
+    """
     config = load_config(str(PROJECT_ROOT / "configs" / "data_smoke.yaml"))
 
     assert config["data"]["input_path"] == "data/smoke/positive/churn_smoke.csv"

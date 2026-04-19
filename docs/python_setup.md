@@ -1,3 +1,11 @@
+---
+doc_id: python-setup
+doc_type: setup-guide
+explains:
+  features:
+    - workspace-bootstrap
+---
+
 # Python 3.9 Environment Setup Guide
 
 This guide explains how to set up a Python 3.9 development environment for this project. Using Python 3.9 ensures compatibility with the Docker image (`python:3.9-slim`) and prevents version mismatches when compiling requirements.

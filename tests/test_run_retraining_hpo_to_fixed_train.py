@@ -498,6 +498,10 @@ def test_main_blocks_when_required_winner_manifest_is_missing(
 def test_main_reuses_existing_winner_train_config_and_invokes_fixed_train(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    """
+    @proves fixed-train.accept-hpo-to-fixed-continuation
+    @proves fixed-train.accept-hpo-winner-train-config
+    """
     import run_retraining_hpo_to_fixed_train
 
     temp_dir = _make_temp_dir()
@@ -596,6 +600,10 @@ def test_main_reuses_existing_winner_train_config_and_invokes_fixed_train(
 def test_main_downloads_hpo_outputs_and_exports_when_winner_config_missing(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    """
+    @proves fixed-train.accept-hpo-to-fixed-continuation
+    @proves hpo.export-selected-hpo-winner-fixed-train-config-yaml
+    """
     import run_retraining_hpo_to_fixed_train
 
     temp_dir = _make_temp_dir()

@@ -16,6 +16,16 @@ tags:
   - azure-ml
   - deployment
   - release
+features:
+  - online-endpoint-deployment
+capabilities:
+  - online-deploy.configure-approved-model-repo-owned-src-inference-score
+  - online-deploy.recover-transient-sdk-side-deployment-operation-failures-when
+  - online-deploy.distinguish-delayed-azure-success-terminal-deployment-failure-deployment
+  - online-deploy.preserve-truthful-deployment-state-metadata-release-record-when
+  - online-deploy.externalize-repo-owned-inference-capture-azure-accessible-jsonl
+  - online-deploy.keep-release-smoke-validation-broad-enough-catch-registration
+  - online-deploy.reuse-shared-src-azureml-registry-deployment-adapters-release
 lifecycle:
   status: active
 """

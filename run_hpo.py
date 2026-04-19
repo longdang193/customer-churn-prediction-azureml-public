@@ -17,6 +17,15 @@ tags:
   - azure-ml
   - hpo
   - orchestration
+features:
+  - notebook-hpo
+capabilities:
+  - hpo.build-sweep-definitions-configs-hpo-yaml-another-selected
+  - hpo.submit-reload-sweep-jobs-azure-ml-run-hpo
+  - hpo.treat-configs-hpo-smoke-yaml-wiring-artifact-profile
+  - hpo.provide-review-surface-periodic-re-optimization-becoming-sole
+invariants:
+  - hpo.run-hpo-py-remains-canonical-direct-rerun
 lifecycle:
   status: active
 """

@@ -1,3 +1,12 @@
+# @architecture
+# owner: notebook-hpo
+# features:
+#   - notebook-hpo
+#   - model-training-pipeline
+# stages:
+#   - model_sweep
+# role: component
+# canonical: true
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: collect_hpo_results
 version: 1

@@ -1,3 +1,13 @@
+# @architecture
+# owner: churn-data-preparation
+# features:
+#   - churn-data-preparation
+#   - model-training-pipeline
+#   - notebook-hpo
+# stages:
+#   - data_prep
+# role: component
+# canonical: true
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: data_prep
 version: 1

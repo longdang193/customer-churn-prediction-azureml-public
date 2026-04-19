@@ -1,4 +1,18 @@
-"""Core training logic for model training and evaluation."""
+"""Core training logic for model training and evaluation.
+
+@meta
+name: training
+type: module
+domain: training
+responsibility:
+  - Provide training behavior for `src/training/training.py`.
+inputs: []
+outputs: []
+tags:
+  - training
+lifecycle:
+  status: active
+"""
 
 # Import azureml.mlflow before mlflow to register Azure ML tracking store
 import azureml.mlflow  # noqa: F401

@@ -1,4 +1,18 @@
-"""Helpers for normalizing MLflow conda environments for Azure serving."""
+"""Helpers for normalizing MLflow conda environments for Azure serving.
+
+@meta
+name: mlflow_conda
+type: module
+domain: utils
+responsibility:
+  - Provide utils behavior for `src/utils/mlflow_conda.py`.
+inputs: []
+outputs: []
+tags:
+  - utils
+lifecycle:
+  status: active
+"""
 
 from __future__ import annotations
 

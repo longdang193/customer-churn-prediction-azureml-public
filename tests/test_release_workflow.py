@@ -91,6 +91,9 @@ def test_build_registered_model_tags_carries_approval_and_metric_metadata() -> N
 
 
 def test_build_registered_model_tags_merges_lineage_without_overriding_core_tags() -> None:
+    """
+    @proves online-deploy.stamp-approved-registered-models-lightweight-data-config-component
+    """
     from src.release.workflow import build_registered_model_tags
 
     tags = build_registered_model_tags(
@@ -112,6 +115,10 @@ def test_build_registered_model_tags_merges_lineage_without_overriding_core_tags
 
 
 def test_build_release_lineage_rejects_train_config_mismatch() -> None:
+    """
+    @proves fixed-train.carry-manifest-lineage
+    @proves fixed-train.release-lineage-evidence
+    """
     from src.release.workflow import build_release_lineage
 
     lineage = build_release_lineage(
@@ -134,6 +141,11 @@ def test_build_release_lineage_rejects_train_config_mismatch() -> None:
 
 
 def test_build_release_lineage_prefers_canonical_train_config_from_manifest() -> None:
+    """
+    @proves fixed-train.preserve-train-config-identity
+    @proves fixed-train.carry-manifest-lineage
+    @proves fixed-train.release-lineage-evidence
+    """
     from src.release.workflow import build_release_lineage
 
     lineage = build_release_lineage(

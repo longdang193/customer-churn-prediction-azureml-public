@@ -1,3 +1,24 @@
+---
+doc_id: pipeline-guide
+doc_type: operator-guide
+explains:
+  features:
+    - churn-data-preparation
+    - model-training-pipeline
+    - notebook-hpo
+    - online-endpoint-deployment
+    - release-monitoring-evaluator
+    - workspace-bootstrap
+  stages:
+    - data_validate
+    - data_prep
+    - fixed_train
+    - model_sweep
+    - model_promote
+    - online_deploy
+    - monitor
+---
+
 # Pipeline Guide
 
 This guide describes the intended workflow model for the churn project and the current execution surfaces that exist in the repo today.
@@ -45,6 +66,14 @@ The current stage contracts live under `docs/stages/` and currently cover:
 - `model_promote`
 - `online_deploy`
 - `monitor`
+
+Architecture discovery note:
+
+- generated stage contracts and generated feature contracts document the current
+  public-facing lifecycle surfaces
+- private feature-local lineage may reference internal planning or governance
+  materials, so public-facing docs should link to public-safe current contracts
+  instead of private evidence files
 
 ## 2.1 Smoke Surface
 

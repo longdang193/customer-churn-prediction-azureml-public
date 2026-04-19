@@ -19,6 +19,20 @@ tags:
   - azure-ml
   - release
   - deployment
+features:
+  - online-endpoint-deployment
+capabilities:
+  - online-deploy.register-selected-promoted-model-bundle-azure-ml
+  - online-deploy.validate-release-time-data-train-config-lineage-against
+  - fixed-train.release-lineage-evidence
+  - online-deploy.create-update-managed-online-endpoint-deployment-approved-registered
+  - online-deploy.validate-configured-endpoint-smoke-payload-before-invoking-managed
+  - online-deploy.write-canary-inference-metadata-release-record-json-including
+  - online-deploy.hand-off-deployed-artifacts-release-metadata-smoke-test
+  - online-deploy.provide-release-evidence-monitor-stage-retraining-policy-can
+invariants:
+  - online-deploy.deployment-consumes-promoted-registered-model-than-loosely
+  - online-deploy.every-deployment-should-leave-behind-smoke-test
 lifecycle:
   status: active
 """

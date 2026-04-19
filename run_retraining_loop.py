@@ -20,6 +20,18 @@ tags:
   - retraining
   - orchestration
   - cli
+features:
+  - model-training-pipeline
+  - online-endpoint-deployment
+  - release-monitoring-evaluator
+capabilities:
+  - fixed-train.accept-phase-one-loop
+  - fixed-train.continue-loop-after-promotion-evidence
+  - online-deploy.accept-opt-retraining-loop-continuation-only-after-promotion
+  - online-deploy.accept-optional-post-release-monitoring-handoff-continuation-retraining
+  - monitor.support-thin-phase-1-loop-orchestrator-composes-existing
+  - monitor.allow-thin-retraining-loop-orchestrator-continue-run-release
+  - monitor.allow-same-opt-retraining-loop-continuation-compose-run
 lifecycle:
   status: active
 """
@@ -1004,6 +1016,11 @@ def _write_loop_outputs(
 
 
 def main() -> None:
+    """
+    @capability monitor.support-thin-phase-1-loop-orchestrator-composes-existing
+    @capability monitor.allow-thin-retraining-loop-orchestrator-continue-run-release
+    @capability monitor.allow-same-opt-retraining-loop-continuation-compose-run
+    """
     parser = argparse.ArgumentParser(
         description="Run the bounded phase-1 retraining loop from monitor decision through train-path submission.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

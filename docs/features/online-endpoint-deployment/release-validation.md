@@ -1,3 +1,12 @@
+---
+doc_id: online-endpoint-release-validation
+doc_type: feature-guide
+explains:
+  features:
+    - online-endpoint-deployment
+    - release-monitoring-evaluator
+---
+
 # Release Validation
 
 Use this checklist when validating `run_release.py` against Azure ML. It keeps

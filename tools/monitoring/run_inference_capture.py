@@ -17,6 +17,10 @@ tags:
   - inference
   - monitoring
   - azure-ml
+features:
+  - release-monitoring-evaluator
+capabilities:
+  - monitor.provide-caller-side-inference-capture-wrapper-invokes-managed
 lifecycle:
   status: active
 """
@@ -62,6 +66,9 @@ def _write_manifest(
 
 
 def main() -> None:
+    """
+    @capability monitor.provide-caller-side-inference-capture-wrapper-invokes-managed
+    """
     parser = argparse.ArgumentParser(
         description="Invoke a managed online endpoint and write caller-side inference capture evidence.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

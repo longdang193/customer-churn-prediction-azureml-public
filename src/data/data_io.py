@@ -1,4 +1,23 @@
-"""Data loading and artifact saving utilities."""
+"""Data loading and artifact saving utilities.
+
+@meta
+name: data_io
+type: module
+domain: data-prep
+responsibility:
+  - Provide data-prep behavior for `src/data/data_io.py`.
+inputs: []
+outputs: []
+tags:
+  - data-prep
+features:
+  - churn-data-preparation
+capabilities:
+  - data-prep.load-one-more-csv-files-configured-raw-data
+  - data-prep.emit-processed-csv-artifacts-plus-metadata-scaler-encoder
+lifecycle:
+  status: active
+"""
 
 import json
 import logging
@@ -15,6 +34,8 @@ logger = logging.getLogger(__name__)
 
 def load_data(path: Path) -> pd.DataFrame:
     """Read the raw CSV file(s).
+
+    @capability data-prep.load-one-more-csv-files-configured-raw-data
     
     Args:
         path: Path to CSV file or directory containing CSV file(s)
@@ -53,6 +74,8 @@ def save_artifacts(
     metadata: Dict[str, Any]
 ) -> None:
     """Save all preprocessing artifacts to disk.
+
+    @capability data-prep.emit-processed-csv-artifacts-plus-metadata-scaler-encoder
     
     Args:
         output_dir: Directory to save artifacts
@@ -79,6 +102,8 @@ def save_preprocessed_data(
     y_test: pd.Series,
 ) -> None:
     """Save preprocessed training and test data to CSV files.
+
+    @capability data-prep.emit-processed-csv-artifacts-plus-metadata-scaler-encoder
     
     Args:
         output_dir: Directory to save CSV files

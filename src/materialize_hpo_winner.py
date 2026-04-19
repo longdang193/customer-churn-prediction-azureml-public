@@ -1,5 +1,24 @@
 #!/usr/bin/env python3
-"""Materialize canonical winner artifacts from per-family HPO outputs."""
+"""Materialize canonical winner artifacts from per-family HPO outputs.
+
+@meta
+name: materialize_hpo_winner
+type: module
+domain: hpo
+responsibility:
+  - Provide hpo behavior for `src/materialize_hpo_winner.py`.
+inputs: []
+outputs: []
+tags:
+  - hpo
+features:
+  - notebook-hpo
+capabilities:
+  - hpo.materialize-canonical-winner-outputs-winner-model-output-winner
+  - hpo.materialize-winner-train-config-train-config-yaml-hpo
+lifecycle:
+  status: active
+"""
 
 from __future__ import annotations
 

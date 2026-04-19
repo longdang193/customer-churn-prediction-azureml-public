@@ -1,4 +1,18 @@
-"""Helpers for Azure ML folder outputs that should contain named files."""
+"""Helpers for Azure ML folder outputs that should contain named files.
+
+@meta
+name: output_paths
+type: module
+domain: utils
+responsibility:
+  - Provide utils behavior for `src/utils/output_paths.py`.
+inputs: []
+outputs: []
+tags:
+  - utils
+lifecycle:
+  status: active
+"""
 
 from __future__ import annotations
 

@@ -17,6 +17,10 @@ tags:
   - inference
   - monitoring
   - deployment
+features:
+  - release-monitoring-evaluator
+capabilities:
+  - monitor.provide-caller-side-inference-capture-wrapper-invokes-managed
 lifecycle:
   status: active
 """
@@ -249,6 +253,11 @@ def invoke_with_capture(
     random_value_factory: Callable[[], float] | None = None,
     blob_service_client_factory: Callable[[str], SupportsBlobServiceClient] = create_blob_service_client,
 ) -> CallerCaptureResult:
+    """
+    Invoke the managed endpoint and emit bounded caller-side capture evidence.
+
+    @capability monitor.provide-caller-side-inference-capture-wrapper-invokes-managed
+    """
     validate_endpoint_payload_file(
         request.request_file,
         expected_feature_count=request.expected_feature_count,

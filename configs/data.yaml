@@ -1,3 +1,16 @@
+# @architecture
+# owner: churn-data-preparation
+# features:
+#   - churn-data-preparation
+#   - model-training-pipeline
+#   - notebook-hpo
+# stages:
+#   - data_validate
+#   - data_prep
+#   - fixed_train
+#   - model_sweep
+# role: config
+# canonical: true
 # Data Preparation Configuration
 # Controls data input/output and target information
 

@@ -6,6 +6,10 @@ domain: training-orchestration
 covers:
   - Environment-driven compute selection for the fixed training pipeline
   - Reference/current data asset resolution for validation-aware execution
+features:
+  - model-training-pipeline
+capabilities:
+  - fixed-train.submit-pipeline-job
 excludes:
   - Real Azure ML job submission
 tags:
@@ -66,6 +70,9 @@ def test_get_pipeline_runtime_settings_reads_reference_assets_and_compute() -> N
 
 
 def test_resolve_pipeline_data_inputs_uses_explicit_overrides() -> None:
+    """
+    @proves fixed-train.support-fixed-dataset-overrides
+    """
     from run_pipeline import get_pipeline_runtime_settings, resolve_pipeline_data_inputs
 
     current_input, reference_input, cleanup_dirs = resolve_pipeline_data_inputs(
@@ -412,6 +419,10 @@ def test_environment_asset_config_builds_image_from_acr_name(monkeypatch) -> Non
 
 
 def test_main_installs_noise_filters_and_submits_job_quietly(monkeypatch) -> None:
+    """
+    @proves fixed-train.submit-pipeline-job
+    @proves fixed-train.use-quiet-submission
+    """
     import run_pipeline
 
     captured: dict[str, object] = {}
@@ -550,12 +561,18 @@ def test_resolve_train_config_path_defaults_to_production_config() -> None:
 
 
 def test_resolve_train_config_path_accepts_smoke_config() -> None:
+    """
+    @proves fixed-train.accept-train-config-path
+    """
     from run_pipeline import resolve_train_config_path
 
     assert resolve_train_config_path("configs/train_smoke.yaml") == Path("configs/train_smoke.yaml")
 
 
 def test_resolve_data_config_path_defaults_and_accepts_smoke_config() -> None:
+    """
+    @proves fixed-train.accept-data-config-path
+    """
     from run_pipeline import resolve_data_config_path
 
     assert resolve_data_config_path() == Path("configs/data.yaml")
@@ -563,6 +580,9 @@ def test_resolve_data_config_path_defaults_and_accepts_smoke_config() -> None:
 
 
 def test_build_pipeline_lineage_tags_includes_selected_assets_and_configs() -> None:
+    """
+    @proves fixed-train.attach-lineage-tags
+    """
     from run_pipeline import PipelineRuntimeSettings, build_pipeline_lineage_tags
 
     runtime = PipelineRuntimeSettings(
@@ -589,6 +609,14 @@ def test_build_pipeline_lineage_tags_includes_selected_assets_and_configs() -> N
 
 
 def test_pipeline_components_accept_policy_config_inputs() -> None:
+    """
+    @proves fixed-train.share-validation-prep-contracts
+    @proves fixed-train.share-training-artifact-vocabulary
+    @proves fixed-train.emit-release-artifacts
+    @proves fixed-train.emit-declared-manifest-folders
+    @proves fixed-train.canonical-manifest-paths
+    @proves fixed-train.execute-promotion-utility
+    """
     import yaml
 
     project_root = Path(__file__).resolve().parents[1]
@@ -640,3 +668,31 @@ def test_build_submission_messages_are_ascii_safe() -> None:
         "  View in Azure ML Studio: https://ml.azure.com/runs/bold_eagle_nlg5yg49qw",
     ]
     assert all(message.isascii() for message in messages)
+
+
+def test_get_pipeline_metadata_reads_train_config_fields() -> None:
+    """
+    @proves fixed-train.apply-train-metadata
+    """
+    from run_pipeline import get_pipeline_metadata
+
+    temp_dir = _make_temp_dir()
+    try:
+        train_config = temp_dir / "train.yaml"
+        train_config.write_text(
+            "\n".join(
+                [
+                    "training:",
+                    '  experiment_name: "train-owned-experiment"',
+                    '  display_name: "train-display"',
+                ]
+            ),
+            encoding="utf-8",
+        )
+
+        metadata = get_pipeline_metadata(train_config)
+
+        assert metadata["experiment_name"] == "train-owned-experiment"
+        assert metadata["display_name"] == "train-display"
+    finally:
+        shutil.rmtree(temp_dir, ignore_errors=True)

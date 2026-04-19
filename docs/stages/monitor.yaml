@@ -1,75 +1,103 @@
+# GENERATED FILE - do not edit directly.
+# Source: docs/stages/monitor.source.yaml
 stage_id: monitor
 name: Monitoring
 status: active
 purpose: Evaluate bounded post-release monitoring readiness from release evidence first and optional retrievable inference-capture evidence second.
+workflow_position: post_release
+depends_on:
+  - online_deploy
+hands_off_to:
+  - data_validate
+  - fixed_train
+  - model_sweep
 inputs:
   - Registered deployment metadata
   - Release record and deploy smoke-test evidence
   - Release canary inference record
-  - Release evidence that distinguishes configured repo-owned scoring intent from the observed managed-online runtime contract
-  - Optional externally retrievable sampled inference records from a caller/gateway capture wrapper
+  - Optional externally retrievable sampled inference records
   - Monitoring thresholds
 outputs:
-  - monitor_summary.json
-  - monitor_report.md
-  - retraining_decision.json
-  - retraining_candidate_manifest.json via the downstream candidate-freeze bridge
-  - validation_handoff.json via the downstream candidate-freeze bridge
-  - retraining_path_selection.json via the downstream post-validation selector
-  - retraining_fixed_train_handoff.json via the downstream validated-candidate smoke fixed-train bridge
-  - retraining_hpo_smoke_handoff.json via the downstream validated-candidate smoke HPO bridge
-  - retraining_loop_summary.json via the thin phase-1 loop orchestrator
-  - monitor_manifest/step_manifest.json
-  - Operational follow-up recommendations derived from release and optional capture evidence
+  - Monitor summary and report
+  - Retraining decision artifact
+  - Optional retraining candidate and validation handoff artifacts through downstream bridges
+  - Operational follow-up recommendations
+  - Monitor manifest containing `step_manifest.json`
 feature_refs:
-  - online-endpoint-deployment
   - release-monitoring-evaluator
+  - online-endpoint-deployment
+capability_refs:
+  - monitor.allow-same-opt-retraining-loop-continuation-compose-run
+  - monitor.allow-thin-retraining-loop-orchestrator-continue-run-release
+  - monitor.classify-monitoring-outcomes-limited-but-healthy-capture-backed
+  - monitor.emit-bounded-monitoring-artifacts-such-monitor-summary-json
+  - monitor.emit-retraining-decision-json-plus-embedded-retraining-policy
+  - monitor.enforce-bounded-production-checks-including-minimum-sample-count
+  - monitor.enrich-retraining-policy-bounded-path-recommendation-evidence-such
+  - monitor.evaluate-always-release-evidence-checks-even-when-capture
+  - monitor.expose-deployment-owned-capture-truth-caller-side-capture
+  - monitor.load-validate-release-records-produced-run-release-py
+  - monitor.negative-scorer-probes-may-produce-intentional-azure-scoring
+  - monitor.optionally-consume-externally-retrievable-sampled-inference-records-file
+  - monitor.preserve-truthful-monitoring-semantics-whether-release-record-reports
+  - monitor.provide-caller-side-inference-capture-wrapper-invokes-managed
+  - monitor.recommend-bounded-next-steps-such-dataset-freeze-validate
+  - monitor.support-capture-path-override-scheduled-operator-driven-runs
+  - monitor.support-one-thin-monitoring-first-automation-consumes-saved
+  - monitor.support-one-thin-release-plus-monitor-automation-resolves
+  - monitor.support-second-thin-bridge-can-take-passed-retraining
+  - monitor.support-thin-phase-1-loop-orchestrator-composes-existing
+  - monitor.support-thin-post-monitor-bridge-freezes-explicit-current
+  - monitor.support-third-thin-bridge-selects-next-retraining-path
+  - monitor.treat-blob-backed-caller-capture-exact-path-evidence
+  - online-deploy.accept-optional-post-release-monitoring-handoff-continuation-retraining
+  - online-deploy.compose-release-follow-up-automation-through-thin-wrapper
+  - online-deploy.externalize-repo-owned-inference-capture-azure-accessible-jsonl
+  - online-deploy.hand-off-deployed-artifacts-release-metadata-smoke-test
+  - online-deploy.hand-off-saved-release-truth-repeatable-monitoring-first
+  - online-deploy.provide-enough-release-monitor-provenance-later-post-validation
+  - online-deploy.provide-enough-release-monitor-provenance-later-retraining-candidate
+  - online-deploy.provide-enough-release-provenance-later-validated-retraining-candidate
+  - online-deploy.provide-release-evidence-monitor-stage-retraining-policy-can
+  - online-deploy.support-exact-caller-side-blob-capture-retrieval-repeatable
+  - online-deploy.surface-deployment-owned-capture-evidence-release-record-json
+  - online-deploy.write-derived-monitoring-handoff-summary-release-record-json
 code_refs:
   - run_monitor.py
-  - tools/monitoring/run_monitor_handoff.py
-  - tools/monitoring/run_inference_capture.py
-  - tools/retraining/run_retraining_candidate.py
-  - tools/retraining/run_retraining_path_selection.py
-  - tools/retraining/run_retraining_fixed_train_smoke.py
-  - tools/retraining/run_retraining_hpo_smoke.py
   - run_retraining_loop.py
-  - tools/monitoring/run_release_monitor_smoke.py
-  - aml/components/monitor.yaml
   - src/inference/client_capture.py
-  - src/inference/capture.py
   - src/monitoring/evaluate_release.py
-  - src/azureml/deployment.py
-  - src/inference/online_scoring.py
-  - src/inference/score.py
-  - src/release/workflow.py
-  - src/inference/payloads.py
+  - src/monitoring/handoff_helpers.py
+  - tools/monitoring/run_inference_capture.py
+  - tools/monitoring/run_monitor_handoff.py
+  - tools/monitoring/run_release_monitor_smoke.py
+  - tools/release/run_release_failure_probe.py
+  - tools/retraining/run_retraining_candidate.py
+  - tools/retraining/run_retraining_fixed_train_smoke.py
+  - tools/retraining/run_retraining_path_selection.py
+test_refs:
+  - tests/test_azureml_adapters.py
+  - tests/test_download_capture_blob.py
+  - tests/test_inference_capture.py
+  - tests/test_inference_client_capture.py
+  - tests/test_release_monitoring_evaluator.py
+  - tests/test_release_record.py
+  - tests/test_run_monitor_handoff.py
+  - tests/test_run_release_failure_probe.py
+  - tests/test_run_release_monitor_smoke.py
+  - tests/test_run_retraining_candidate.py
+  - tests/test_run_retraining_fixed_train_smoke.py
+  - tests/test_run_retraining_loop.py
+  - tests/test_run_retraining_path_selection.py
+doc_refs:
+  - docs/pipeline_guide.md
+  - docs/portfolio_architecture_spec.md
+config_refs:
   - configs/inference_capture.yaml
   - configs/inference_capture_blob.yaml
   - configs/monitor.yaml
-notes:
-  - Monitoring is now implemented as a bounded evaluator over release artifacts; it does not yet own full dashboards, alert routing, or long-horizon production drift infrastructure.
-  - '`notebooks/deploy_online_endpoint.ipynb` remains historical deployment context, not the monitoring implementation surface.'
-  - The deployment adapter now records `repo_owned_scoring_expected`, `repo_owned_scoring_observed`, and `repo_owned_scoring_status`; the primary cloud path is now proven as `repo_owned_scoring_proven`, while `generated_runtime_still_in_control` remains a fallback or older-run classification that monitor-stage truth must still handle.
-  - The canonical repo-owned capture mode is `workspaceblobstore_jsonl`; treat capture as monitor-ready only after the external sink is actually readable and the scoring-runtime proof no longer contradicts repo-owned hook assumptions.
-  - The first production-evidence bridge is caller/gateway capture plus `run_monitor.py --capture-path <retrieved-capture-path>`, which allows monitor evaluation over externally retrieved JSONL records without mutating the saved `release_record.json`.
-  - The repo now also ships `run_release_monitor_smoke.py` as a thin wrapper that chains release, caller capture, exact-record retrieval, and monitor evaluation into one proof bundle without replacing the underlying monitor contract.
-  - The repo now also ships `run_monitor_handoff.py` as the repeatable monitoring-first wrapper that starts from a saved `release_record.json`, reruns bounded caller-side capture, retrieves the exact records, and then reuses `run_monitor.py` without redeploying.
-  - The repo also ships `run_release_failure_probe.py` for bounded scorer-failure proof; negative probes must not retroactively downgrade healthy monitoring handoff truth from the original release artifact.
-  - Direct endpoint calls bypass caller-side capture unless they are routed through `run_inference_capture.py` or a future gateway that reuses `src/inference/client_capture.py`.
-  - Release canary inference records intentionally capture payload shape and response preview, not full production input/output storage in release records.
-  - Release records now also capture deployment finalization state (`deployment_state`, `recovery_used`, `finalization_timed_out`) so monitoring handoff can distinguish healthy deploy smoke from unresolved rollout state.
-  - The explicit `release_record.json.monitoring_handoff` block is the current operator summary for monitor readiness; healthy states now distinguish `ready_for_basic_monitoring_handoff` from `ready_for_repo_owned_inference_capture_handoff`.
-  - The first implemented healthy monitor result is `limited_but_healthy`, which means release evidence is trustworthy even when deployment-owned capture is disabled or caller-side capture was not run.
-  - Capture-backed healthy monitoring also requires bounded production checks such as minimum sample count, feature-count consistency, and max single-class share.
-  - 'Treat status planes separately: `release_record.json.monitoring_handoff.status` is the release-owned handoff summary, `monitor_summary.json.monitor_status` is the evaluator result, and wrapper `handoff.status` fields are operator-facing reconciliations across release plus caller-capture evidence.'
-  - The monitor stage now emits a bounded `retraining_policy` / `retraining_decision.json` layer that can recommend `no_retraining_signal`, `retraining_candidate`, or `investigate_before_retraining`, but it does not start train, HPO, promotion, or release on its own.
-  - 'That bounded retraining layer now also carries explicit recommendation evidence: `path_recommendation`, `path_recommendation_reason_codes`, `drift_severity`, `signal_persistence`, and `policy_confidence` stay mutually consistent across `monitor_summary.json`, `retraining_decision.json`, the monitor report, and the step manifest.'
-  - 'The current downstream bridges now stop in four places: `run_retraining_candidate.py` freezes the explicit dataset contract and optional validation, `run_retraining_path_selection.py` makes the post-validation train-path choice explicit and writes the HPO handoff artifact for `model_sweep`, `run_retraining_fixed_train_smoke.py` can take only a passed candidate validation into the smoke fixed-train path, and `run_retraining_hpo_smoke.py` can take only a passed candidate validation plus `model_sweep` selection into the smoke HPO path; monitor itself still does not own the dataset snapshot or start training directly.'
-  - The repo now also ships `run_retraining_loop.py` as a bounded phase-1 coordinator that composes those existing bridges through explicit stop modes; by default it may stop after candidate freeze, validation, path selection, or one selected downstream smoke bridge, and with explicit `--release-mode` it may continue into release and optional post-release monitor handoff while keeping child truth in `promotion_decision.json`, `release_record.json`, and `handoff_summary.json`.
-  - For deterministic proof hardening on the `model_sweep` branch, the loop also supports `--resume-continuation-summary` so already-promotable continuation evidence can be resumed without rerunning the stochastic HPO branch; this is a bounded resume seam, not a new training path.
-doc_refs:
-  - README.md
-  - docs/pipeline_guide.md
-  - docs/features/online-endpoint-deployment/online-endpoint-deployment.yaml
-  - docs/features/online-endpoint-deployment/release-validation.md
-  - docs/features/release-monitoring-evaluator/release-monitoring-evaluator.yaml
+component_refs:
+  - aml/components/monitor.yaml
+human_notes:
+  - Monitoring can recommend retraining, but it must not start training, HPO, promotion, or release directly.
+  - Status planes stay separate between release-owned handoff, monitor evaluator result, and wrapper reconciliation.

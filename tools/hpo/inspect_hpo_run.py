@@ -18,6 +18,11 @@ tags:
   - hpo
   - debugging
   - observability
+features:
+  - notebook-hpo
+capabilities:
+  - hpo.inspect-downloaded-remote-hpo-parent-run-through-inspect
+  - hpo.treat-inspect-hpo-run-py-export-hpo-winner
 lifecycle:
   status: active
 """

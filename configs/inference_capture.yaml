@@ -1,3 +1,13 @@
+# @architecture
+# owner: release-monitoring-evaluator
+# features:
+#   - release-monitoring-evaluator
+#   - online-endpoint-deployment
+# stages:
+#   - monitor
+#   - online_deploy
+# role: config
+# canonical: true
 inference_capture:
   enabled: true
   mode: "caller_local_jsonl"

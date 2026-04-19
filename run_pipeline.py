@@ -18,6 +18,27 @@ tags:
   - azure-ml
   - training
   - orchestration
+features:
+  - model-training-pipeline
+capabilities:
+  - fixed-train.submit-pipeline-job
+  - fixed-train.apply-train-metadata
+  - fixed-train.accept-data-config-path
+  - fixed-train.accept-train-config-path
+  - fixed-train.share-validation-prep-contracts
+  - fixed-train.share-training-artifact-vocabulary
+  - fixed-train.use-azureml-adapters
+  - fixed-train.use-quiet-submission
+  - fixed-train.attach-lineage-tags
+  - fixed-train.emit-release-artifacts
+  - fixed-train.emit-declared-manifest-folders
+  - fixed-train.canonical-manifest-paths
+  - fixed-train.execute-promotion-utility
+  - fixed-train.expose-promotion-thresholds
+  - fixed-train.support-fixed-dataset-overrides
+invariants:
+  - fixed-train.validation-first
+  - fixed-train.env-backed-assets
 lifecycle:
   status: active
 """
@@ -147,7 +168,11 @@ def get_pipeline_runtime_settings(
 
 
 def load_pipeline_components(components_dir: Path) -> Dict[str, Any]:
-    """Load AML components from the specified directory."""
+    """
+    Load AML components from the specified directory.
+
+    @capability fixed-train.submit-pipeline-job
+    """
     from azure.ai.ml import load_component
 
     return {
@@ -164,7 +189,11 @@ def define_pipeline(
     *,
     gate_validation_before_prep: bool = False,
 ):
-    """Define the Azure ML pipeline using the loaded components."""
+    """
+    Define the Azure ML pipeline using the loaded components.
+
+    @capability fixed-train.submit-pipeline-job
+    """
     from azure.ai.ml import dsl
 
     @dsl.pipeline(
@@ -318,7 +347,11 @@ def build_submission_messages(*, job_name: str, studio_url: str) -> list[str]:
 
 
 def main() -> None:
-    """Main function to define and run the Azure ML pipeline."""
+    """
+    Main function to define and run the Azure ML pipeline.
+
+    @capability fixed-train.submit-pipeline-job
+    """
     parser = argparse.ArgumentParser(
         description="Submit the validation-aware Azure ML training pipeline.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

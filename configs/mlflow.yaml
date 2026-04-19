@@ -1,3 +1,13 @@
+# @architecture
+# owner: model-training-pipeline
+# features:
+#   - model-training-pipeline
+#   - online-endpoint-deployment
+# stages:
+#   - fixed_train
+#   - online_deploy
+# role: config
+# canonical: true
 # MLflow Configuration
 
 mlflow:

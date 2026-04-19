@@ -1,3 +1,13 @@
+# @architecture
+# owner: churn-data-preparation
+# features:
+#   - churn-data-preparation
+#   - model-training-pipeline
+#   - notebook-hpo
+# stages:
+#   - data_validate
+# role: component
+# canonical: true
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: validate_data
 version: 1

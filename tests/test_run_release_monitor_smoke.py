@@ -47,6 +47,12 @@ def _command_targets(command: list[str], script_name: str) -> bool:
 
 
 def test_main_runs_release_capture_download_and_monitor(monkeypatch) -> None:
+    """
+    @proves online-deploy.compose-release-follow-up-automation-through-thin-wrapper
+    @proves online-deploy.hand-off-deployed-artifacts-release-metadata-smoke-test
+    @proves monitor.support-one-thin-release-plus-monitor-automation-resolves
+    @proves monitor.treat-blob-backed-caller-capture-exact-path-evidence
+    """
     import run_release_monitor_smoke
 
     temp_dir = _make_temp_dir()

@@ -67,6 +67,10 @@ def _make_temp_dir() -> Path:
 
 
 def test_run_validation_creates_summary_and_evidently_artifacts() -> None:
+    """
+    @proves data-prep.support-pre-training-validation-drift-analysis-against-baseline
+    @proves data-prep.emit-structured-step-manifest-json-artifact-validation-data
+    """
     from src.validate_data import ValidationConfig, run_validation
 
     temp_dir = _make_temp_dir()
@@ -236,6 +240,9 @@ def test_run_validation_short_circuits_before_evidently_when_guardrails_fail() -
 
 
 def test_run_validation_fails_when_drift_crosses_threshold() -> None:
+    """
+    @proves data-prep.support-pre-training-validation-drift-analysis-against-baseline
+    """
     from src.validate_data import ValidationConfig, run_validation
 
     temp_dir = _make_temp_dir()
@@ -281,6 +288,9 @@ def test_run_validation_fails_when_drift_crosses_threshold() -> None:
 
 
 def test_load_validation_config_parses_quoted_boolean_values() -> None:
+    """
+    @proves data-prep.accept-selected-data-config-files-through-aml-validation
+    """
     from src.validate_data import load_validation_config
 
     temp_dir = _make_temp_dir()

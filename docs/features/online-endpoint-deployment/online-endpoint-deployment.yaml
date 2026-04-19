@@ -1,30 +1,71 @@
+# GENERATED FILE - do not edit directly.
+# Source: docs/features/online-endpoint-deployment/feature.source.yaml
 feature_id: online-endpoint-deployment
 name: Managed online endpoint deployment
-version: 1
 status: active
 type: workflow
 summary: Register the model bundle and deploy it to an Azure ML managed online endpoint with a smoke-test payload.
 invariants:
-  - Deployment consumes a promoted registered model rather than a loosely selected latest artifact.
-  - Deployment depends on a promotion-approved MLflow model bundle emitted by the fixed training path.
-  - MLflow model bundles used for managed online deployment must carry an Azure ML image-build-safe conda environment.
-  - '`configs/assets.yaml` deployment settings remain the source of truth for smoke payload and inference-capture defaults.'
-  - Every deployment should leave behind smoke-test evidence and enough metadata to support monitoring follow-up.
-  - End-to-end release-plus-monitor smoke automation may compose deployment and monitoring, but it must not replace `run_release.py` as the authoritative release surface.
-  - Repeated releases reuse an existing validated approved model version by default when source job, lineage, and candidate model match.
-  - Deployment failures after model resolution still write a diagnostic release record before surfacing the error.
-  - Azure SDK deployment-operation errors are not automatically terminal; the deployment adapter must check the actual Azure deployment state before classifying the release as failed.
-  - Explicit deployment-finalization timeout or unknown outcomes after model resolution must still write a local `release_record.json` with terminal operator guidance.
-  - Monitoring is part of the deployment lifecycle, not a separate afterthought.
-  - Deployment and release may hand monitoring enough evidence to open a retraining candidate, but they must not bypass the later validation, training, promotion, and release gates.
-  - Endpoint smoke payloads are validated locally before Azure ML invoke so malformed canary requests fail with operator-readable errors.
-  - Canary inference evidence records payload shape and response preview only; do not store unbounded raw production inference payloads in release records.
-  - '`release_record.json` must include an explicit `monitoring_handoff` summary so operators can interpret current monitoring readiness without inferring it from scattered deploy and canary fields.'
-  - '`release_record.json` must separate deployment-owned capture truth from post-release caller-side monitoring evidence; deployment capture state may be disabled while later monitor bundles still prove caller-side capture-backed monitoring.'
-  - Repeatable post-release monitoring must reuse the saved `release_record.json` and must not require a fresh deployment just to gather new bounded monitoring evidence.
-  - Managed online deployment now has a cloud-proven repo-owned scoring contract on the primary path; use `release_record.json > deployment.repo_owned_scoring_status` plus Azure logs as the source of truth for each individual run.
-  - Repo-owned inference capture is only a healthy monitoring handoff when the configured external sink is cloud-retrievable; configured-but-unproven capture must not upgrade monitoring readiness.
-  - Managed online collector binding remains unsupported for the current repo-owned scoring path after bounded Azure probe variants all reproduced the same `inputs_collector` and `outputs_collector` runtime failures; use release evidence or repo-owned capture instead of Azure collector assumptions.
+  - invariant_id: online-deploy.deployment-consumes-promoted-registered-model-than-loosely
+    statement: Deployment consumes a promoted registered model rather than a loosely selected latest artifact.
+    state: active
+  - invariant_id: online-deploy.deployment-depends-promotion-approved-mlflow-model-bundle
+    statement: Deployment depends on a promotion-approved MLflow model bundle emitted by the fixed training path.
+    state: active
+  - invariant_id: online-deploy.mlflow-model-bundles-used-managed-online-deployment
+    statement: MLflow model bundles used for managed online deployment must carry an Azure ML image-build-safe conda environment.
+    state: active
+  - invariant_id: online-deploy.configs-assets-yaml-deployment-settings-remain-source
+    statement: '`configs/assets.yaml` deployment settings remain the source of truth for smoke payload and inference-capture defaults.'
+    state: active
+  - invariant_id: online-deploy.every-deployment-should-leave-behind-smoke-test
+    statement: Every deployment should leave behind smoke-test evidence and enough metadata to support monitoring follow-up.
+    state: active
+  - invariant_id: online-deploy.end-end-release-plus-monitor-smoke-automation
+    statement: End-to-end release-plus-monitor smoke automation may compose deployment and monitoring, but it must not replace `run_release.py` as the authoritative release surface.
+    state: active
+  - invariant_id: online-deploy.repeated-releases-reuse-existing-validated-approved-model
+    statement: Repeated releases reuse an existing validated approved model version by default when source job, lineage, and candidate model match.
+    state: active
+  - invariant_id: online-deploy.deployment-failures-after-model-resolution-still-write
+    statement: Deployment failures after model resolution still write a diagnostic release record before surfacing the error.
+    state: active
+  - invariant_id: online-deploy.azure-sdk-deployment-operation-errors-not-automatically
+    statement: Azure SDK deployment-operation errors are not automatically terminal; the deployment adapter must check the actual Azure deployment state before classifying the release as failed.
+    state: active
+  - invariant_id: online-deploy.explicit-deployment-finalization-timeout-unknown-outcomes-after
+    statement: Explicit deployment-finalization timeout or unknown outcomes after model resolution must still write a local `release_record.json` with terminal operator guidance.
+    state: active
+  - invariant_id: online-deploy.monitoring-part-deployment-lifecycle-not-separate-afterthought
+    statement: Monitoring is part of the deployment lifecycle, not a separate afterthought.
+    state: active
+  - invariant_id: online-deploy.deployment-release-may-hand-monitoring-enough-evidence
+    statement: Deployment and release may hand monitoring enough evidence to open a retraining candidate, but they must not bypass the later validation, training, promotion, and release gates.
+    state: active
+  - invariant_id: online-deploy.endpoint-smoke-payloads-validated-locally-before-azure
+    statement: Endpoint smoke payloads are validated locally before Azure ML invoke so malformed canary requests fail with operator-readable errors.
+    state: active
+  - invariant_id: online-deploy.canary-inference-evidence-records-payload-shape-response
+    statement: Canary inference evidence records payload shape and response preview only; do not store unbounded raw production inference payloads in release records.
+    state: active
+  - invariant_id: online-deploy.release-record-json-must-include-explicit-monitoring
+    statement: '`release_record.json` must include an explicit `monitoring_handoff` summary so operators can interpret current monitoring readiness without inferring it from scattered deploy and canary fields.'
+    state: active
+  - invariant_id: online-deploy.release-record-json-must-separate-deployment-owned
+    statement: '`release_record.json` must separate deployment-owned capture truth from post-release caller-side monitoring evidence; deployment capture state may be disabled while later monitor bundles still prove caller-side capture-backed monitoring.'
+    state: active
+  - invariant_id: online-deploy.repeatable-post-release-monitoring-must-reuse-saved
+    statement: Repeatable post-release monitoring must reuse the saved `release_record.json` and must not require a fresh deployment just to gather new bounded monitoring evidence.
+    state: active
+  - invariant_id: online-deploy.managed-online-deployment-now-has-cloud-proven
+    statement: Managed online deployment now has a cloud-proven repo-owned scoring contract on the primary path; use `release_record.json > deployment.repo_owned_scoring_status` plus Azure logs as the source of truth for each individual run.
+    state: active
+  - invariant_id: online-deploy.repo-owned-inference-capture-only-healthy-monitoring
+    statement: Repo-owned inference capture is only a healthy monitoring handoff when the configured external sink is cloud-retrievable; configured-but-unproven capture must not upgrade monitoring readiness.
+    state: active
+  - invariant_id: online-deploy.managed-online-collector-binding-remains-unsupported-current
+    statement: Managed online collector binding remains unsupported for the current repo-owned scoring path after bounded Azure probe variants all reproduced the same `inputs_collector` and `outputs_collector` runtime failures; use release evidence or repo-owned capture instead of Azure collector assumptions.
+    state: active
 domains:
   - deployment
   - azure-ml
@@ -32,53 +73,126 @@ domains:
 depends_on:
   - model-training-pipeline
 capabilities:
-  - Register the selected promoted model bundle with Azure ML.
-  - Validate release-time data and train config lineage against source job manifests before model registry mutation.
-  - Stamp approved registered models with lightweight data/config/component lineage tags for audit and rollback.
-  - Reuse a matching approved registered model version by default, with `run_release.py --force-reregister` as the explicit duplicate-version escape hatch.
-  - Create or update a managed online endpoint deployment from the approved registered model.
-  - Configure the approved model with the repo-owned `src/inference/score.py` entrypoint and preserve release metadata that distinguishes configured scorer intent from observed cloud runtime behavior, including the now-proven `repo_owned_scoring_proven` path.
-  - Recover from transient SDK-side deployment operation failures when Azure continues provisioning and the deployment later reaches `Succeeded`.
-  - Distinguish delayed Azure success from terminal deployment failure and deployment-finalization timeout, and preserve that classification in the release record.
-  - Preserve truthful deployment-state metadata in the release record when local smoke-payload validation fails after Azure deployment provisioning or traffic assignment has already completed.
-  - Validate the configured endpoint smoke payload before invoking the managed endpoint, using the current processed-feature `input_data` 2D-array contract.
-  - Invoke the endpoint with the `deployment.smoke_payload` path from `configs/assets.yaml`, defaulting to `sample-data.json`, to verify scoring works end to end.
-  - Write canary inference metadata in `release_record.json`, including payload validation status, row count, feature count, endpoint/deployment coordinates, registered model coordinates, and response preview.
-  - Write a derived `monitoring_handoff` summary in `release_record.json` that classifies bounded monitoring readiness from release-owned evidence rather than implying full production monitoring exists.
-  - Surface deployment-owned capture evidence in `release_record.json > deployment_capture`, including mode, enabled flag, status, output path, and warnings, while keeping raw captured records out of release metadata.
-  - Externalize repo-owned inference capture to an Azure-accessible JSONL sink when enabled, and only classify capture as `healthy` after deploy-time proof that sink records are externally retrievable and the active runtime contract is not contradicting repo-owned scorer assumptions.
-  - Keep release smoke validation broad enough to catch registration URI, image build, container startup, and scoring payload failures.
-  - Support one bounded negative cloud probe that intentionally bypasses local payload validation for a known-bad request so repo-owned scorer failures can be proven cleanly in Azure without weakening default guardrails.
-  - Compose release follow-up automation through a thin wrapper that reuses `run_release.py`, `run_inference_capture.py`, and `run_monitor.py` rather than duplicating their domain logic.
-  - Hand off saved release truth into a repeatable monitoring-first wrapper that can rerun caller-side capture, exact retrieval, and monitor evaluation without redeploying.
-  - Support exact caller-side Blob capture retrieval for repeatable monitoring handoff by preserving one `azureblob://<account>/<container>/<blob>` contract between the capture writer and downloader, with bounded retry for fresh-write visibility but no fuzzy blob lookup.
-  - Write an enriched `release_record.json` with status, model resolution, declared/source/effective lineage, release config, smoke payload, smoke response, deployment metadata, canary metadata, monitoring handoff summary, and failure details when deployment fails, times out during finalization, succeeds after SDK recovery, or fails local payload validation after deployment setup.
-  - Reuse the shared `src/azureml/` registry and deployment adapters so the release entrypoint stays focused on release policy instead of raw SDK wiring.
-  - Hand off deployed artifacts, release metadata, and smoke-test evidence to monitoring workflows.
-  - Provide release evidence that a monitor-stage retraining policy can interpret without confusing a monitoring recommendation with an approved retraining run.
-  - Provide enough release and monitor provenance that a later retraining-candidate freeze can reference the originating release truth without treating deployment capture logs as the retraining dataset itself.
-  - Provide enough release provenance that a later validated retraining-candidate smoke handoff can reference the originating release truth without requiring a fresh deployment or mutating production asset defaults.
-  - Provide enough release and monitor provenance that a later post-validation retraining path selector can preserve release truth while choosing fixed-train or HPO smoke execution without requiring another deploy cycle.
-  - Accept an opt-in retraining-loop continuation only after promotion-facing evidence is promotable, while keeping `run_release.py` as the authoritative release surface and `release_record.json` as the source of truth for the continued release outcome.
-  - Accept an optional post-release monitoring-handoff continuation from the retraining loop, but keep `run_monitor_handoff.py` as the authoritative post-release evidence surface rather than merging monitoring logic into the loop wrapper.
+  - capability_id: online-deploy.register-selected-promoted-model-bundle-azure-ml
+    statement: Register the selected promoted model bundle with Azure ML.
+    state: active
+  - capability_id: online-deploy.validate-release-time-data-train-config-lineage-against
+    statement: Validate release-time data and train config lineage against source job manifests before model registry mutation.
+    state: active
+  - capability_id: online-deploy.stamp-approved-registered-models-lightweight-data-config-component
+    statement: Stamp approved registered models with lightweight data/config/component lineage tags for audit and rollback.
+    state: active
+  - capability_id: online-deploy.reuse-matching-approved-registered-model-version-default-run
+    statement: Reuse a matching approved registered model version by default, with `run_release.py --force-reregister` as the explicit duplicate-version escape hatch.
+    state: active
+  - capability_id: online-deploy.create-update-managed-online-endpoint-deployment-approved-registered
+    statement: Create or update a managed online endpoint deployment from the approved registered model.
+    state: active
+  - capability_id: online-deploy.configure-approved-model-repo-owned-src-inference-score
+    statement: Configure the approved model with the repo-owned `src/inference/score.py` entrypoint and preserve release metadata that distinguishes configured scorer intent from observed cloud runtime behavior, including the now-proven `repo_owned_scoring_proven` path.
+    state: active
+  - capability_id: online-deploy.recover-transient-sdk-side-deployment-operation-failures-when
+    statement: Recover from transient SDK-side deployment operation failures when Azure continues provisioning and the deployment later reaches `Succeeded`.
+    state: active
+  - capability_id: online-deploy.distinguish-delayed-azure-success-terminal-deployment-failure-deployment
+    statement: Distinguish delayed Azure success from terminal deployment failure and deployment-finalization timeout, and preserve that classification in the release record.
+    state: active
+  - capability_id: online-deploy.preserve-truthful-deployment-state-metadata-release-record-when
+    statement: Preserve truthful deployment-state metadata in the release record when local smoke-payload validation fails after Azure deployment provisioning or traffic assignment has already completed.
+    state: active
+  - capability_id: online-deploy.validate-configured-endpoint-smoke-payload-before-invoking-managed
+    statement: Validate the configured endpoint smoke payload before invoking the managed endpoint, using the current processed-feature `input_data` 2D-array contract.
+    state: active
+  - capability_id: online-deploy.invoke-endpoint-deployment-smoke-payload-path-configs-assets
+    statement: Invoke the endpoint with the `deployment.smoke_payload` path from `configs/assets.yaml`, defaulting to `sample-data.json`, to verify scoring works end to end.
+    state: active
+  - capability_id: online-deploy.write-canary-inference-metadata-release-record-json-including
+    statement: Write canary inference metadata in `release_record.json`, including payload validation status, row count, feature count, endpoint/deployment coordinates, registered model coordinates, and response preview.
+    state: active
+  - capability_id: online-deploy.write-derived-monitoring-handoff-summary-release-record-json
+    statement: Write a derived `monitoring_handoff` summary in `release_record.json` that classifies bounded monitoring readiness from release-owned evidence rather than implying full production monitoring exists.
+    state: active
+  - capability_id: online-deploy.surface-deployment-owned-capture-evidence-release-record-json
+    statement: Surface deployment-owned capture evidence in `release_record.json > deployment_capture`, including mode, enabled flag, status, output path, and warnings, while keeping raw captured records out of release metadata.
+    state: active
+  - capability_id: online-deploy.externalize-repo-owned-inference-capture-azure-accessible-jsonl
+    statement: Externalize repo-owned inference capture to an Azure-accessible JSONL sink when enabled, and only classify capture as `healthy` after deploy-time proof that sink records are externally retrievable and the active runtime contract is not contradicting repo-owned scorer assumptions.
+    state: active
+  - capability_id: online-deploy.keep-release-smoke-validation-broad-enough-catch-registration
+    statement: Keep release smoke validation broad enough to catch registration URI, image build, container startup, and scoring payload failures.
+    state: active
+  - capability_id: online-deploy.support-one-bounded-negative-cloud-probe-intentionally-bypasses
+    statement: Support one bounded negative cloud probe that intentionally bypasses local payload validation for a known-bad request so repo-owned scorer failures can be proven cleanly in Azure without weakening default guardrails.
+    state: active
+  - capability_id: online-deploy.compose-release-follow-up-automation-through-thin-wrapper
+    statement: Compose release follow-up automation through a thin wrapper that reuses `run_release.py`, `run_inference_capture.py`, and `run_monitor.py` rather than duplicating their domain logic.
+    state: active
+  - capability_id: online-deploy.hand-off-saved-release-truth-repeatable-monitoring-first
+    statement: Hand off saved release truth into a repeatable monitoring-first wrapper that can rerun caller-side capture, exact retrieval, and monitor evaluation without redeploying.
+    state: active
+  - capability_id: online-deploy.support-exact-caller-side-blob-capture-retrieval-repeatable
+    statement: Support exact caller-side Blob capture retrieval for repeatable monitoring handoff by preserving one `azureblob://<account>/<container>/<blob>` contract between the capture writer and downloader, with bounded retry for fresh-write visibility but no fuzzy blob lookup.
+    state: active
+  - capability_id: online-deploy.write-enriched-release-record-json-status-model-resolution
+    statement: Write an enriched `release_record.json` with status, model resolution, declared/source/effective lineage, release config, smoke payload, smoke response, deployment metadata, canary metadata, monitoring handoff summary, and failure details when deployment fails, times out during finalization, succeeds after SDK recovery, or fails local payload validation after deployment setup.
+    state: active
+  - capability_id: online-deploy.reuse-shared-src-azureml-registry-deployment-adapters-release
+    statement: Reuse the shared `src/azureml/` registry and deployment adapters so the release entrypoint stays focused on release policy instead of raw SDK wiring.
+    state: active
+  - capability_id: online-deploy.hand-off-deployed-artifacts-release-metadata-smoke-test
+    statement: Hand off deployed artifacts, release metadata, and smoke-test evidence to monitoring workflows.
+    state: active
+  - capability_id: online-deploy.provide-release-evidence-monitor-stage-retraining-policy-can
+    statement: Provide release evidence that a monitor-stage retraining policy can interpret without confusing a monitoring recommendation with an approved retraining run.
+    state: active
+  - capability_id: online-deploy.provide-enough-release-monitor-provenance-later-retraining-candidate
+    statement: Provide enough release and monitor provenance that a later retraining-candidate freeze can reference the originating release truth without treating deployment capture logs as the retraining dataset itself.
+    state: active
+  - capability_id: online-deploy.provide-enough-release-provenance-later-validated-retraining-candidate
+    statement: Provide enough release provenance that a later validated retraining-candidate smoke handoff can reference the originating release truth without requiring a fresh deployment or mutating production asset defaults.
+    state: active
+  - capability_id: online-deploy.provide-enough-release-monitor-provenance-later-post-validation
+    statement: Provide enough release and monitor provenance that a later post-validation retraining path selector can preserve release truth while choosing fixed-train or HPO smoke execution without requiring another deploy cycle.
+    state: active
+  - capability_id: online-deploy.accept-opt-retraining-loop-continuation-only-after-promotion
+    statement: Accept an opt-in retraining-loop continuation only after promotion-facing evidence is promotable, while keeping `run_release.py` as the authoritative release surface and `release_record.json` as the source of truth for the continued release outcome.
+    state: active
+  - capability_id: online-deploy.accept-optional-post-release-monitoring-handoff-continuation-retraining
+    statement: Accept an optional post-release monitoring-handoff continuation from the retraining loop, but keep `run_monitor_handoff.py` as the authoritative post-release evidence surface rather than merging monitoring logic into the loop wrapper.
+    state: active
 refs:
-  code:
-    - run_release.py
-    - tools/monitoring/run_monitor_handoff.py
-    - tools/monitoring/run_release_monitor_smoke.py
-    - src/azureml/__init__.py
-    - src/azureml/client.py
-    - src/azureml/deployment.py
-    - src/azureml/registry.py
-    - src/config/assets.py
-    - src/inference/online_scoring.py
-    - src/inference/payloads.py
-    - src/inference/score.py
-    - src/release/workflow.py
-    - configs/assets.yaml
-    - notebooks/deploy_online_endpoint.ipynb
-    - sample-data.json
+  code: []
+  tests:
+    - tests/test_asset_manifest.py
+    - tests/test_azureml_adapters.py
+    - tests/test_download_capture_blob.py
+    - tests/test_inference_capture.py
+    - tests/test_release_record.py
+    - tests/test_release_workflow.py
+    - tests/test_run_monitor_handoff.py
+    - tests/test_run_release.py
+    - tests/test_run_release_failure_probe.py
+    - tests/test_run_release_monitor_smoke.py
+    - tests/test_run_retraining_candidate.py
+    - tests/test_run_retraining_fixed_train_smoke.py
+    - tests/test_run_retraining_loop.py
+    - tests/test_run_retraining_path_selection.py
   docs:
-    - README.md
-    - docs/pipeline_guide.md
+    - docs/asset_management_examples.md
     - docs/features/online-endpoint-deployment/release-validation.md
+    - docs/pipeline_guide.md
+    - docs/portfolio_architecture_spec.md
+  configs:
+    - configs/assets.yaml
+    - configs/inference_capture.yaml
+    - configs/inference_capture_blob.yaml
+    - configs/mlflow.yaml
+    - configs/monitor.yaml
+  components:
+    - aml/components/monitor.yaml
+    - aml/components/promote_model.yaml
+  specs:
+  plans:
+revision: 14
+latest_change_id: 2026-04-18-feature-freshness-metadata
+last_updated_at: '2026-04-19T00:00:40+02:00'

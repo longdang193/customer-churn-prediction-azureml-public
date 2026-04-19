@@ -1,4 +1,22 @@
-"""Data-domain configuration helpers for preprocessing and validation."""
+"""Data-domain configuration helpers for preprocessing and validation.
+
+@meta
+name: config
+type: module
+domain: data-prep
+responsibility:
+  - Provide data-prep behavior for `src/data/config.py`.
+inputs: []
+outputs: []
+tags:
+  - data-prep
+features:
+  - churn-data-preparation
+capabilities:
+  - data-prep.accept-selected-data-config-files-through-aml-validation
+lifecycle:
+  status: active
+"""
 
 from __future__ import annotations
 
@@ -17,7 +35,11 @@ DEFAULT_CATEGORICAL_COLUMNS = ("Geography", "Gender")
 
 
 def get_data_prep_config(args: argparse.Namespace) -> dict[str, Any]:
-    """Load data-prep config from file and merge with CLI arguments."""
+    """
+    Load data-prep config from file and merge with CLI arguments.
+
+    @capability data-prep.accept-selected-data-config-files-through-aml-validation
+    """
     config_path = Path(args.config or DEFAULT_DATA_CONFIG)
     config = load_config(str(config_path)) if config_path.exists() else {}
     data_config = get_config_value(config, "data", {}) or {}

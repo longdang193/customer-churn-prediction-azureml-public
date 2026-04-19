@@ -1,4 +1,18 @@
-"""Metrics calculation utilities."""
+"""Metrics calculation utilities.
+
+@meta
+name: metrics
+type: module
+domain: utils
+responsibility:
+  - Provide utils behavior for `src/utils/metrics.py`.
+inputs: []
+outputs: []
+tags:
+  - utils
+lifecycle:
+  status: active
+"""
 
 from typing import Dict
 

@@ -1,3 +1,12 @@
+# @architecture
+# owner: release-monitoring-evaluator
+# features:
+#   - release-monitoring-evaluator
+#   - online-endpoint-deployment
+# stages:
+#   - monitor
+# role: component
+# canonical: true
 $schema: https://azuremlschemas.azureedge.net/latest/commandComponent.schema.json
 name: monitor_release
 version: 1

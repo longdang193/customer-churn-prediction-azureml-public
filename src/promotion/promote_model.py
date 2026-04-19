@@ -16,6 +16,11 @@ tags:
   - promotion
   - evaluation
   - release
+features:
+  - model-training-pipeline
+capabilities:
+  - fixed-train.execute-promotion-utility
+  - fixed-train.expose-promotion-thresholds
 lifecycle:
   status: active
 """

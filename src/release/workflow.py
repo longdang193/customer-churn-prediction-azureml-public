@@ -1,4 +1,25 @@
-"""Pure release-orchestration helpers for promotion and registration flows."""
+"""Pure release-orchestration helpers for promotion and registration flows.
+
+@meta
+name: workflow
+type: module
+domain: release
+responsibility:
+  - Provide release behavior for `src/release/workflow.py`.
+inputs: []
+outputs: []
+tags:
+  - release
+features:
+  - online-endpoint-deployment
+capabilities:
+  - online-deploy.write-derived-monitoring-handoff-summary-release-record-json
+  - online-deploy.surface-deployment-owned-capture-evidence-release-record-json
+  - online-deploy.write-enriched-release-record-json-status-model-resolution
+  - online-deploy.reuse-matching-approved-registered-model-version-default-run
+lifecycle:
+  status: active
+"""
 
 from __future__ import annotations
 

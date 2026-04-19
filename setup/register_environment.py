@@ -2,6 +2,19 @@
 
 This script avoids manual edits to aml/environments/environment.yml by deriving the
 environment image URI from configs/assets.yaml plus AZURE_ACR_NAME in config.env.
+
+@meta
+name: register_environment
+type: utility
+domain: setup
+responsibility:
+  - Provide setup behavior for `setup/register_environment.py`.
+inputs: []
+outputs: []
+tags:
+  - setup
+lifecycle:
+  status: active
 """
 
 from __future__ import annotations

@@ -1,4 +1,22 @@
-"""Structured step-manifest helpers for local and AML-backed runs."""
+"""Structured step-manifest helpers for local and AML-backed runs.
+
+@meta
+name: step_manifest
+type: module
+domain: utils
+responsibility:
+  - Provide utils behavior for `src/utils/step_manifest.py`.
+inputs: []
+outputs: []
+tags:
+  - utils
+features:
+  - churn-data-preparation
+capabilities:
+  - data-prep.emit-structured-step-manifest-json-artifact-validation-data
+lifecycle:
+  status: active
+"""
 
 from __future__ import annotations
 

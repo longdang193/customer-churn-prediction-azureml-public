@@ -20,6 +20,15 @@ tags:
   - retraining
   - training
   - cli
+features:
+  - model-training-pipeline
+  - release-monitoring-evaluator
+capabilities:
+  - fixed-train.accept-fixed-train-bridge
+  - fixed-train.monitor-candidates-advisory
+  - fixed-train.accept-frozen-candidate-manifests
+  - online-deploy.provide-enough-release-provenance-later-validated-retraining-candidate
+  - monitor.support-second-thin-bridge-can-take-passed-retraining
 lifecycle:
   status: active
 """
@@ -208,6 +217,9 @@ def _build_summary(
 
 
 def main() -> None:
+    """
+    @capability monitor.support-second-thin-bridge-can-take-passed-retraining
+    """
     parser = argparse.ArgumentParser(
         description="Hand off a validated retraining candidate into the smoke fixed-train path.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

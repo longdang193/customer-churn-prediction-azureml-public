@@ -48,6 +48,16 @@ def _command_targets(command: list[str], script_name: str) -> bool:
 
 
 def test_main_runs_capture_download_and_monitor_from_saved_release_record(monkeypatch) -> None:
+    """
+    @proves online-deploy.hand-off-saved-release-truth-repeatable-monitoring-first
+    @proves online-deploy.support-exact-caller-side-blob-capture-retrieval-repeatable
+    @proves online-deploy.provide-release-evidence-monitor-stage-retraining-policy-can
+    @proves online-deploy.provide-enough-release-monitor-provenance-later-retraining-candidate
+    @proves online-deploy.provide-enough-release-monitor-provenance-later-post-validation
+    @proves online-deploy.accept-optional-post-release-monitoring-handoff-continuation-retraining
+    @proves monitor.support-one-thin-monitoring-first-automation-consumes-saved
+    @proves monitor.treat-blob-backed-caller-capture-exact-path-evidence
+    """
     import run_monitor_handoff
 
     temp_dir = _make_temp_dir()
@@ -274,6 +284,9 @@ def test_main_writes_partial_failure_summary_when_monitor_step_fails(monkeypatch
 
 
 def test_main_classifies_capture_download_failure_as_capture_stage(monkeypatch) -> None:
+    """
+    @proves monitor.treat-blob-backed-caller-capture-exact-path-evidence
+    """
     import run_monitor_handoff
 
     temp_dir = _make_temp_dir()

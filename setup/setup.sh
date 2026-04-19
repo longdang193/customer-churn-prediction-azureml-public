@@ -1,5 +1,18 @@
 #!/bin/bash
 
+# @meta
+# name: setup_sh
+# type: script
+# features:
+#   - workspace-bootstrap
+# capabilities:
+#   - workspace-bootstrap.create-update-resource-group-azure-ml-workspace
+#   - workspace-bootstrap.create-compute-cluster-optional-compute-instance-notebook-workflows
+#   - workspace-bootstrap.create-reuse-azure-container-registry-aml-environments
+#   - workspace-bootstrap.provide-cloud-prerequisites-sdk-v2-jobs-registry-usage
+# lifecycle:
+#   status: active
+
 # Azure ML Setup Script - Creates workspace and compute resources
 set -e
 

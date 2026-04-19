@@ -1,4 +1,18 @@
-"""Model definitions for churn prediction."""
+"""Model definitions for churn prediction.
+
+@meta
+name: models
+type: module
+domain: models
+responsibility:
+  - Provide models behavior for `src/models/__init__.py`.
+inputs: []
+outputs: []
+tags:
+  - models
+lifecycle:
+  status: active
+"""
 
 from .factory import (
     apply_class_weight_adjustments,

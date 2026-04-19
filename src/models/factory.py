@@ -1,4 +1,18 @@
-"""Model-factory helpers owned by the models domain."""
+"""Model-factory helpers owned by the models domain.
+
+@meta
+name: factory
+type: module
+domain: models
+responsibility:
+  - Provide models behavior for `src/models/factory.py`.
+inputs: []
+outputs: []
+tags:
+  - models
+lifecycle:
+  status: active
+"""
 
 from __future__ import annotations
 

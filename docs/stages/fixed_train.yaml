@@ -1,15 +1,20 @@
+# GENERATED FILE - do not edit directly.
+# Source: docs/stages/fixed_train.source.yaml
 stage_id: fixed_train
 name: Fixed training
 status: active
 purpose: Run the validation-aware AML pipeline with the selected training configuration to produce candidate model artifacts for promotion.
+workflow_position: training
+depends_on:
+  - data_validate
+  - data_prep
+hands_off_to:
+  - model_promote
 inputs:
   - Azure ML current and reference data asset references
-  - '`configs/data.yaml`'
-  - '`configs/train.yaml`'
-  - optional smoke data profile `configs/data_smoke.yaml`
-  - optional smoke training profile `configs/train_smoke.yaml`
-  - optional HPO parent output `winner_train_config/train_config.yaml`
-  - optional HPO continuation helper output `effective_train_config/train_config.yaml`
+  - Data and training configs
+  - Optional smoke profiles
+  - Optional HPO winner train config handoff
   - AML component definitions
 outputs:
   - AML pipeline run metadata
@@ -18,23 +23,70 @@ outputs:
   - Candidate metrics artifact
   - Validation report and summary artifacts
   - Promotion decision artifact
-  - Train manifest artifact that acts as release-lineage evidence for selected training config and best model
-  - Pipeline job lineage tags for data assets, selected configs, components, environment, and git commit
+  - Train manifest artifact for release-lineage evidence
 feature_refs:
   - model-training-pipeline
+capability_refs:
+  - fixed-train.accept-data-config-path
+  - fixed-train.accept-fixed-train-bridge
+  - fixed-train.accept-frozen-candidate-manifests
+  - fixed-train.accept-hpo-smoke-bridge
+  - fixed-train.accept-hpo-to-fixed-continuation
+  - fixed-train.accept-hpo-winner-train-config
+  - fixed-train.accept-path-selection-artifact
+  - fixed-train.accept-phase-one-loop
+  - fixed-train.accept-train-config-path
+  - fixed-train.apply-train-metadata
+  - fixed-train.attach-lineage-tags
+  - fixed-train.canonical-manifest-paths
+  - fixed-train.carry-manifest-lineage
+  - fixed-train.continue-loop-after-promotion-evidence
+  - fixed-train.deterministic-hpo-family-selection
+  - fixed-train.emit-declared-manifest-folders
+  - fixed-train.emit-release-artifacts
+  - fixed-train.execute-promotion-utility
+  - fixed-train.expose-promotion-thresholds
+  - fixed-train.monitor-candidates-advisory
+  - fixed-train.path-selection-invokes-bridges
+  - fixed-train.preserve-train-config-identity
+  - fixed-train.release-lineage-evidence
+  - fixed-train.share-training-artifact-vocabulary
+  - fixed-train.share-validation-prep-contracts
+  - fixed-train.submit-pipeline-job
+  - fixed-train.support-fixed-dataset-overrides
+  - fixed-train.support-hpo-dataset-overrides
+  - fixed-train.surface-hpo-tie-break-metadata
+  - fixed-train.use-azureml-adapters
+  - fixed-train.use-quiet-submission
 code_refs:
   - run_pipeline.py
-  - run_retraining_hpo_to_fixed_train.py
-  - src/azureml/client.py
-  - src/azureml/inputs.py
-  - src/azureml/registry.py
-  - aml/components/validate_data.yaml
-  - src/train.py
-  - aml/components/train.yaml
-  - aml/components/promote_model.yaml
-  - configs/data.yaml
-  - configs/train_smoke.yaml
-  - configs/assets.yaml
+test_refs:
+  - tests/test_asset_manifest.py
+  - tests/test_azureml_adapters.py
+  - tests/test_collect_hpo_results.py
+  - tests/test_export_hpo_winner_config.py
+  - tests/test_release_workflow.py
+  - tests/test_run_hpo_pipeline.py
+  - tests/test_run_pipeline_config.py
+  - tests/test_run_retraining_fixed_train_smoke.py
+  - tests/test_run_retraining_hpo_smoke.py
+  - tests/test_run_retraining_hpo_to_fixed_train.py
+  - tests/test_run_retraining_loop.py
+  - tests/test_run_retraining_path_selection.py
+  - tests/test_training_runtime_config.py
 doc_refs:
+  - docs/asset_management_examples.md
   - docs/pipeline_guide.md
-  - docs/features/model-training-pipeline/model-training-pipeline.yaml
+  - docs/portfolio_architecture_spec.md
+  - docs/setup_guide.md
+config_refs:
+  - configs/assets.yaml
+  - configs/data.yaml
+  - configs/data_smoke.yaml
+  - configs/mlflow.yaml
+  - configs/train.yaml
+  - configs/train_ranking_hpo_winner.yaml
+  - configs/train_smoke.yaml
+  - configs/train_smoke_hpo_winner_rf.yaml
+component_refs:
+  - aml/components/train.yaml

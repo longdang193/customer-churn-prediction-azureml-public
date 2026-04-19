@@ -15,6 +15,10 @@ tags:
   - hpo
   - config
   - utility
+features:
+  - notebook-hpo
+capabilities:
+  - hpo.keep-hpo-utils-py-supporting-shared-utility-code
 lifecycle:
   status: active
 """

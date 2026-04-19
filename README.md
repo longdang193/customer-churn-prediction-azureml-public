@@ -144,8 +144,9 @@ Data prep
 
 Operational invariants:
 
-- source-of-truth policy stays in `configs/` and `docs/features/` / `docs/stages/`
-- runtime/workflow config stays in `configs/`, while publication and other repo-governance config stay separate from the public product surface
+- workflow configuration stays in `configs/`
+- generated feature and stage contracts document the current lifecycle surfaces
+- publication and other repo-governance config stay separate from the public product surface
 - release and monitoring truth are artifact-driven, not log-guess-driven
 - wrapper scripts stay thin and compose authoritative child surfaces instead of duplicating domain logic
 - smoke evidence is bounded and explicit
@@ -194,6 +195,8 @@ Operational invariants:
   Current workflow model, stage boundaries, artifact surfaces, operator guidance, and the active root-versus-tools helper policy.
 - [setup_guide.md](docs/setup_guide.md)
   Local Python setup, Azure setup, asset registration, and first-run commands.
+- [model-training-pipeline.yaml](docs/features/model-training-pipeline/model-training-pipeline.yaml)
+  Generated current contract for the fixed-training feature.
 - [release-validation.md](docs/features/online-endpoint-deployment/release-validation.md)
   Focused release, deploy, canary, and monitoring-handoff validation guidance.
 - [online-endpoint-deployment.yaml](docs/features/online-endpoint-deployment/online-endpoint-deployment.yaml)

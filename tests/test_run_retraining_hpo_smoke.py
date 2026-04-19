@@ -103,6 +103,10 @@ def _selection(selected_path: str) -> dict[str, object]:
 def test_main_writes_dry_run_handoff_for_passed_model_sweep_selection(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    """
+    @proves fixed-train.accept-hpo-smoke-bridge
+    @proves hpo.submit-end-end-azure-ml-hpo-parent-pipeline
+    """
     import run_retraining_hpo_smoke
 
     temp_dir = _make_temp_dir()
@@ -249,6 +253,10 @@ def test_main_blocks_when_selected_path_is_not_model_sweep(
 
 
 def test_main_submits_hpo_when_explicitly_requested(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    @proves fixed-train.accept-hpo-smoke-bridge
+    @proves hpo.submit-end-end-azure-ml-hpo-parent-pipeline
+    """
     import run_retraining_hpo_smoke
 
     temp_dir = _make_temp_dir()

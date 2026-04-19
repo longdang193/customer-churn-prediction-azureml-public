@@ -35,6 +35,13 @@ def _make_temp_dir() -> Path:
 
 
 def test_export_winner_config_materializes_fixed_rf_config() -> None:
+    """
+    @proves hpo.treat-inspect-hpo-run-py-export-hpo-winner
+    @proves hpo.analyze-completed-sweep-results-update-configs-train-yaml
+    @proves fixed-train.accept-hpo-winner-train-config
+    @proves fixed-train.preserve-train-config-identity
+    @proves fixed-train.carry-manifest-lineage
+    """
     from export_hpo_winner_config import export_winner_config
 
     temp_dir = _make_temp_dir()

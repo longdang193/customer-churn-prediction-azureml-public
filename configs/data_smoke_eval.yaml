@@ -1,4 +1,15 @@
 # Overlapping smoke profile for less biased end-to-end pipeline checks.
+# @architecture
+# owner: churn-data-preparation
+# features:
+#   - churn-data-preparation
+#   - notebook-hpo
+# stages:
+#   - data_validate
+#   - data_prep
+#   - model_sweep
+# role: config
+# canonical: true
 data:
   input_path: "data/smoke/eval/churn_smoke_eval.csv"
   output_dir: "data/processed_smoke_eval"

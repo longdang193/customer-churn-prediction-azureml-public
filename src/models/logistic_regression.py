@@ -1,4 +1,18 @@
-"""Logistic Regression model configuration."""
+"""Logistic Regression model configuration.
+
+@meta
+name: logistic_regression
+type: module
+domain: models
+responsibility:
+  - Provide models behavior for `src/models/logistic_regression.py`.
+inputs: []
+outputs: []
+tags:
+  - models
+lifecycle:
+  status: active
+"""
 
 from sklearn.linear_model import LogisticRegression
 

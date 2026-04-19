@@ -1,3 +1,11 @@
+---
+doc_id: dependencies
+doc_type: setup-guide
+explains:
+  features:
+    - workspace-bootstrap
+---
+
 # Dependencies
 
 Centralized project dependencies and workflow for reproducible environments. All commands assume you are inside the project root with a Python **3.9** virtual environment activated (see `docs/python_setup.md`).
@@ -40,3 +48,4 @@ pip-sync requirements.txt dev-requirements.txt
 - Run `pip-compile` with Python 3.9 so the generated headers show `Python 3.9`; other versions may produce incompatible pins.
 - All packages listed in `requirements.in` are runtime dependencies required for the project.
 - If you change `requirements.in` or `dev-requirements.in`, re-run `pip-compile` and commit the updated `*.txt` files along with the `requirements.txt` / `dev-requirements.txt`.
+- Publication and other repo-governance configuration live outside these runtime dependency files and are curated separately from the public product surface.

@@ -17,6 +17,12 @@ tags:
   - release
   - validation
   - failure-path
+features:
+  - online-endpoint-deployment
+  - release-monitoring-evaluator
+capabilities:
+  - online-deploy.support-one-bounded-negative-cloud-probe-intentionally-bypasses
+  - monitor.negative-scorer-probes-may-produce-intentional-azure-scoring
 lifecycle:
   status: active
 """
@@ -227,6 +233,9 @@ def _invoke_negative_probe(
 
 
 def main() -> None:
+    """
+    @capability monitor.negative-scorer-probes-may-produce-intentional-azure-scoring
+    """
     parser = argparse.ArgumentParser(
         description="Run one bounded negative Azure probe against a proven deployed scorer.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

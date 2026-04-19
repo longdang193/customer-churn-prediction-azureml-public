@@ -90,6 +90,9 @@ def _build_release_record(
 
 
 def test_evaluate_release_record_blocks_when_release_record_is_missing() -> None:
+    """
+    @proves monitor.load-validate-release-records-produced-run-release-py
+    """
     from src.monitoring.evaluate_release import evaluate_release_monitoring
 
     temp_path = _local_temp_dir()
@@ -110,6 +113,12 @@ def test_evaluate_release_record_blocks_when_release_record_is_missing() -> None
 
 def test_evaluate_release_record_marks_release_evidence_only_handoff_as_limited_but_healthy(
 ) -> None:
+    """
+    @proves monitor.classify-monitoring-outcomes-limited-but-healthy-capture-backed
+    @proves monitor.evaluate-always-release-evidence-checks-even-when-capture
+    @proves monitor.preserve-truthful-monitoring-semantics-whether-release-record-reports
+    @proves monitor.expose-deployment-owned-capture-truth-caller-side-capture
+    """
     from src.monitoring.evaluate_release import evaluate_release_monitoring
 
     temp_path = _local_temp_dir()
@@ -155,6 +164,12 @@ def test_evaluate_release_record_marks_release_evidence_only_handoff_as_limited_
 
 def test_evaluate_release_record_marks_capture_backed_when_fixture_records_are_retrievable(
 ) -> None:
+    """
+    @proves monitor.classify-monitoring-outcomes-limited-but-healthy-capture-backed
+    @proves monitor.optionally-consume-externally-retrievable-sampled-inference-records-file
+    @proves monitor.enforce-bounded-production-checks-including-minimum-sample-count
+    @proves monitor.expose-deployment-owned-capture-truth-caller-side-capture
+    """
     from src.monitoring.evaluate_release import evaluate_release_monitoring
 
     temp_path = _local_temp_dir()
@@ -222,6 +237,9 @@ def test_evaluate_release_record_marks_capture_backed_when_fixture_records_are_r
 
 
 def test_evaluate_release_record_reads_capture_records_from_directory_tree() -> None:
+    """
+    @proves monitor.optionally-consume-externally-retrievable-sampled-inference-records-file
+    """
     from src.monitoring.evaluate_release import evaluate_release_monitoring
 
     temp_path = _local_temp_dir()
@@ -320,6 +338,12 @@ def test_evaluate_release_record_downgrades_missing_capture_sink_to_degraded() -
 
 
 def test_evaluate_release_record_degrades_when_single_class_share_exceeds_threshold() -> None:
+    """
+    @proves monitor.emit-retraining-decision-json-plus-embedded-retraining-policy
+    @proves monitor.enrich-retraining-policy-bounded-path-recommendation-evidence-such
+    @proves monitor.recommend-bounded-next-steps-such-dataset-freeze-validate
+    @proves monitor.enforce-bounded-production-checks-including-minimum-sample-count
+    """
     from src.monitoring.evaluate_release import evaluate_release_monitoring
 
     temp_path = _local_temp_dir()
@@ -422,6 +446,10 @@ def test_evaluate_release_record_degrades_when_single_class_share_exceeds_thresh
 
 
 def test_run_monitor_writes_bounded_outputs(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    @proves monitor.emit-bounded-monitoring-artifacts-such-monitor-summary-json
+    @proves monitor.emit-retraining-decision-json-plus-embedded-retraining-policy
+    """
     import run_monitor
 
     temp_path = _local_temp_dir()
@@ -476,6 +504,9 @@ def test_run_monitor_writes_bounded_outputs(monkeypatch: pytest.MonkeyPatch) -> 
 
 
 def test_run_monitor_accepts_capture_path_override(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    @proves monitor.support-capture-path-override-scheduled-operator-driven-runs
+    """
     import run_monitor
 
     temp_path = _local_temp_dir()

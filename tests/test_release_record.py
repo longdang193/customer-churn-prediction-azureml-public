@@ -16,6 +16,12 @@ from __future__ import annotations
 
 
 def test_build_release_record_captures_registration_and_deployment_metadata() -> None:
+    """
+    @proves online-deploy.write-enriched-release-record-json-status-model-resolution
+    @proves online-deploy.write-canary-inference-metadata-release-record-json-including
+    @proves online-deploy.write-derived-monitoring-handoff-summary-release-record-json
+    @proves online-deploy.surface-deployment-owned-capture-evidence-release-record-json
+    """
     from src.release.workflow import build_release_record
 
     record = build_release_record(
@@ -134,6 +140,9 @@ def test_build_release_record_preserves_deployment_finalization_metadata() -> No
 
 
 def test_build_release_record_marks_successful_deploy_as_ready_for_basic_monitoring_handoff() -> None:
+    """
+    @proves online-deploy.write-derived-monitoring-handoff-summary-release-record-json
+    """
     from src.release.workflow import build_release_record
 
     record = build_release_record(
@@ -174,6 +183,9 @@ def test_build_release_record_marks_successful_deploy_as_ready_for_basic_monitor
 
 
 def test_build_release_record_preserves_repo_owned_scoring_contract_metadata() -> None:
+    """
+    @proves online-deploy.configure-approved-model-repo-owned-src-inference-score
+    """
     from src.release.workflow import build_release_record
 
     record = build_release_record(
@@ -360,6 +372,9 @@ def test_build_release_record_marks_capture_warning_as_degraded_handoff() -> Non
 
 
 def test_build_release_record_marks_repo_owned_capture_as_ready_monitoring_handoff() -> None:
+    """
+    @proves online-deploy.surface-deployment-owned-capture-evidence-release-record-json
+    """
     from src.release.workflow import build_release_record
 
     record = build_release_record(
@@ -443,6 +458,9 @@ def test_build_release_record_marks_repo_owned_capture_warning_as_degraded() -> 
 
 
 def test_build_release_record_keeps_configured_external_capture_at_basic_handoff_until_proven() -> None:
+    """
+    @proves online-deploy.externalize-repo-owned-inference-capture-azure-accessible-jsonl
+    """
     from src.release.workflow import build_release_record
 
     record = build_release_record(

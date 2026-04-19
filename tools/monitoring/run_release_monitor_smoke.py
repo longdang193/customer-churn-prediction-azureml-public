@@ -22,6 +22,14 @@ tags:
   - monitoring
   - orchestration
   - azure-ml
+features:
+  - online-endpoint-deployment
+  - release-monitoring-evaluator
+capabilities:
+  - online-deploy.compose-release-follow-up-automation-through-thin-wrapper
+  - online-deploy.hand-off-deployed-artifacts-release-metadata-smoke-test
+  - monitor.support-one-thin-release-plus-monitor-automation-resolves
+  - monitor.treat-blob-backed-caller-capture-exact-path-evidence
 lifecycle:
   status: active
 """
@@ -192,6 +200,10 @@ def _build_summary(
 
 
 def main() -> None:
+    """
+    @capability monitor.support-one-thin-release-plus-monitor-automation-resolves
+    @capability monitor.treat-blob-backed-caller-capture-exact-path-evidence
+    """
     parser = argparse.ArgumentParser(
         description="Compose release, caller capture, retrieval, and monitor evaluation.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter,

@@ -1,4 +1,18 @@
-"""Core preprocessing transformation utilities."""
+"""Core preprocessing transformation utilities.
+
+@meta
+name: preprocessing
+type: module
+domain: data-prep
+responsibility:
+  - Provide data-prep behavior for `src/data/preprocessing.py`.
+inputs: []
+outputs: []
+tags:
+  - data-prep
+lifecycle:
+  status: active
+"""
 
 from typing import Dict, Iterable, List, Optional, Tuple
 

@@ -1,5 +1,23 @@
 #!/usr/bin/env python3
-"""Helper entry-point to invoke train.py with sweep-managed hyperparameters."""
+"""Helper entry-point to invoke train.py with sweep-managed hyperparameters.
+
+@meta
+name: run_sweep_trial
+type: module
+domain: training
+responsibility:
+  - Provide training behavior for `src/run_sweep_trial.py`.
+inputs: []
+outputs: []
+tags:
+  - training
+features:
+  - notebook-hpo
+capabilities:
+  - hpo.submit-reload-sweep-jobs-azure-ml-run-hpo
+lifecycle:
+  status: active
+"""
 
 from __future__ import annotations
 

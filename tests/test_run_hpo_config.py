@@ -22,6 +22,9 @@ import types
 
 
 def test_build_model_sweep_specs_creates_per_model_search_spaces() -> None:
+    """
+    @proves hpo.build-sweep-definitions-configs-hpo-yaml-another-selected
+    """
     from run_hpo import build_model_sweep_specs
 
     hpo_config = {
@@ -186,6 +189,11 @@ def test_submit_sweeps_normalizes_goal_for_sdk(monkeypatch) -> None:
 
 
 def test_run_hpo_main_accepts_explicit_config_path(monkeypatch) -> None:
+    """
+    @proves hpo.submit-reload-sweep-jobs-azure-ml-run-hpo
+    @proves hpo.treat-configs-hpo-smoke-yaml-wiring-artifact-profile
+    @proves hpo.provide-review-surface-periodic-re-optimization-becoming-sole
+    """
     import run_hpo
 
     observed: dict[str, object] = {}
@@ -328,3 +336,29 @@ def test_submit_sweeps_imports_bandit_policy_from_sweep_module(monkeypatch) -> N
     assert observed["policy"] == {"evaluation_interval": 2, "slack_factor": 0.2}
     assert observed["submitted_job"].early_termination.__class__ is FakeBanditPolicy
     assert observed["sweep_kwargs"]["search_space"]["logreg_C"].values == [1.0]
+
+
+def test_hpo_utils_loads_config_and_filters_null_values() -> None:
+    """
+    @proves hpo.keep-hpo-utils-py-supporting-shared-utility-code
+    """
+    import hpo_utils
+    import shutil
+    import uuid
+
+    temp_dir = Path(__file__).resolve().parents[1] / ".tmp-tests" / f"hpo-utils-{uuid.uuid4().hex}"
+    temp_dir.mkdir(parents=True, exist_ok=False)
+    try:
+        config_path = temp_dir / "hpo.yaml"
+        config_path.write_text(
+            "search_space:\n  model_types:\n    - rf\n  rf:\n    max_depth:\n      - 4\n      - null\n",
+            encoding="utf-8",
+        )
+
+        loaded = hpo_utils.load_hpo_config(config_path)
+        filtered = hpo_utils.build_parameter_space(loaded["search_space"])
+
+        assert loaded["search_space"]["model_types"] == ["rf"]
+        assert filtered["rf"]["max_depth"] == [4]
+    finally:
+        shutil.rmtree(temp_dir, ignore_errors=True)

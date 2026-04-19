@@ -22,7 +22,7 @@ import types
 import uuid
 
 
-TEST_TEMP_ROOT = Path(__file__).resolve().parents[3] / ".tmp-tests"
+TEST_TEMP_ROOT = Path(__file__).resolve().parents[1] / ".tmp-tests"
 TEST_TEMP_ROOT.mkdir(exist_ok=True)
 
 

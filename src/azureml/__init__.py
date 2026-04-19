@@ -14,6 +14,14 @@ tags:
   - azure-ml
   - adapters
   - orchestration
+features:
+  - model-training-pipeline
+  - notebook-hpo
+  - online-endpoint-deployment
+capabilities:
+  - fixed-train.use-azureml-adapters
+  - hpo.reuse-shared-src-azureml-client-input-adapters-instead
+  - online-deploy.reuse-shared-src-azureml-registry-deployment-adapters-release
 lifecycle:
   status: active
 """

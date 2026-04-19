@@ -17,6 +17,12 @@ tags:
   - monitoring
   - release
   - cli
+features:
+  - release-monitoring-evaluator
+capabilities:
+  - monitor.emit-bounded-monitoring-artifacts-such-monitor-summary-json
+  - monitor.support-capture-path-override-scheduled-operator-driven-runs
+  - monitor.emit-retraining-decision-json-plus-embedded-retraining-policy
 lifecycle:
   status: active
 """
@@ -109,6 +115,11 @@ def _build_report(summary: dict[str, object]) -> str:
 
 
 def main() -> None:
+    """
+    @capability monitor.emit-bounded-monitoring-artifacts-such-monitor-summary-json
+    @capability monitor.support-capture-path-override-scheduled-operator-driven-runs
+    @capability monitor.emit-retraining-decision-json-plus-embedded-retraining-policy
+    """
     parser = argparse.ArgumentParser(description="Evaluate monitoring readiness from release artifacts.")
     parser.add_argument("--release-record", required=True, help="Path to release_record.json")
     parser.add_argument("--config", default="configs/monitor.yaml", help="Monitor config path")

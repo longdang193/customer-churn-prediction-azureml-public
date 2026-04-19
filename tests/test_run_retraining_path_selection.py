@@ -132,6 +132,9 @@ def test_main_blocks_when_validation_not_passed(monkeypatch: pytest.MonkeyPatch)
 def test_main_uses_candidate_manifest_recommendation_when_decision_is_missing(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    """
+    @proves fixed-train.accept-path-selection-artifact
+    """
     import run_retraining_path_selection
 
     temp_dir = _make_temp_dir()
@@ -233,6 +236,11 @@ def test_main_writes_dry_run_fixed_train_selection(monkeypatch: pytest.MonkeyPat
 def test_main_invokes_fixed_train_handoff_when_requested(
     monkeypatch: pytest.MonkeyPatch,
 ) -> None:
+    """
+    @proves fixed-train.path-selection-invokes-bridges
+    @proves online-deploy.provide-enough-release-monitor-provenance-later-post-validation
+    @proves monitor.support-third-thin-bridge-selects-next-retraining-path
+    """
     import run_retraining_path_selection
 
     temp_dir = _make_temp_dir()
@@ -302,6 +310,11 @@ def test_main_invokes_fixed_train_handoff_when_requested(
 
 
 def test_main_prepares_hpo_handoff_without_execution(monkeypatch: pytest.MonkeyPatch) -> None:
+    """
+    @proves fixed-train.path-selection-invokes-bridges
+    @proves online-deploy.provide-enough-release-monitor-provenance-later-post-validation
+    @proves monitor.support-third-thin-bridge-selects-next-retraining-path
+    """
     import run_retraining_path_selection
 
     temp_dir = _make_temp_dir()

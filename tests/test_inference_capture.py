@@ -35,6 +35,9 @@ def _make_temp_dir() -> Path:
 
 
 def test_build_capture_record_limits_rows_and_redacts_inputs() -> None:
+    """
+    @proves monitor.provide-caller-side-inference-capture-wrapper-invokes-managed
+    """
     from src.inference.capture import (
         RepoOwnedInferenceCaptureSettings,
         build_capture_record,
@@ -75,6 +78,9 @@ def test_build_capture_record_limits_rows_and_redacts_inputs() -> None:
 
 
 def test_jsonl_capture_sink_writes_partitioned_records() -> None:
+    """
+    @proves monitor.provide-caller-side-inference-capture-wrapper-invokes-managed
+    """
     from src.inference.capture import FileInferenceCaptureSink
 
     temp_dir = _make_temp_dir()
@@ -114,6 +120,9 @@ def test_should_capture_honors_sample_rate() -> None:
 
 
 def test_workspace_blob_capture_settings_load_from_environment(monkeypatch) -> None:
+    """
+    @proves online-deploy.externalize-repo-owned-inference-capture-azure-accessible-jsonl
+    """
     from src.inference.capture import RepoOwnedInferenceCaptureSettings
 
     monkeypatch.setenv("INFERENCE_CAPTURE_ENABLED", "true")
@@ -134,6 +143,9 @@ def test_workspace_blob_capture_settings_load_from_environment(monkeypatch) -> N
 
 
 def test_azure_blob_capture_sink_writes_jsonl_records_with_session_prefix() -> None:
+    """
+    @proves online-deploy.externalize-repo-owned-inference-capture-azure-accessible-jsonl
+    """
     from src.inference.capture import AzureBlobInferenceCaptureSink
     from setup.download_capture_blob import parse_capture_blob_path
 

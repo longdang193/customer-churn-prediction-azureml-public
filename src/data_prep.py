@@ -1,5 +1,26 @@
 #!/usr/bin/env python3
-"""Data preparation CLI for the churn dataset."""
+"""Data preparation CLI for the churn dataset.
+
+@meta
+name: data_prep
+type: module
+domain: data-prep
+responsibility:
+  - Provide data-prep behavior for `src/data_prep.py`.
+inputs: []
+outputs: []
+tags:
+  - data-prep
+features:
+  - churn-data-preparation
+capabilities:
+  - data-prep.accept-selected-data-config-files-through-aml-validation
+  - data-prep.encode-categoricals-scale-numerics-split-dataset-train-test
+  - data-prep.emit-processed-csv-artifacts-plus-metadata-scaler-encoder
+  - data-prep.emit-structured-step-manifest-json-artifact-validation-data
+lifecycle:
+  status: active
+"""
 
 from __future__ import annotations
 
@@ -40,6 +61,10 @@ def prepare_data(
     manifest_output_path: Path | None = None,
 ) -> dict[str, object]:
     """Execute the end-to-end preprocessing pipeline.
+
+    @capability data-prep.encode-categoricals-scale-numerics-split-dataset-train-test
+    @capability data-prep.emit-processed-csv-artifacts-plus-metadata-scaler-encoder
+    @capability data-prep.emit-structured-step-manifest-json-artifact-validation-data
     
     Args:
         input_path: Path to input CSV file or directory containing CSV file(s)
@@ -247,7 +272,11 @@ def prepare_data(
 
 
 def main() -> None:
-    """CLI entry-point."""
+    """
+    CLI entry-point.
+
+    @capability data-prep.accept-selected-data-config-files-through-aml-validation
+    """
     parser = argparse.ArgumentParser(
         description="Prepare churn data for training.",
         formatter_class=argparse.ArgumentDefaultsHelpFormatter

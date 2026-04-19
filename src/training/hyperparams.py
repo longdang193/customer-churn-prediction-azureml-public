@@ -1,4 +1,18 @@
-"""Hyperparameter loading, parsing, and management utilities."""
+"""Hyperparameter loading, parsing, and management utilities.
+
+@meta
+name: hyperparams
+type: module
+domain: training
+responsibility:
+  - Provide training behavior for `src/training/hyperparams.py`.
+inputs: []
+outputs: []
+tags:
+  - training
+lifecycle:
+  status: active
+"""
 
 import ast
 from typing import Any, Dict, Optional

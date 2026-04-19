@@ -1,5 +1,24 @@
 #!/usr/bin/env python3
-"""Training entry-point for the churn prediction models."""
+"""Training entry-point for the churn prediction models.
+
+@meta
+name: train
+type: module
+domain: training
+responsibility:
+  - Provide training behavior for `src/train.py`.
+inputs: []
+outputs: []
+tags:
+  - training
+features:
+  - model-training-pipeline
+capabilities:
+  - fixed-train.emit-release-artifacts
+  - fixed-train.emit-declared-manifest-folders
+lifecycle:
+  status: active
+"""
 
 import argparse
 from pathlib import Path

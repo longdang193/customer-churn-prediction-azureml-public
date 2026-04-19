@@ -17,6 +17,19 @@ tags:
   - monitoring
   - release
   - evaluation
+features:
+  - release-monitoring-evaluator
+capabilities:
+  - monitor.load-validate-release-records-produced-run-release-py
+  - monitor.classify-monitoring-outcomes-limited-but-healthy-capture-backed
+  - monitor.evaluate-always-release-evidence-checks-even-when-capture
+  - monitor.optionally-consume-externally-retrievable-sampled-inference-records-file
+  - monitor.emit-retraining-decision-json-plus-embedded-retraining-policy
+  - monitor.enrich-retraining-policy-bounded-path-recommendation-evidence-such
+  - monitor.recommend-bounded-next-steps-such-dataset-freeze-validate
+  - monitor.enforce-bounded-production-checks-including-minimum-sample-count
+  - monitor.preserve-truthful-monitoring-semantics-whether-release-record-reports
+  - monitor.expose-deployment-owned-capture-truth-caller-side-capture
 lifecycle:
   status: active
 """
@@ -412,7 +425,20 @@ def evaluate_release_monitoring(
     output_dir: Path,
     capture_path_override: Path | None = None,
 ) -> dict[str, object]:
-    """Evaluate monitoring readiness from release artifacts."""
+    """
+    Evaluate monitoring readiness from release artifacts.
+
+    @capability monitor.load-validate-release-records-produced-run-release-py
+    @capability monitor.classify-monitoring-outcomes-limited-but-healthy-capture-backed
+    @capability monitor.evaluate-always-release-evidence-checks-even-when-capture
+    @capability monitor.optionally-consume-externally-retrievable-sampled-inference-records-file
+    @capability monitor.emit-retraining-decision-json-plus-embedded-retraining-policy
+    @capability monitor.enrich-retraining-policy-bounded-path-recommendation-evidence-such
+    @capability monitor.recommend-bounded-next-steps-such-dataset-freeze-validate
+    @capability monitor.enforce-bounded-production-checks-including-minimum-sample-count
+    @capability monitor.preserve-truthful-monitoring-semantics-whether-release-record-reports
+    @capability monitor.expose-deployment-owned-capture-truth-caller-side-capture
+    """
     del output_dir
     config = _load_yaml_config(Path(config_path))
     retraining_policy_config = _load_retraining_policy_config(config)
