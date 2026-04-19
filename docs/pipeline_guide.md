@@ -533,7 +533,6 @@ Current implementation direction:
 Current live execution surfaces:
 
 - `run_release.py`
-- `notebooks/deploy_online_endpoint.ipynb`
 
 Current purpose:
 

@@ -211,7 +211,7 @@ aml/                  Azure ML component and environment definitions
 configs/              asset, data, training, HPO, release, and monitor config
 data/                 local data, smoke fixtures, and sample payloads
 docs/                 workflow docs, feature contracts, and stage contracts
-notebooks/            EDA, HPO review, and deployment notebooks
+notebooks/            EDA and HPO review notebooks
 tools/                helper implementations for HPO inspection, monitoring, release proofs, and retraining bridges
 setup/                workspace, environment, and asset setup scripts
 src/                  Azure ML adapters, data, training, promotion, release, monitoring
