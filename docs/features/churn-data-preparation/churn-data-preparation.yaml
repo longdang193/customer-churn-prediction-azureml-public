@@ -1,0 +1,80 @@
+# GENERATED FILE - do not edit directly.
+# Source: docs/features/churn-data-preparation/feature.source.yaml
+feature_id: churn-data-preparation
+name: Churn data preparation
+status: active
+type: component
+summary: Transform the raw churn dataset into encoded train and test artifacts for AML training and sweep workflows.
+invariants:
+  - invariant_id: data-prep.raw-data-enters-workflow-uri-folder-asset
+    statement: Raw data enters the workflow as a `uri_folder` asset or equivalent local folder input.
+    state: active
+  - invariant_id: data-prep.data-preparation-drops-identifier-columns-persists-encoders
+    statement: Data preparation drops identifier columns and persists the encoders and scaler used for downstream parity.
+    state: active
+  - invariant_id: data-prep.train-test-splits-derived-config-driven-preprocessing
+    statement: Train and test splits are derived from config-driven preprocessing rules.
+    state: active
+  - invariant_id: data-prep.fixed-training-now-runs-behind-explicit-validation
+    statement: Fixed training now runs behind an explicit validation gate, and `data.target_column` remains the canonical target owner for both prep and validation.
+    state: active
+domains:
+  - data-prep
+  - training
+  - azure-ml
+depends_on:
+  - workspace-bootstrap
+capabilities:
+  - capability_id: data-prep.load-one-more-csv-files-configured-raw-data
+    statement: Load one or more CSV files from the configured raw-data location.
+    state: active
+  - capability_id: data-prep.support-pre-training-validation-drift-analysis-against-baseline
+    statement: Support pre-training validation and drift analysis against a baseline dataset.
+    state: active
+  - capability_id: data-prep.provide-positive-negative-smoke-fixtures-local-data-prep
+    statement: Provide positive and negative smoke fixtures for local data-prep and validation gate checks.
+    state: active
+  - capability_id: data-prep.accept-selected-data-config-files-through-aml-validation
+    statement: Accept selected data config files through AML validation and data-prep component inputs instead of duplicating policy in component YAML.
+    state: active
+  - capability_id: data-prep.encode-categoricals-scale-numerics-split-dataset-train-test
+    statement: Encode categoricals, scale numerics, and split the dataset into train and test partitions.
+    state: active
+  - capability_id: data-prep.emit-processed-csv-artifacts-plus-metadata-scaler-encoder
+    statement: Emit processed CSV artifacts plus metadata, scaler, and encoder bundles.
+    state: active
+  - capability_id: data-prep.emit-structured-step-manifest-json-artifact-validation-data
+    statement: Emit a structured `step_manifest.json` artifact for validation and data-prep debugging across local and AML-backed runs.
+    state: active
+refs:
+  code:
+    - src/data/config.py
+    - src/data/data_io.py
+    - src/data/preprocessing.py
+    - src/data_prep.py
+    - src/smoke_preflight.py
+    - src/utils/step_manifest.py
+    - src/validate_data.py
+  tests:
+    - tests/test_data_prep.py
+    - tests/test_data_prep_manifest.py
+    - tests/test_smoke_assets.py
+    - tests/test_step_manifest.py
+    - tests/test_validate_data.py
+  docs:
+    - docs/asset_management_examples.md
+    - docs/pipeline_guide.md
+    - docs/portfolio_architecture_spec.md
+  configs:
+    - configs/assets.yaml
+    - configs/data.yaml
+    - configs/data_smoke.yaml
+    - configs/data_smoke_eval.yaml
+  components:
+    - aml/components/data_prep.yaml
+    - aml/components/validate_data.yaml
+  specs:
+  plans:
+revision: 13
+latest_change_id: 2026-04-18-feature-freshness-metadata
+last_updated_at: '2026-04-19T00:00:40+02:00'

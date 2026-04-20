@@ -1,0 +1,67 @@
+# GENERATED FILE - do not edit directly.
+# Source: docs/features/workspace-bootstrap/feature.source.yaml
+feature_id: workspace-bootstrap
+name: Azure ML workspace bootstrap
+status: active
+type: workflow
+summary: Provision the Azure ML workspace, compute resources, container registry hooks, and data-asset prerequisites needed by the project workflows.
+invariants:
+  - invariant_id: workspace-bootstrap.setup-remains-optional-runtime-tooling-does-not
+    statement: Setup remains optional runtime tooling and does not alter model behavior directly.
+    state: active
+  - invariant_id: workspace-bootstrap.repo-must-stay-usable-documentation-code-review
+    statement: The repo must stay usable for documentation and code review even when Azure resources are not provisioned.
+    state: active
+  - invariant_id: workspace-bootstrap.workspace-compute-names-should-come-environment-configuration
+    statement: Workspace and compute names should come from environment configuration rather than hardcoded assumptions where possible.
+    state: active
+  - invariant_id: workspace-bootstrap.workspace-setup-should-enable-later-training-deployment
+    statement: Workspace setup should enable the later training, deployment, and monitoring stages without forcing notebook-only operation.
+    state: active
+domains:
+  - azure-ml
+  - infrastructure
+  - mlops
+depends_on: []
+capabilities:
+  - capability_id: workspace-bootstrap.create-update-resource-group-azure-ml-workspace
+    statement: Create or update the resource group and Azure ML workspace.
+    state: active
+  - capability_id: workspace-bootstrap.create-compute-cluster-optional-compute-instance-notebook-workflows
+    statement: Create the compute cluster and optional compute instance for notebook workflows from both setup scripts.
+    state: active
+  - capability_id: workspace-bootstrap.create-reuse-azure-container-registry-aml-environments
+    statement: Create or reuse an Azure Container Registry for AML environments.
+    state: active
+  - capability_id: workspace-bootstrap.register-raw-dataset-azure-ml-data-asset
+    statement: Register the raw dataset as an Azure ML data asset.
+    state: active
+  - capability_id: workspace-bootstrap.register-smoke-dataset-separate-azure-ml-data-asset
+    statement: Register the smoke dataset as a separate Azure ML data asset for low-cost pipeline wiring checks.
+    state: active
+  - capability_id: workspace-bootstrap.provide-cloud-prerequisites-sdk-v2-jobs-registry-usage
+    statement: Provide the cloud prerequisites for SDK v2 jobs, registry usage, endpoint deployment, and monitoring.
+    state: active
+refs:
+  code:
+    - setup/create_data_asset.py
+    - setup/setup.ps1
+    - setup/setup.sh
+  tests:
+    - tests/test_create_data_asset.py
+    - tests/test_workspace_bootstrap_setup_scripts.py
+  docs:
+    - docs/asset_management_examples.md
+    - docs/dependencies.md
+    - docs/pipeline_guide.md
+    - docs/portfolio_architecture_spec.md
+    - docs/python_setup.md
+    - docs/setup_guide.md
+  configs:
+    - configs/assets.yaml
+  components: []
+  specs:
+  plans:
+revision: 13
+latest_change_id: 2026-04-18-feature-freshness-metadata
+last_updated_at: '2026-04-19T00:00:40+02:00'
