@@ -59,6 +59,11 @@ def _candidate_manifest(current_data: str, reference_data: str) -> dict[str, obj
         },
         "trigger": "retraining_candidate",
         "training_path_recommendation": "fixed_train",
+        "recommendation_summary": {
+            "recommended_action": "Freeze the dataset window and validate before retraining.",
+            "next_step": "freeze_candidate_then_validate",
+            "policy_confidence": "moderate",
+        },
         "current_data": {
             "raw": current_data,
             "normalized": current_data,
@@ -128,6 +133,8 @@ def test_main_writes_dry_run_handoff_for_passed_validation(monkeypatch: pytest.M
 
         assert summary["status"] == "dry_run_ready"
         assert summary["validation_status"] == "passed"
+        assert summary["trigger"] == "retraining_candidate"
+        assert summary["recommendation_summary"]["next_step"] == "freeze_candidate_then_validate"
         assert summary["submission"]["attempted"] is False
         assert invocation["arguments"]["train_config"] == "configs/train_smoke.yaml"
         assert invocation["arguments"]["current_data_override"].startswith("azureml://")
@@ -135,6 +142,7 @@ def test_main_writes_dry_run_handoff_for_passed_validation(monkeypatch: pytest.M
         assert "--current-data-override" in invocation["command"]
         assert "--reference-data-override" in invocation["command"]
         assert handoff["trigger"] == "retraining_candidate"
+        assert handoff["recommendation_summary"]["policy_confidence"] == "moderate"
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
 
@@ -181,6 +189,9 @@ def test_main_blocks_when_validation_did_not_pass(monkeypatch: pytest.MonkeyPatc
         )
         assert summary["status"] == "blocked_by_validation"
         assert summary["validation_status"] == "failed"
+        assert summary["recommendation_summary"]["recommended_action"].startswith(
+            "Freeze the dataset window"
+        )
         assert not (output_dir / "fixed_train_invocation.json").exists()
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
@@ -252,6 +263,7 @@ def test_main_submits_fixed_train_when_explicitly_requested(monkeypatch: pytest.
             (output_dir / "retraining_fixed_train_summary.json").read_text(encoding="utf-8")
         )
         assert summary["status"] == "submitted"
+        assert summary["recommendation_summary"]["next_step"] == "freeze_candidate_then_validate"
         assert summary["submission"]["attempted"] is True
         assert summary["submission"]["job_name"] == "train-job-123"
         assert len(commands) == 1
@@ -318,6 +330,7 @@ def test_main_writes_truthful_summary_when_submit_fails(monkeypatch: pytest.Monk
             (output_dir / "retraining_fixed_train_summary.json").read_text(encoding="utf-8")
         )
         assert summary["status"] == "submission_failed"
+        assert summary["recommendation_summary"]["policy_confidence"] == "moderate"
         assert summary["submission"]["attempted"] is True
         assert summary["submission"]["job_name"] is None
         assert summary["submission"]["stderr"] == "credential failure"

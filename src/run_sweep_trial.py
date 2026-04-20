@@ -11,8 +11,6 @@ inputs: []
 outputs: []
 tags:
   - training
-features:
-  - notebook-hpo
 capabilities:
   - hpo.submit-reload-sweep-jobs-azure-ml-run-hpo
 lifecycle:

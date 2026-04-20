@@ -10,8 +10,6 @@ inputs: []
 outputs: []
 tags:
   - release
-features:
-  - online-endpoint-deployment
 capabilities:
   - online-deploy.write-derived-monitoring-handoff-summary-release-record-json
   - online-deploy.surface-deployment-owned-capture-evidence-release-record-json

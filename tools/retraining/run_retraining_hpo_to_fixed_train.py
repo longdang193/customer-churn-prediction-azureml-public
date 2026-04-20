@@ -87,6 +87,7 @@ class SelectionPayload(TypedDict, total=False):
     selected_path: str
     reason_codes: list[str]
     downstream: dict[str, object]
+    recommendation_summary: dict[str, object]
 
 
 class HpoSmokeSummary(TypedDict, total=False):
@@ -476,6 +477,9 @@ def _build_summary(
         "created_at_utc": _utc_timestamp(),
         "status": status,
         "selected_path": _selected_path(context.selection_payload),
+        "trigger": context.selection_payload.get("trigger"),
+        "reason_codes": context.selection_payload.get("reason_codes", []),
+        "recommendation_summary": context.selection_payload.get("recommendation_summary"),
         "validation_status": _validation_status(context.validation_summary),
         "release_record_path": str(context.release_record_path),
         "selection_path": str(context.selection_path),
@@ -497,11 +501,23 @@ def _build_report(summary: Mapping[str, object], export_metadata: Mapping[str, o
         "",
         f"- Status: `{summary.get('status')}`",
         f"- Selected path: `{summary.get('selected_path')}`",
+        f"- Trigger: `{summary.get('trigger')}`",
         f"- Winner family: `{summary.get('winner_family')}`",
         f"- Exported train config: `{summary.get('exported_train_config_path')}`",
         f"- Downstream summary: `{summary.get('downstream_summary_path')}`",
         f"- Submitted fixed-train job: `{summary.get('submitted_job_name')}`",
     ]
+    recommendation_summary = summary.get("recommendation_summary")
+    if isinstance(recommendation_summary, Mapping):
+        lines.extend(
+            [
+                "",
+                "## Recommendation",
+                f"- Recommended action: {recommendation_summary.get('recommended_action')}",
+                f"- Policy confidence: `{recommendation_summary.get('policy_confidence')}`",
+                f"- Next step: `{recommendation_summary.get('next_step')}`",
+            ]
+        )
     if export_metadata:
         lines.extend(
             [

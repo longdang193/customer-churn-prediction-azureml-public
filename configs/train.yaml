@@ -1,7 +1,5 @@
 # @architecture
 # owner: model-training-pipeline
-# features:
-#   - model-training-pipeline
 # stages:
 #   - fixed_train
 #   - model_promote

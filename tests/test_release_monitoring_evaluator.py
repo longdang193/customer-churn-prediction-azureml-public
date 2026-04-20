@@ -496,6 +496,13 @@ def test_run_monitor_writes_bounded_outputs(monkeypatch: pytest.MonkeyPatch) -> 
         assert retraining_decision["trigger"] == "no_retraining_signal"
         assert retraining_decision["path_recommendation"] == "none"
         assert retraining_decision["policy_confidence"] == "strong"
+        assert retraining_decision["recommendation_summary"]["trigger"] == "no_retraining_signal"
+        assert retraining_decision["recommendation_summary"]["path_recommendation"] == "none"
+        assert retraining_decision["recommendation_summary"]["policy_confidence"] == "strong"
+        assert (
+            retraining_decision["recommendation_summary"]["recommended_action"]
+            == summary["recommended_action"]
+        )
         assert manifest["status"] == "succeeded"
         assert manifest["outputs"]["monitor_summary"]["path"].endswith("monitor_summary.json")
         assert manifest["outputs"]["retraining_decision"]["path"].endswith("retraining_decision.json")

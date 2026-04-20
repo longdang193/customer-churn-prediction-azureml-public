@@ -11,8 +11,6 @@ inputs: []
 outputs: []
 tags:
   - data-prep
-features:
-  - churn-data-preparation
 capabilities:
   - data-prep.accept-selected-data-config-files-through-aml-validation
   - data-prep.encode-categoricals-scale-numerics-split-dataset-train-test

@@ -1,7 +1,6 @@
 # @architecture
 # owner: notebook-hpo
-# features:
-#   - notebook-hpo
+# related_features:
 #   - model-training-pipeline
 # stages:
 #   - model_sweep

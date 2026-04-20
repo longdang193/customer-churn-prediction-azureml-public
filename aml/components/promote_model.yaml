@@ -1,7 +1,6 @@
 # @architecture
 # owner: model-training-pipeline
-# features:
-#   - model-training-pipeline
+# related_features:
 #   - online-endpoint-deployment
 # stages:
 #   - model_promote

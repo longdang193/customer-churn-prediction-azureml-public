@@ -16,8 +16,6 @@ tags:
   - inference
   - deployment
   - monitoring
-features:
-  - online-endpoint-deployment
 capabilities:
   - online-deploy.invoke-endpoint-deployment-smoke-payload-path-configs-assets
 lifecycle:

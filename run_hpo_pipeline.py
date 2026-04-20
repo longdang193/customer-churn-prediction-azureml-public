@@ -18,9 +18,6 @@ tags:
   - azure-ml
   - hpo
   - orchestration
-features:
-  - notebook-hpo
-  - model-training-pipeline
 capabilities:
   - hpo.submit-end-end-azure-ml-hpo-parent-pipeline
   - hpo.reuse-shared-src-azureml-client-input-adapters-instead

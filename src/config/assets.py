@@ -10,9 +10,6 @@ inputs: []
 outputs: []
 tags:
   - config
-features:
-  - model-training-pipeline
-  - online-endpoint-deployment
 capabilities:
   - fixed-train.attach-lineage-tags
   - online-deploy.invoke-endpoint-deployment-smoke-payload-path-configs-assets

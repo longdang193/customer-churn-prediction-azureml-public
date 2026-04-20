@@ -54,7 +54,20 @@ capability_refs:
   - hpo.surface-per-family-model-output-mlflow-model-candidate
   - hpo.treat-configs-hpo-smoke-yaml-wiring-artifact-profile
   - hpo.treat-inspect-hpo-run-py-export-hpo-winner
-code_refs: []
+code_refs:
+  - hpo_utils.py
+  - run_hpo.py
+  - run_hpo_pipeline.py
+  - src/azureml/__init__.py
+  - src/azureml/client.py
+  - src/azureml/inputs.py
+  - src/collect_hpo_results.py
+  - src/materialize_hpo_winner.py
+  - src/run_sweep_trial.py
+  - tools/hpo/export_hpo_winner_config.py
+  - tools/hpo/inspect_hpo_run.py
+  - tools/retraining/run_retraining_hpo_smoke.py
+  - tools/retraining/run_retraining_hpo_to_fixed_train.py
 test_refs:
   - tests/test_azureml_adapters.py
   - tests/test_collect_hpo_results.py

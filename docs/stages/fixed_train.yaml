@@ -59,7 +59,24 @@ capability_refs:
   - fixed-train.use-azureml-adapters
   - fixed-train.use-quiet-submission
 code_refs:
+  - run_hpo_pipeline.py
   - run_pipeline.py
+  - run_release.py
+  - run_retraining_loop.py
+  - src/azureml/__init__.py
+  - src/azureml/client.py
+  - src/azureml/inputs.py
+  - src/collect_hpo_results.py
+  - src/config/assets.py
+  - src/config/runtime.py
+  - src/promotion/promote_model.py
+  - src/train.py
+  - src/training/training.py
+  - tools/hpo/export_hpo_winner_config.py
+  - tools/retraining/run_retraining_fixed_train_smoke.py
+  - tools/retraining/run_retraining_hpo_smoke.py
+  - tools/retraining/run_retraining_hpo_to_fixed_train.py
+  - tools/retraining/run_retraining_path_selection.py
 test_refs:
   - tests/test_asset_manifest.py
   - tests/test_azureml_adapters.py

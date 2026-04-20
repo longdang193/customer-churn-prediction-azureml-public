@@ -17,8 +17,6 @@ tags:
   - evidently
   - data-quality
   - drift
-features:
-  - churn-data-preparation
 capabilities:
   - data-prep.support-pre-training-validation-drift-analysis-against-baseline
   - data-prep.accept-selected-data-config-files-through-aml-validation

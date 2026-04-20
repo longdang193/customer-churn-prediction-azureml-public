@@ -6,8 +6,6 @@ domain: training-orchestration
 covers:
   - Environment-driven compute selection for the fixed training pipeline
   - Reference/current data asset resolution for validation-aware execution
-features:
-  - model-training-pipeline
 capabilities:
   - fixed-train.submit-pipeline-job
 excludes:

@@ -182,6 +182,7 @@ def _build_handoff_payload(
         "decision_source": decision_source,
         "trigger": candidate_manifest.get("trigger"),
         "training_path_recommendation": candidate_manifest.get("training_path_recommendation"),
+        "recommendation_summary": candidate_manifest.get("recommendation_summary"),
         "current_data": candidate_manifest.get("current_data"),
         "reference_data": candidate_manifest.get("reference_data"),
         "data_config_path": data_config_path,
@@ -199,10 +200,14 @@ def _build_summary(
     invocation_path: Path | None,
     submit_attempted: bool,
     submission: SubmissionResult | None,
+    candidate_manifest: Mapping[str, object],
 ) -> dict[str, object]:
     return {
         "status": status,
         "validation_status": validation_status,
+        "trigger": candidate_manifest.get("trigger"),
+        "training_path_recommendation": candidate_manifest.get("training_path_recommendation"),
+        "recommendation_summary": candidate_manifest.get("recommendation_summary"),
         "release_record_path": str(release_record_path),
         "candidate_manifest_path": str(candidate_manifest_path),
         "validation_summary_path": str(validation_summary_path),
@@ -280,6 +285,7 @@ def main() -> None:
                 invocation_path=None,
                 submit_attempted=False,
                 submission=None,
+                candidate_manifest=candidate_manifest,
             ),
         )
         raise SystemExit(
@@ -327,6 +333,7 @@ def main() -> None:
                 invocation_path=invocation_path,
                 submit_attempted=False,
                 submission=None,
+                candidate_manifest=candidate_manifest,
             ),
         )
         print(f"Retraining fixed-train handoff summary: {summary_path}")
@@ -366,6 +373,7 @@ def main() -> None:
                 invocation_path=invocation_path,
                 submit_attempted=True,
                 submission=submission,
+                candidate_manifest=candidate_manifest,
             ),
         )
         raise SystemExit(
@@ -384,6 +392,7 @@ def main() -> None:
             invocation_path=invocation_path,
             submit_attempted=True,
             submission=submission,
+            candidate_manifest=candidate_manifest,
         ),
     )
     print(f"Retraining fixed-train handoff summary: {summary_path}")

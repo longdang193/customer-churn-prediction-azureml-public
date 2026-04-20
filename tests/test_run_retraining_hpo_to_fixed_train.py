@@ -67,6 +67,11 @@ def _selection(selected_path: str = "model_sweep") -> dict[str, object]:
         "trigger": "retraining_candidate",
         "policy_version": 1,
         "reason_codes": ["prediction_class_balance_exceeded"],
+        "recommendation_summary": {
+            "recommended_action": "Freeze the dataset window and validate before retraining.",
+            "policy_confidence": "moderate",
+            "next_step": "freeze_candidate_then_validate",
+        },
         "selected_path": selected_path,
         "validation_status": "passed",
         "invoke_selected_path": False,
@@ -248,6 +253,7 @@ def test_main_blocks_when_hpo_smoke_summary_not_submitted(monkeypatch: pytest.Mo
             (output_dir / "retraining_hpo_to_fixed_train_summary.json").read_text(encoding="utf-8")
         )
         assert summary["status"] == "blocked_by_hpo_status"
+        assert summary["recommendation_summary"]["next_step"] == "freeze_candidate_then_validate"
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
 
@@ -297,6 +303,7 @@ def test_main_blocks_when_selected_path_is_not_model_sweep(monkeypatch: pytest.M
             (output_dir / "retraining_hpo_to_fixed_train_summary.json").read_text(encoding="utf-8")
         )
         assert summary["status"] == "blocked_by_selection"
+        assert summary["recommendation_summary"]["policy_confidence"] == "moderate"
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
 
@@ -359,6 +366,9 @@ def test_main_blocks_when_winner_identity_is_inconsistent(monkeypatch: pytest.Mo
             (output_dir / "retraining_hpo_to_fixed_train_summary.json").read_text(encoding="utf-8")
         )
         assert summary["status"] == "blocked_by_winner_inconsistency"
+        assert summary["recommendation_summary"]["recommended_action"].startswith(
+            "Freeze the dataset window"
+        )
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
 
@@ -429,6 +439,7 @@ def test_main_blocks_when_hpo_summary_winner_disagrees_with_winner_manifest(
             (output_dir / "retraining_hpo_to_fixed_train_summary.json").read_text(encoding="utf-8")
         )
         assert summary["status"] == "blocked_by_winner_inconsistency"
+        assert summary["recommendation_summary"]["next_step"] == "freeze_candidate_then_validate"
         assert summary["submitted_job_name"] is None
         assert summary["downstream_summary_path"] is None
     finally:
@@ -590,6 +601,7 @@ def test_main_reuses_existing_winner_train_config_and_invokes_fixed_train(
             (output_dir / "retraining_exported_train_config.json").read_text(encoding="utf-8")
         )
         assert summary["status"] == "dry_run_ready"
+        assert summary["recommendation_summary"]["policy_confidence"] == "moderate"
         assert exported["source_kind"] == "reused_winner_train_config"
         assert len(calls) == 1
         assert Path(str(calls[0]["train_config_path"])).exists()
@@ -755,6 +767,7 @@ def test_main_downloads_hpo_outputs_and_exports_when_winner_config_missing(
             (output_dir / "retraining_exported_train_config.json").read_text(encoding="utf-8")
         )
         assert summary["status"] == "submitted"
+        assert summary["recommendation_summary"]["next_step"] == "freeze_candidate_then_validate"
         assert summary["submitted_job_name"] == "fixed-train-job-123"
         assert exported["source_kind"] == "exported_from_hpo"
         assert "wait" in calls
@@ -845,6 +858,7 @@ def test_main_blocks_when_remote_hpo_job_does_not_complete(
             (output_dir / "retraining_hpo_to_fixed_train_summary.json").read_text(encoding="utf-8")
         )
         assert summary["status"] == "blocked_by_hpo_status"
+        assert summary["recommendation_summary"]["policy_confidence"] == "moderate"
         assert summary["submitted_job_name"] is None
         assert "wait" in calls
     finally:

@@ -1,8 +1,7 @@
 # Overlapping smoke profile for less biased end-to-end pipeline checks.
 # @architecture
 # owner: churn-data-preparation
-# features:
-#   - churn-data-preparation
+# related_features:
 #   - notebook-hpo
 # stages:
 #   - data_validate

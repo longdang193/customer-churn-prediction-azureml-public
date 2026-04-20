@@ -68,6 +68,7 @@ class RetrainingPolicyPayload(TypedDict, total=False):
     policy_version: int
     reason_codes: list[str]
     next_step: str
+    recommendation_summary: dict[str, object]
 
 
 @dataclass(frozen=True)
@@ -161,6 +162,7 @@ def _build_candidate_manifest(context: CandidateContext) -> dict[str, object]:
         "trigger": context.policy.get("trigger"),
         "reason_codes": context.policy.get("reason_codes", []),
         "training_path_recommendation": context.policy.get("recommended_training_path"),
+        "recommendation_summary": context.policy.get("recommendation_summary"),
         "current_data": asdict(context.current_data),
         "reference_data": asdict(context.reference_data),
         "data_config_path": str(context.data_config_path),
@@ -238,6 +240,7 @@ def _build_candidate_summary(
         "trigger": context.policy.get("trigger"),
         "reason_codes": context.policy.get("reason_codes", []),
         "recommended_training_path": context.policy.get("recommended_training_path"),
+        "recommendation_summary": context.policy.get("recommendation_summary"),
         "release_record_path": str(context.release_record_path),
         "decision_source_path": str(context.decision_source_path),
         "current_data": asdict(context.current_data),

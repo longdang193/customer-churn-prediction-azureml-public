@@ -17,8 +17,6 @@ tags:
   - azure-ml
   - hpo
   - orchestration
-features:
-  - notebook-hpo
 capabilities:
   - hpo.build-sweep-definitions-configs-hpo-yaml-another-selected
   - hpo.submit-reload-sweep-jobs-azure-ml-run-hpo

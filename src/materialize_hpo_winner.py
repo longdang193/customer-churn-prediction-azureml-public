@@ -11,8 +11,6 @@ inputs: []
 outputs: []
 tags:
   - hpo
-features:
-  - notebook-hpo
 capabilities:
   - hpo.materialize-canonical-winner-outputs-winner-model-output-winner
   - hpo.materialize-winner-train-config-train-config-yaml-hpo

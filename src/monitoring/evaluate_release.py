@@ -17,8 +17,6 @@ tags:
   - monitoring
   - release
   - evaluation
-features:
-  - release-monitoring-evaluator
 capabilities:
   - monitor.load-validate-release-records-produced-run-release-py
   - monitor.classify-monitoring-outcomes-limited-but-healthy-capture-backed

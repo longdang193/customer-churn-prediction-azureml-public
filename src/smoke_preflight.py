@@ -16,8 +16,6 @@ tags:
   - smoke
   - preflight
   - local
-features:
-  - churn-data-preparation
 capabilities:
   - data-prep.provide-positive-negative-smoke-fixtures-local-data-prep
 lifecycle:

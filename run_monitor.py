@@ -17,8 +17,6 @@ tags:
   - monitoring
   - release
   - cli
-features:
-  - release-monitoring-evaluator
 capabilities:
   - monitor.emit-bounded-monitoring-artifacts-such-monitor-summary-json
   - monitor.support-capture-path-override-scheduled-operator-driven-runs
@@ -46,6 +44,34 @@ from src.utils.step_manifest import (
     merge_config,
     merge_section,
 )
+
+
+def _build_retraining_decision(summary: dict[str, object]) -> dict[str, object]:
+    retraining_policy = cast(dict[str, object], summary.get("retraining_policy", {}))
+    return {
+        **retraining_policy,
+        "recommendation_summary": {
+            "monitor_status": summary.get("monitor_status"),
+            "evidence_level": summary.get("evidence_level"),
+            "capture_status": summary.get("capture_status"),
+            "capture_evidence_source": summary.get("capture_evidence_source"),
+            "trigger": retraining_policy.get("trigger"),
+            "recommended_training_path": retraining_policy.get("recommended_training_path"),
+            "path_recommendation": retraining_policy.get("path_recommendation"),
+            "policy_confidence": retraining_policy.get("policy_confidence"),
+            "drift_severity": retraining_policy.get("drift_severity"),
+            "signal_persistence": retraining_policy.get("signal_persistence"),
+            "requires_dataset_freeze": retraining_policy.get("requires_dataset_freeze"),
+            "requires_data_validation": retraining_policy.get("requires_data_validation"),
+            "requires_human_review": retraining_policy.get("requires_human_review"),
+            "reason_codes": retraining_policy.get("reason_codes", []),
+            "path_recommendation_reason_codes": retraining_policy.get(
+                "path_recommendation_reason_codes", []
+            ),
+            "next_step": retraining_policy.get("next_step"),
+            "recommended_action": summary.get("recommended_action"),
+        },
+    }
 
 
 def _build_report(summary: dict[str, object]) -> str:
@@ -178,7 +204,7 @@ def main() -> None:
 
     report_path.write_text(_build_report(summary), encoding="utf-8")
     retraining_path.write_text(
-        json.dumps(cast(dict[str, object], summary.get("retraining_policy", {})), indent=2),
+        json.dumps(_build_retraining_decision(summary), indent=2),
         encoding="utf-8",
     )
 

@@ -20,10 +20,6 @@ tags:
   - retraining
   - orchestration
   - cli
-features:
-  - model-training-pipeline
-  - online-endpoint-deployment
-  - release-monitoring-evaluator
 capabilities:
   - fixed-train.accept-phase-one-loop
   - fixed-train.continue-loop-after-promotion-evidence
@@ -117,6 +113,7 @@ class DecisionPayload(TypedDict, total=False):
     policy_version: int
     next_step: str
     recommended_training_path: str | None
+    recommendation_summary: dict[str, object]
 
 
 @dataclass(frozen=True)
@@ -833,6 +830,9 @@ def _build_summary(
         },
         "trigger": decision.payload.get("trigger"),
         "reason_codes": decision.payload.get("reason_codes", []),
+        "recommended_training_path": decision.payload.get("recommended_training_path"),
+        "next_step": decision.payload.get("next_step"),
+        "recommendation_summary": decision.payload.get("recommendation_summary"),
         "candidate": candidate,
         "path_selection": path_selection,
         "selected_bridge": selected_bridge,
@@ -875,6 +875,8 @@ def _build_report(summary: Mapping[str, object]) -> str:
         f"- Release mode: `{summary.get('release_mode')}`",
         f"- Final stage: `{summary.get('final_stage')}`",
         f"- Trigger: `{summary.get('trigger')}`",
+        f"- Recommended training path: `{summary.get('recommended_training_path')}`",
+        f"- Next step: `{summary.get('next_step')}`",
         f"- Selected bridge: `{summary.get('selected_bridge')}`",
         f"- Selected bridge status: `{summary.get('selected_bridge_status')}`",
         f"- Submitted job name: `{summary.get('submitted_job_name')}`",
@@ -887,6 +889,20 @@ def _build_report(summary: Mapping[str, object]) -> str:
         f"- Resumed continuation summary: `{summary.get('resumed_from_continuation_summary_path')}`",
     ]
     candidate = summary.get("candidate")
+    recommendation_summary = summary.get("recommendation_summary")
+    if isinstance(recommendation_summary, Mapping):
+        lines.extend(
+            [
+                "",
+                "## Recommendation",
+                f"- Recommended action: {recommendation_summary.get('recommended_action')}",
+                f"- Policy confidence: `{recommendation_summary.get('policy_confidence')}`",
+                f"- Path recommendation: `{recommendation_summary.get('path_recommendation')}`",
+                f"- Requires dataset freeze: `{recommendation_summary.get('requires_dataset_freeze')}`",
+                f"- Requires data validation: `{recommendation_summary.get('requires_data_validation')}`",
+                f"- Requires human review: `{recommendation_summary.get('requires_human_review')}`",
+            ]
+        )
     if isinstance(candidate, Mapping):
         lines.extend(
             [

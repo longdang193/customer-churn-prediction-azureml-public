@@ -18,8 +18,6 @@ tags:
   - azure-ml
   - training
   - orchestration
-features:
-  - model-training-pipeline
 capabilities:
   - fixed-train.submit-pipeline-job
   - fixed-train.apply-train-metadata

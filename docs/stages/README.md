@@ -18,6 +18,14 @@ Stage participation is now modeled on both sides:
 - generated stage `capability_refs` are narrowed to the feature capability ids
   explicitly declared for that stage
 
+Ownership rule:
+
+- stage sources are the canonical owner of stage role semantics
+- feature sources declare stage participation through `stage_id` plus
+  `capability_ids`
+- generated views derive readable linkage from those upstream sources instead of
+  requiring the same role fact to be hand-entered twice
+
 The initial stage map for this repo is:
 
 - `data_validate`

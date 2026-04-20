@@ -85,6 +85,11 @@ def _selection(selected_path: str) -> dict[str, object]:
         "trigger": "retraining_candidate",
         "policy_version": 1,
         "reason_codes": ["prediction_class_balance_exceeded"],
+        "recommendation_summary": {
+            "recommended_action": "Freeze the dataset window and validate before retraining.",
+            "next_step": "freeze_candidate_then_validate",
+            "policy_confidence": "moderate",
+        },
         "selected_path": selected_path,
         "validation_status": "passed",
         "invoke_selected_path": False,
@@ -150,6 +155,8 @@ def test_main_writes_dry_run_handoff_for_passed_model_sweep_selection(
 
         assert summary["status"] == "dry_run_ready"
         assert summary["validation_status"] == "passed"
+        assert summary["trigger"] == "retraining_candidate"
+        assert summary["recommendation_summary"]["next_step"] == "freeze_candidate_then_validate"
         assert summary["submission"]["attempted"] is False
         assert invocation["arguments"]["hpo_config"] == "configs/hpo_smoke.yaml"
         assert invocation["arguments"]["current_data_override"].startswith("azureml://")
@@ -157,6 +164,7 @@ def test_main_writes_dry_run_handoff_for_passed_model_sweep_selection(
         assert "--current-data-override" in invocation["command"]
         assert "--reference-data-override" in invocation["command"]
         assert handoff["selected_path"] == "model_sweep"
+        assert handoff["recommendation_summary"]["policy_confidence"] == "moderate"
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
 
@@ -201,6 +209,9 @@ def test_main_blocks_when_validation_did_not_pass(monkeypatch: pytest.MonkeyPatc
         )
         assert summary["status"] == "blocked_by_validation"
         assert summary["validation_status"] == "failed"
+        assert summary["recommendation_summary"]["recommended_action"].startswith(
+            "Freeze the dataset window"
+        )
         assert not (output_dir / "hpo_invocation.json").exists()
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
@@ -248,6 +259,7 @@ def test_main_blocks_when_selected_path_is_not_model_sweep(
         )
         assert summary["status"] == "blocked_by_selection"
         assert summary["selected_path"] == "fixed_train"
+        assert summary["recommendation_summary"]["policy_confidence"] == "moderate"
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
 
@@ -315,6 +327,7 @@ def test_main_submits_hpo_when_explicitly_requested(monkeypatch: pytest.MonkeyPa
             (output_dir / "retraining_hpo_smoke_summary.json").read_text(encoding="utf-8")
         )
         assert summary["status"] == "submitted"
+        assert summary["recommendation_summary"]["next_step"] == "freeze_candidate_then_validate"
         assert summary["submission"]["attempted"] is True
         assert summary["submission"]["job_name"] == "hpo-job-123"
         assert len(commands) == 1
@@ -379,6 +392,9 @@ def test_main_writes_truthful_summary_when_submit_fails(monkeypatch: pytest.Monk
             (output_dir / "retraining_hpo_smoke_summary.json").read_text(encoding="utf-8")
         )
         assert summary["status"] == "submission_failed"
+        assert summary["recommendation_summary"]["recommended_action"].startswith(
+            "Freeze the dataset window"
+        )
         assert summary["submission"]["attempted"] is True
         assert summary["submission"]["job_name"] is None
         assert summary["submission"]["stderr"] == "credential failure"

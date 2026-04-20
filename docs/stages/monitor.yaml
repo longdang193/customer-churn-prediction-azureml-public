@@ -19,7 +19,7 @@ inputs:
   - Monitoring thresholds
 outputs:
   - Monitor summary and report
-  - Retraining decision artifact
+  - Retraining decision artifact with backward-compatible policy fields and an operator-readable recommendation summary
   - Optional retraining candidate and validation handoff artifacts through downstream bridges
   - Operational follow-up recommendations
   - Monitor manifest containing `step_manifest.json`
@@ -64,10 +64,15 @@ capability_refs:
   - online-deploy.write-derived-monitoring-handoff-summary-release-record-json
 code_refs:
   - run_monitor.py
+  - run_release.py
   - run_retraining_loop.py
+  - src/azureml/deployment.py
+  - src/inference/capture.py
   - src/inference/client_capture.py
+  - src/monitoring/download_capture_blob.py
   - src/monitoring/evaluate_release.py
   - src/monitoring/handoff_helpers.py
+  - src/release/workflow.py
   - tools/monitoring/run_inference_capture.py
   - tools/monitoring/run_monitor_handoff.py
   - tools/monitoring/run_release_monitor_smoke.py

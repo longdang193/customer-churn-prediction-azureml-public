@@ -16,8 +16,6 @@ tags:
   - azure-ml
   - deployment
   - release
-features:
-  - online-endpoint-deployment
 capabilities:
   - online-deploy.configure-approved-model-repo-owned-src-inference-score
   - online-deploy.recover-transient-sdk-side-deployment-operation-failures-when

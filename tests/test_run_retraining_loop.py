@@ -58,6 +58,17 @@ def _retraining_decision(trigger: str = "retraining_candidate") -> dict[str, obj
         if trigger == "retraining_candidate"
         else [trigger],
         "next_step": "freeze_retraining_candidate",
+        "recommendation_summary": {
+            "recommended_action": "Freeze the dataset window and validate before retraining.",
+            "policy_confidence": "moderate" if trigger == "retraining_candidate" else "strong",
+            "path_recommendation": "fixed_train" if trigger == "retraining_candidate" else "none",
+            "requires_dataset_freeze": trigger == "retraining_candidate",
+            "requires_data_validation": trigger == "retraining_candidate",
+            "requires_human_review": trigger != "retraining_candidate",
+            "next_step": "freeze_candidate_then_validate"
+            if trigger == "retraining_candidate"
+            else "continue_monitoring",
+        },
     }
 
 
@@ -115,6 +126,7 @@ def test_main_stops_after_candidate_for_freeze_only(monkeypatch: pytest.MonkeyPa
         assert summary["status"] == "succeeded"
         assert summary["mode"] == "freeze_only"
         assert summary["final_stage"] == "candidate"
+        assert summary["recommendation_summary"]["next_step"] == "freeze_candidate_then_validate"
         assert summary["selected_bridge"] is None
         assert Path(str(summary["candidate"]["summary_path"])).name == "candidate_summary.json"
     finally:
@@ -199,6 +211,7 @@ def test_main_stops_after_path_selection_for_validate_and_select_path(
         summary = json.loads((output_dir / "retraining_loop_summary.json").read_text(encoding="utf-8"))
         assert summary["status"] == "succeeded"
         assert summary["final_stage"] == "path_selection"
+        assert summary["recommendation_summary"]["policy_confidence"] == "moderate"
         assert summary["path_selection"]["selected_path"] == "fixed_train"
         assert summary["selected_bridge"] is None
     finally:
@@ -288,6 +301,9 @@ def test_main_submits_fixed_train_selected_bridge(monkeypatch: pytest.MonkeyPatc
         assert summary["status"] == "succeeded"
         assert summary["final_stage"] == "selected_bridge"
         assert summary["selected_bridge"] == "run_retraining_fixed_train_smoke.py"
+        assert summary["recommendation_summary"]["recommended_action"].startswith(
+            "Freeze the dataset window"
+        )
         assert summary["submitted_job_name"] == "fixed-train-job"
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
@@ -376,6 +392,7 @@ def test_main_submits_hpo_selected_bridge(monkeypatch: pytest.MonkeyPatch) -> No
         assert summary["status"] == "succeeded"
         assert summary["final_stage"] == "selected_bridge"
         assert summary["selected_bridge"] == "run_retraining_hpo_smoke.py"
+        assert summary["recommendation_summary"]["next_step"] == "freeze_candidate_then_validate"
         assert summary["submitted_job_name"] == "hpo-job"
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
@@ -431,6 +448,7 @@ def test_main_blocks_before_candidate_when_monitor_does_not_open_candidate(
         )
         assert summary["status"] == "blocked"
         assert summary["final_stage"] == "monitor_gate"
+        assert summary["recommendation_summary"]["requires_human_review"] is True
         assert summary["candidate"] is None
         assert (
             manifest["outputs"]["retraining_loop_report"]["path"].endswith(

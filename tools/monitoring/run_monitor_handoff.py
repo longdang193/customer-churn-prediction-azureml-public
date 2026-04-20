@@ -82,6 +82,31 @@ def _resolve_runtime_contract(
     return None
 
 
+def _build_retraining_recommendation(
+    monitor_summary: dict[str, object] | None,
+) -> dict[str, object] | None:
+    if monitor_summary is None:
+        return None
+    retraining_policy = _coerce_dict(monitor_summary.get("retraining_policy"))
+    if not retraining_policy:
+        return None
+    return {
+        "trigger": retraining_policy.get("trigger"),
+        "recommended_training_path": retraining_policy.get("recommended_training_path"),
+        "path_recommendation": retraining_policy.get("path_recommendation"),
+        "policy_confidence": retraining_policy.get("policy_confidence"),
+        "requires_dataset_freeze": retraining_policy.get("requires_dataset_freeze"),
+        "requires_data_validation": retraining_policy.get("requires_data_validation"),
+        "requires_human_review": retraining_policy.get("requires_human_review"),
+        "reason_codes": retraining_policy.get("reason_codes", []),
+        "path_recommendation_reason_codes": retraining_policy.get(
+            "path_recommendation_reason_codes", []
+        ),
+        "next_step": retraining_policy.get("next_step"),
+        "recommended_action": monitor_summary.get("recommended_action"),
+    }
+
+
 def _build_handoff_summary(
     *,
     status: str,
@@ -150,6 +175,7 @@ def _build_handoff_summary(
             "evidence_level": evidence_level,
             "summary_path": str(monitor_summary_path) if monitor_summary_path else None,
         },
+        "retraining_recommendation": _build_retraining_recommendation(monitor_summary),
         "handoff": {
             "status": handoff_status,
         },

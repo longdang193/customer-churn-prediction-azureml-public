@@ -19,8 +19,6 @@ tags:
   - azure-ml
   - release
   - deployment
-features:
-  - online-endpoint-deployment
 capabilities:
   - online-deploy.register-selected-promoted-model-bundle-azure-ml
   - online-deploy.validate-release-time-data-train-config-lineage-against

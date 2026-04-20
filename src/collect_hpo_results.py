@@ -19,9 +19,6 @@ tags:
   - azure-ml
   - hpo
   - summary
-features:
-  - notebook-hpo
-  - model-training-pipeline
 capabilities:
   - hpo.emit-hpo-summary-artifacts-hpo-summary-json-hpo
   - hpo.surface-per-family-model-output-mlflow-model-candidate

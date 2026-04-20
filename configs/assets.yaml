@@ -1,7 +1,6 @@
 # @architecture
 # owner: workspace-bootstrap
-# features:
-#   - workspace-bootstrap
+# related_features:
 #   - churn-data-preparation
 #   - model-training-pipeline
 #   - online-endpoint-deployment

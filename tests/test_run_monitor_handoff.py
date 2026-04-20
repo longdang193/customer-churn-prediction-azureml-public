@@ -140,6 +140,19 @@ def test_main_runs_capture_download_and_monitor_from_saved_release_record(monkey
                     "capture_record_count": 2,
                     "evidence_level": "repo_owned_inference_capture",
                     "runtime_contract": "repo_owned_scoring_proven",
+                    "recommended_action": "Freeze the candidate dataset window and validate before retraining.",
+                    "retraining_policy": {
+                        "trigger": "retraining_candidate",
+                        "recommended_training_path": "fixed_train",
+                        "path_recommendation": "fixed_train",
+                        "policy_confidence": "moderate",
+                        "requires_dataset_freeze": True,
+                        "requires_data_validation": True,
+                        "requires_human_review": False,
+                        "reason_codes": ["prediction_class_balance_exceeded"],
+                        "path_recommendation_reason_codes": ["bounded_refresh_candidate"],
+                        "next_step": "Freeze the candidate dataset window, run validate_data, then submit a fixed-train refresh if validation passes.",
+                    },
                 },
             )
             return summary_path
@@ -195,6 +208,11 @@ def test_main_runs_capture_download_and_monitor_from_saved_release_record(monkey
         assert summary["caller_capture"]["status"] == "retrieved"
         assert summary["caller_capture"]["record_count"] == 2
         assert summary["monitor"]["status"] == "capture_backed"
+        assert summary["retraining_recommendation"]["trigger"] == "retraining_candidate"
+        assert summary["retraining_recommendation"]["recommended_training_path"] == "fixed_train"
+        assert summary["retraining_recommendation"]["recommended_action"].startswith(
+            "Freeze the candidate dataset window"
+        )
         assert summary["handoff"]["status"] == "capture_backed_monitoring_ready"
         assert capture_calls == [probe_a, probe_b]
         assert monitor_calls == [(release_record_path, output_dir / "downloaded_capture")]
@@ -357,6 +375,7 @@ def test_main_classifies_capture_download_failure_as_capture_stage(monkeypatch) 
         assert summary["failure"]["stage"] == "capture"
         assert summary["caller_capture"]["status"] == "failed"
         assert summary["monitor"]["status"] is None
+        assert summary["retraining_recommendation"] is None
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
 
@@ -378,6 +397,19 @@ def test_build_handoff_summary_prefers_monitor_capture_truth_when_available() ->
         monitor_summary={
             "monitor_status": "limited_but_healthy",
             "evidence_level": "release_evidence_only",
+            "recommended_action": "Continue monitoring; no retraining candidate is recommended from the current evidence.",
+            "retraining_policy": {
+                "trigger": "no_retraining_signal",
+                "recommended_training_path": None,
+                "path_recommendation": "none",
+                "policy_confidence": "strong",
+                "requires_dataset_freeze": False,
+                "requires_data_validation": False,
+                "requires_human_review": False,
+                "reason_codes": ["release_evidence_healthy"],
+                "path_recommendation_reason_codes": ["no_retraining_signal"],
+                "next_step": "Continue monitoring; no retraining candidate is recommended from the current evidence.",
+            },
             "caller_capture": {
                 "status": "not_run",
                 "record_count": 0,
@@ -394,4 +426,6 @@ def test_build_handoff_summary_prefers_monitor_capture_truth_when_available() ->
     assert summary["deployment_capture"]["status"] == "disabled"
     assert summary["caller_capture"]["status"] == "not_run"
     assert summary["caller_capture"]["record_count"] == 0
+    assert summary["retraining_recommendation"]["trigger"] == "no_retraining_signal"
+    assert summary["retraining_recommendation"]["policy_confidence"] == "strong"
     assert summary["handoff"]["status"] == "release_evidence_only_ready"

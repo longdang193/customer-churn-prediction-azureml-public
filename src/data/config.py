@@ -10,8 +10,6 @@ inputs: []
 outputs: []
 tags:
   - data-prep
-features:
-  - churn-data-preparation
 capabilities:
   - data-prep.accept-selected-data-config-files-through-aml-validation
 lifecycle:

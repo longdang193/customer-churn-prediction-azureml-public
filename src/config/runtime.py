@@ -10,8 +10,6 @@ inputs: []
 outputs: []
 tags:
   - config
-features:
-  - model-training-pipeline
 capabilities:
   - fixed-train.apply-train-metadata
   - fixed-train.expose-promotion-thresholds

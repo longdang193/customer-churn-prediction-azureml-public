@@ -19,8 +19,6 @@ tags:
   - release-handoff
   - orchestration
   - utility
-features:
-  - release-monitoring-evaluator
 capabilities:
   - monitor.treat-blob-backed-caller-capture-exact-path-evidence
 lifecycle:

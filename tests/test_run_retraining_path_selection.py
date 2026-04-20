@@ -81,6 +81,10 @@ def _retraining_decision(training_path: str | None) -> dict[str, object]:
         "policy_version": 1,
         "reason_codes": ["prediction_class_balance_exceeded"],
         "next_step": "freeze_retraining_candidate",
+        "recommendation_summary": {
+            "recommended_action": "Freeze the dataset window and validate before retraining.",
+            "next_step": "freeze_candidate_then_validate",
+        },
     }
 
 
@@ -125,6 +129,9 @@ def test_main_blocks_when_validation_not_passed(monkeypatch: pytest.MonkeyPatch)
         assert summary["status"] == "blocked"
         assert summary["validation_status"] == "failed"
         assert summary["selected_path"] == "fixed_train"
+        assert summary["recommendation_summary"]["recommended_action"].startswith(
+            "Freeze the dataset window"
+        )
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
 
@@ -175,9 +182,13 @@ def test_main_uses_candidate_manifest_recommendation_when_decision_is_missing(
             (output_dir / "retraining_path_selection_summary.json").read_text(encoding="utf-8")
         )
         assert selection["selected_path"] == "fixed_train"
+        assert selection["recommendation_summary"]["next_step"] == "freeze_candidate_then_validate"
         assert summary["status"] == "dry_run_ready"
         assert summary["selected_path"] == "fixed_train"
         assert summary["reason_codes"] == ["prediction_class_balance_exceeded"]
+        assert summary["recommendation_summary"]["recommended_action"].startswith(
+            "Freeze the dataset window"
+        )
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)
 
@@ -224,6 +235,9 @@ def test_main_writes_dry_run_fixed_train_selection(monkeypatch: pytest.MonkeyPat
         )
 
         assert selection["selected_path"] == "fixed_train"
+        assert selection["recommendation_summary"]["recommended_action"].startswith(
+            "Freeze the dataset window"
+        )
         assert selection["downstream"]["entrypoint"] == "run_retraining_fixed_train_smoke.py"
         assert selection["invoke_selected_path"] is False
         assert summary["status"] == "dry_run_ready"
@@ -301,6 +315,7 @@ def test_main_invokes_fixed_train_handoff_when_requested(
         assert len(calls) == 1
         assert summary["status"] == "selected_and_invoked"
         assert summary["selected_path"] == "fixed_train"
+        assert summary["recommendation_summary"]["next_step"] == "freeze_candidate_then_validate"
         assert summary["downstream_invoked"] is True
         assert Path(str(summary["downstream_summary_path"])).as_posix().endswith(
             "selected-path/retraining_fixed_train_summary.json"
@@ -361,10 +376,17 @@ def test_main_prepares_hpo_handoff_without_execution(monkeypatch: pytest.MonkeyP
         )
 
         assert selection["selected_path"] == "model_sweep"
+        assert selection["recommendation_summary"]["recommended_action"].startswith(
+            "Freeze the dataset window"
+        )
         assert selection["downstream"]["entrypoint"] == "run_hpo_pipeline.py"
         assert summary["status"] == "prepared_hpo_handoff"
+        assert summary["recommendation_summary"]["next_step"] == "freeze_candidate_then_validate"
         assert summary["downstream_invoked"] is False
         assert hpo_handoff["hpo_config_path"] == "configs/hpo_smoke.yaml"
+        assert hpo_handoff["recommendation_summary"]["recommended_action"].startswith(
+            "Freeze the dataset window"
+        )
         assert hpo_handoff["current_data"]["raw"].startswith("azureml://")
         assert not (output_dir / "selected_path_invocation.json").exists()
     finally:

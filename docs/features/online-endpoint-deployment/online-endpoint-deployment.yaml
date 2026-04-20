@@ -161,7 +161,26 @@ capabilities:
     statement: Accept an optional post-release monitoring-handoff continuation from the retraining loop, but keep `run_monitor_handoff.py` as the authoritative post-release evidence surface rather than merging monitoring logic into the loop wrapper.
     state: active
 refs:
-  code: []
+  code:
+    - run_release.py
+    - run_retraining_loop.py
+    - src/azureml/__init__.py
+    - src/azureml/client.py
+    - src/azureml/deployment.py
+    - src/azureml/registry.py
+    - src/config/assets.py
+    - src/inference/capture.py
+    - src/inference/online_scoring.py
+    - src/inference/payloads.py
+    - src/inference/score.py
+    - src/monitoring/download_capture_blob.py
+    - src/release/workflow.py
+    - tools/monitoring/run_monitor_handoff.py
+    - tools/monitoring/run_release_monitor_smoke.py
+    - tools/release/run_release_failure_probe.py
+    - tools/retraining/run_retraining_candidate.py
+    - tools/retraining/run_retraining_fixed_train_smoke.py
+    - tools/retraining/run_retraining_path_selection.py
   tests:
     - tests/test_asset_manifest.py
     - tests/test_azureml_adapters.py

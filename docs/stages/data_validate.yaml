@@ -34,10 +34,15 @@ capability_refs:
   - fixed-train.share-validation-prep-contracts
   - hpo.submit-end-end-azure-ml-hpo-parent-pipeline
 code_refs:
+  - run_hpo_pipeline.py
+  - run_pipeline.py
   - src/data/config.py
   - src/data_prep.py
   - src/smoke_preflight.py
+  - src/utils/step_manifest.py
   - src/validate_data.py
+  - tools/retraining/run_retraining_fixed_train_smoke.py
+  - tools/retraining/run_retraining_hpo_smoke.py
 test_refs:
   - tests/test_data_prep.py
   - tests/test_data_prep_manifest.py

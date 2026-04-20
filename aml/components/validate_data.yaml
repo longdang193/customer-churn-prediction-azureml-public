@@ -1,7 +1,6 @@
 # @architecture
 # owner: churn-data-preparation
-# features:
-#   - churn-data-preparation
+# related_features:
 #   - model-training-pipeline
 #   - notebook-hpo
 # stages:

@@ -10,8 +10,6 @@ inputs: []
 outputs: []
 tags:
   - data-prep
-features:
-  - churn-data-preparation
 capabilities:
   - data-prep.load-one-more-csv-files-configured-raw-data
   - data-prep.emit-processed-csv-artifacts-plus-metadata-scaler-encoder

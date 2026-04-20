@@ -10,6 +10,9 @@ inputs: []
 outputs: []
 tags:
   - data-prep
+capabilities:
+  - data-prep.encode-categoricals-scale-numerics-split-dataset-train-test
+  - data-prep.emit-processed-csv-artifacts-plus-metadata-scaler-encoder
 lifecycle:
   status: active
 """

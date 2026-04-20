@@ -10,6 +10,10 @@ inputs: []
 outputs: []
 tags:
   - training
+capabilities:
+  - fixed-train.emit-release-artifacts
+  - fixed-train.emit-declared-manifest-folders
+  - fixed-train.share-training-artifact-vocabulary
 lifecycle:
   status: active
 """

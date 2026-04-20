@@ -92,7 +92,7 @@ capabilities:
     statement: Accept frozen retraining candidate manifests and validation handoff artifacts as upstream operator inputs without treating them as implicit training approval.
     state: active
   - capability_id: fixed-train.accept-fixed-train-bridge
-    statement: Accept a validated retraining candidate through the thin `run_retraining_fixed_train_smoke.py` bridge, which preserves candidate and validation lineage while feeding explicit current/reference dataset overrides into the existing fixed-train pipeline.
+    statement: Accept a validated retraining candidate through the thin `run_retraining_fixed_train_smoke.py` bridge, which preserves candidate and validation lineage plus the carried monitor `recommendation_summary` while feeding explicit current/reference dataset overrides into the existing fixed-train pipeline.
     state: active
   - capability_id: fixed-train.accept-path-selection-artifact
     statement: Accept an explicit post-validation retraining path-selection artifact so monitor-triggered retraining can choose `fixed_train` or `model_sweep` without merging those downstream surfaces into one opaque workflow.
@@ -104,10 +104,10 @@ capabilities:
     statement: Accept a thin phase-1 loop orchestrator that composes candidate freeze, validation, path selection, and exactly one downstream smoke bridge while keeping `run_pipeline.py` and `run_hpo_pipeline.py` as the authoritative submission surfaces.
     state: active
   - capability_id: fixed-train.accept-hpo-smoke-bridge
-    statement: Accept a validated retraining candidate selected for `model_sweep` through the thin `run_retraining_hpo_smoke.py` bridge, which preserves candidate, validation, and path-selection lineage while feeding explicit current/reference dataset overrides into the existing HPO pipeline.
+    statement: Accept a validated retraining candidate selected for `model_sweep` through the thin `run_retraining_hpo_smoke.py` bridge, which preserves candidate, validation, and path-selection lineage plus the carried monitor `recommendation_summary` while feeding explicit current/reference dataset overrides into the existing HPO pipeline.
     state: active
   - capability_id: fixed-train.accept-hpo-to-fixed-continuation
-    statement: Accept a completed retraining HPO smoke run through the thin `run_retraining_hpo_to_fixed_train.py` continuation helper, which validates winner consistency, reuses or exports one effective winner train config, and then invokes the fixed-train smoke bridge instead of treating HPO outputs as release-ready directly.
+    statement: Accept a completed retraining HPO smoke run through the thin `run_retraining_hpo_to_fixed_train.py` continuation helper, which validates winner consistency, preserves the carried monitor `recommendation_summary`, reuses or exports one effective winner train config, and then invokes the fixed-train smoke bridge instead of treating HPO outputs as release-ready directly.
     state: active
   - capability_id: fixed-train.continue-loop-after-promotion-evidence
     statement: Allow the thin retraining-loop orchestrator to continue beyond the selected training bridge only after promotion-facing evidence exists, while keeping release as an explicit downstream gate delegated to `run_release.py`.
@@ -126,7 +126,24 @@ capabilities:
     state: active
 refs:
   code:
+    - run_hpo_pipeline.py
     - run_pipeline.py
+    - run_release.py
+    - run_retraining_loop.py
+    - src/azureml/__init__.py
+    - src/azureml/client.py
+    - src/azureml/inputs.py
+    - src/collect_hpo_results.py
+    - src/config/assets.py
+    - src/config/runtime.py
+    - src/promotion/promote_model.py
+    - src/train.py
+    - src/training/training.py
+    - tools/hpo/export_hpo_winner_config.py
+    - tools/retraining/run_retraining_fixed_train_smoke.py
+    - tools/retraining/run_retraining_hpo_smoke.py
+    - tools/retraining/run_retraining_hpo_to_fixed_train.py
+    - tools/retraining/run_retraining_path_selection.py
   tests:
     - tests/test_asset_manifest.py
     - tests/test_azureml_adapters.py

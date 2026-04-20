@@ -80,6 +80,10 @@ def test_main_opens_candidate_manifest_for_retraining_candidate(monkeypatch: pyt
                 "recommended_training_path": "fixed_train",
                 "policy_version": 1,
                 "reason_codes": ["prediction_class_balance_exceeded"],
+                "recommendation_summary": {
+                    "recommended_action": "Freeze the dataset window and validate before retraining.",
+                    "next_step": "freeze_candidate_then_validate",
+                },
             },
         )
 
@@ -112,7 +116,11 @@ def test_main_opens_candidate_manifest_for_retraining_candidate(monkeypatch: pyt
 
         assert summary["status"] == "candidate_opened"
         assert summary["trigger"] == "retraining_candidate"
+        assert summary["recommendation_summary"]["recommended_action"].startswith(
+            "Freeze the dataset window"
+        )
         assert manifest["training_path_recommendation"] == "fixed_train"
+        assert manifest["recommendation_summary"]["next_step"] == "freeze_candidate_then_validate"
         assert manifest["current_data"]["kind"] == "local_path"
         assert manifest["reference_data"]["kind"] == "local_path"
         assert handoff["run_validation"] is False
@@ -174,6 +182,7 @@ def test_main_does_not_open_candidate_for_no_retraining_signal(monkeypatch: pyte
         summary = json.loads((output_dir / "candidate_summary.json").read_text(encoding="utf-8"))
         assert summary["status"] == "no_candidate_opened"
         assert summary["trigger"] == "no_retraining_signal"
+        assert summary["recommendation_summary"] is None
         assert not (output_dir / "retraining_candidate_manifest.json").exists()
         assert not (output_dir / "validation_handoff.json").exists()
     finally:
@@ -200,6 +209,10 @@ def test_main_runs_validation_for_open_candidate(monkeypatch: pytest.MonkeyPatch
                 "recommended_training_path": "fixed_train",
                 "policy_version": 1,
                 "reason_codes": ["prediction_class_balance_exceeded"],
+                "recommendation_summary": {
+                    "recommended_action": "Freeze the dataset window and validate before retraining.",
+                    "next_step": "freeze_candidate_then_validate",
+                },
             },
         )
         _write_csv(
@@ -248,6 +261,7 @@ def test_main_runs_validation_for_open_candidate(monkeypatch: pytest.MonkeyPatch
         )
 
         assert summary["status"] == "candidate_opened"
+        assert summary["recommendation_summary"]["next_step"] == "freeze_candidate_then_validate"
         assert summary["validation"]["status"] == "passed"
         assert handoff["run_validation"] is True
         assert validation_summary["status"] == "passed"
@@ -303,6 +317,7 @@ def test_main_writes_investigation_summary_without_opening_candidate(
         summary = json.loads((output_dir / "candidate_summary.json").read_text(encoding="utf-8"))
         assert summary["status"] == "investigation_required"
         assert summary["trigger"] == "investigate_before_retraining"
+        assert summary["recommendation_summary"] is None
         assert not (output_dir / "retraining_candidate_manifest.json").exists()
     finally:
         shutil.rmtree(temp_dir, ignore_errors=True)

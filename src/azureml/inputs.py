@@ -15,9 +15,6 @@ tags:
   - azure-ml
   - inputs
   - orchestration
-features:
-  - model-training-pipeline
-  - notebook-hpo
 capabilities:
   - fixed-train.use-azureml-adapters
   - hpo.reuse-shared-src-azureml-client-input-adapters-instead

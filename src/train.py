@@ -11,8 +11,6 @@ inputs: []
 outputs: []
 tags:
   - training
-features:
-  - model-training-pipeline
 capabilities:
   - fixed-train.emit-release-artifacts
   - fixed-train.emit-declared-manifest-folders

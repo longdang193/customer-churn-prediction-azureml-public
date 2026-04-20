@@ -185,6 +185,7 @@ def _build_handoff_payload(
         "trigger": selection_payload.get("trigger"),
         "selected_path": selection_payload.get("selected_path"),
         "reason_codes": selection_payload.get("reason_codes", []),
+        "recommendation_summary": selection_payload.get("recommendation_summary"),
         "current_data": candidate_manifest.get("current_data"),
         "reference_data": candidate_manifest.get("reference_data"),
         "data_config_path": data_config_path,
@@ -204,11 +205,15 @@ def _build_summary(
     invocation_path: Path | None,
     submit_attempted: bool,
     submission: SubmissionResult | None,
+    selection_payload: Mapping[str, object],
 ) -> dict[str, object]:
     return {
         "status": status,
         "validation_status": validation_status,
         "selected_path": selected_path,
+        "trigger": selection_payload.get("trigger"),
+        "reason_codes": selection_payload.get("reason_codes", []),
+        "recommendation_summary": selection_payload.get("recommendation_summary"),
         "release_record_path": str(release_record_path),
         "selection_path": str(selection_path),
         "candidate_manifest_path": str(candidate_manifest_path),
@@ -294,6 +299,7 @@ def main() -> None:
                 invocation_path=None,
                 submit_attempted=False,
                 submission=None,
+                selection_payload=selection_payload,
             ),
         )
         raise SystemExit(
@@ -314,6 +320,7 @@ def main() -> None:
                 invocation_path=None,
                 submit_attempted=False,
                 submission=None,
+                selection_payload=selection_payload,
             ),
         )
         raise SystemExit(
@@ -366,6 +373,7 @@ def main() -> None:
                 invocation_path=invocation_path,
                 submit_attempted=False,
                 submission=None,
+                selection_payload=selection_payload,
             ),
         )
         print(f"Retraining HPO smoke summary: {summary_path}")
@@ -404,6 +412,7 @@ def main() -> None:
                 invocation_path=invocation_path,
                 submit_attempted=True,
                 submission=submission,
+                selection_payload=selection_payload,
             ),
         )
         raise SystemExit("HPO smoke submission failed; see retraining_hpo_smoke_summary.json") from error
@@ -422,6 +431,7 @@ def main() -> None:
             invocation_path=invocation_path,
             submit_attempted=True,
             submission=submission,
+            selection_payload=selection_payload,
         ),
     )
     print(f"Retraining HPO smoke summary: {summary_path}")

@@ -16,8 +16,6 @@ tags:
   - azure-ml
   - registry
   - release
-features:
-  - online-endpoint-deployment
 capabilities:
   - online-deploy.register-selected-promoted-model-bundle-azure-ml
   - online-deploy.stamp-approved-registered-models-lightweight-data-config-component

@@ -10,8 +10,6 @@ inputs: []
 outputs: []
 tags:
   - utils
-features:
-  - churn-data-preparation
 capabilities:
   - data-prep.emit-structured-step-manifest-json-artifact-validation-data
 lifecycle:

@@ -1,7 +1,6 @@
 # @architecture
 # owner: release-monitoring-evaluator
-# features:
-#   - release-monitoring-evaluator
+# related_features:
 #   - online-endpoint-deployment
 # stages:
 #   - monitor

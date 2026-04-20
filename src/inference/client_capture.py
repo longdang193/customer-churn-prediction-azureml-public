@@ -17,8 +17,6 @@ tags:
   - inference
   - monitoring
   - deployment
-features:
-  - release-monitoring-evaluator
 capabilities:
   - monitor.provide-caller-side-inference-capture-wrapper-invokes-managed
 lifecycle:

@@ -78,6 +78,7 @@ class DecisionPayload(TypedDict, total=False):
     policy_version: int
     reason_codes: list[str]
     next_step: str
+    recommendation_summary: dict[str, object]
 
 
 @dataclass(frozen=True)
@@ -182,6 +183,7 @@ def _build_selection_payload(
         "trigger": context.decision_payload.get("trigger"),
         "policy_version": context.decision_payload.get("policy_version", 1),
         "reason_codes": context.decision_payload.get("reason_codes", []),
+        "recommendation_summary": context.decision_payload.get("recommendation_summary"),
         "selected_path": selected_path,
         "validation_status": _validation_status(context.validation_summary),
         "invoke_selected_path": invoke_selected_path,
@@ -209,6 +211,7 @@ def _build_summary_payload(
         "status": status,
         "trigger": context.decision_payload.get("trigger"),
         "reason_codes": context.decision_payload.get("reason_codes", []),
+        "recommendation_summary": context.decision_payload.get("recommendation_summary"),
         "selected_path": selected_path,
         "validation_status": _validation_status(context.validation_summary),
         "release_record_path": str(context.release_record_path),
@@ -277,6 +280,7 @@ def _build_hpo_handoff_payload(
         "validation_summary_path": str(context.validation_summary_path),
         "trigger": context.decision_payload.get("trigger"),
         "reason_codes": context.decision_payload.get("reason_codes", []),
+        "recommendation_summary": context.decision_payload.get("recommendation_summary"),
         "selected_path": PATH_MODEL_SWEEP,
         "entrypoint": "run_hpo_pipeline.py",
         "current_data": context.candidate_manifest.get("current_data"),

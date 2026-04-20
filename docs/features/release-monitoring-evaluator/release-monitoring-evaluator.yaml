@@ -69,22 +69,22 @@ capabilities:
     statement: Emit bounded monitoring artifacts such as `monitor_summary.json`, `monitor_report.md`, and `monitor_manifest/step_manifest.json`.
     state: active
   - capability_id: monitor.emit-retraining-decision-json-plus-embedded-retraining-policy
-    statement: Emit `retraining_decision.json` plus an embedded `retraining_policy` block that distinguishes `no_retraining_signal`, `retraining_candidate`, and `investigate_before_retraining`.
+    statement: Emit `retraining_decision.json` with backward-compatible top-level retraining-policy fields plus a nested `recommendation_summary` block that distinguishes `no_retraining_signal`, `retraining_candidate`, and `investigate_before_retraining`.
     state: active
   - capability_id: monitor.enrich-retraining-policy-bounded-path-recommendation-evidence-such
     statement: Enrich `retraining_policy` with bounded path recommendation evidence such as `path_recommendation`, `path_recommendation_reason_codes`, `drift_severity`, `signal_persistence`, and `policy_confidence` so operators can tell why monitor stayed with `fixed_train`, escalated toward `model_sweep`, or declined to recommend retraining.
     state: active
   - capability_id: monitor.recommend-bounded-next-steps-such-dataset-freeze-validate
-    statement: Recommend bounded next steps such as dataset freeze, `validate_data`, and fixed-train refresh without bypassing later promotion and release gates.
+    statement: Recommend bounded next steps such as dataset freeze, `validate_data`, and fixed-train refresh without bypassing later promotion and release gates, and surface that recommendation in an operator-readable summary block.
     state: active
   - capability_id: monitor.support-thin-post-monitor-bridge-freezes-explicit-current
-    statement: Support a thin post-monitor bridge that freezes explicit `current_data` and `reference_data` identifiers into a retraining-candidate contract and prepares a `validate_data` handoff without inventing the training dataset from capture records.
+    statement: Support a thin post-monitor bridge that freezes explicit `current_data` and `reference_data` identifiers into a retraining-candidate contract, preserves the monitor `recommendation_summary`, and prepares a `validate_data` handoff without inventing the training dataset from capture records.
     state: active
   - capability_id: monitor.support-second-thin-bridge-can-take-passed-retraining
     statement: Support a second thin bridge that can take a passed retraining candidate validation into the smoke fixed-train path while preserving release, decision, candidate, and validation lineage.
     state: active
   - capability_id: monitor.support-third-thin-bridge-selects-next-retraining-path
-    statement: Support a third thin bridge that selects the next retraining path only after candidate validation passes, then delegates to either the fixed-train or HPO smoke bridge while preserving explicit selected-path lineage.
+    statement: Support a third thin bridge that selects the next retraining path only after candidate validation passes, then delegates to either the fixed-train or HPO smoke bridge while preserving explicit selected-path lineage and the carried monitor `recommendation_summary`.
     state: active
   - capability_id: monitor.support-thin-phase-1-loop-orchestrator-composes-existing
     statement: Support a thin phase-1 loop orchestrator that composes the existing monitor-to-train bridges through explicit stop modes such as `freeze_only`, `freeze_and_validate`, `validate_and_select_path`, and `submit_selected_path`.
@@ -111,7 +111,9 @@ refs:
   code:
     - run_monitor.py
     - run_retraining_loop.py
+    - src/inference/capture.py
     - src/inference/client_capture.py
+    - src/monitoring/download_capture_blob.py
     - src/monitoring/evaluate_release.py
     - src/monitoring/handoff_helpers.py
     - tools/monitoring/run_inference_capture.py

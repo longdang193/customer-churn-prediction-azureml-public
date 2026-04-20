@@ -17,8 +17,6 @@ tags:
   - inference
   - deployment
   - monitoring
-features:
-  - online-endpoint-deployment
 capabilities:
   - online-deploy.configure-approved-model-repo-owned-src-inference-score
 lifecycle:

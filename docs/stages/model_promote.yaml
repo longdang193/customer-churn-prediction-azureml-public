@@ -28,7 +28,14 @@ capability_refs:
   - fixed-train.execute-promotion-utility
   - fixed-train.expose-promotion-thresholds
   - fixed-train.release-lineage-evidence
-code_refs: []
+code_refs:
+  - run_pipeline.py
+  - run_release.py
+  - run_retraining_loop.py
+  - src/config/runtime.py
+  - src/promotion/promote_model.py
+  - src/train.py
+  - src/training/training.py
 test_refs:
   - tests/test_azureml_adapters.py
   - tests/test_release_workflow.py
