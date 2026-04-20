@@ -1,16 +1,35 @@
 # Customer Churn Prediction on Azure ML
 
-> A portfolio-oriented Azure ML MLOps system for tabular churn prediction, with explicit validation, HPO, fixed training, release, deployment, and monitoring handoff workflows.
+> A production-minded Azure ML churn system that makes validation, training, promotion, release, deployment, monitoring, and retraining handoffs explicit, auditable, and reusable.
+
+## Why This Repo Exists
+
+This project is not only about training or deploying a churn model. It exists
+to make the full lifecycle of a cloud ML system understandable, reproducible,
+and governable.
+
+The repo is designed to help readers and operators do three things well:
+
+- understand how a disciplined ML lifecycle is structured
+- prove what the system actually did through bounded artifacts and handoffs
+- reuse the patterns in future projects without copying accidental complexity
 
 ## Who Uses It
 
-This repo is built for a person or team that wants to run a real cloud ML lifecycle instead of stopping at notebook-only experimentation.
+This repo is built for people who want more than notebook-only experimentation.
 
 Typical users are:
 
-- an ML engineer building and maintaining the churn pipeline
-- an operator submitting Azure ML training, HPO, release, and monitoring workflows
-- a reviewer who needs traceable artifacts, bounded diagnostics, and repeatable cloud proofs
+- an ML engineer or project builder who needs a reproducible training,
+  release, deployment, and monitoring workflow
+- an operator or maintainer who needs explicit commands, handoff artifacts, and
+  truthful status boundaries
+- a reviewer or auditor who needs evidence for why a model was validated,
+  promoted, released, or rejected
+- a portfolio reviewer or public reader who wants a runnable, educational MLOps
+  system without private operating material
+- a future contributor or agent who needs stable source layers and clear doc
+  ownership
 
 ## Problem
 
@@ -24,7 +43,20 @@ Typical pain points are:
 - managed online scoring is difficult to reason about without clear release and monitoring evidence
 - Azure ML runs are noisy unless artifacts, manifests, and wrapper surfaces are intentionally designed
 
-## Solution
+## Core Promises
+
+This repo is built to preserve a few important promises:
+
+- lifecycle stages stay explicit rather than collapsing into one opaque script
+- release truth is auditable and does not depend on console optimism
+- monitoring stays downstream of release truth instead of inventing deployment
+  truth
+- retraining remains policy-guided and artifact-driven rather than hidden
+  automation
+- docs point to the real owner of each fact instead of forcing readers to
+  reverse-engineer the system from code alone
+
+## Lifecycle Summary
 
 This repo turns that into a staged Azure ML workflow:
 
@@ -38,7 +70,7 @@ This repo turns that into a staged Azure ML workflow:
 
 The result is a repo that is easier to operate, inspect, and explain as a complete MLOps system rather than a loose collection of training scripts.
 
-The repo root now stays intentionally smaller:
+The repo root stays intentionally smaller:
 
 - canonical lifecycle entrypoints remain at the root:
   `run_pipeline.py`, `run_hpo_pipeline.py`, `run_hpo.py`, `run_monitor.py`, `run_release.py`, and `run_retraining_loop.py`
@@ -64,7 +96,7 @@ The repo root now stays intentionally smaller:
 - `monitor`
   - evaluates release evidence first and optional caller-side capture evidence second
 
-## Major Workflow Features
+## Main Workflows
 
 - Validation-gated fixed training through `run_pipeline.py`
 - End-to-end Azure ML HPO through `run_hpo_pipeline.py`
@@ -94,26 +126,17 @@ The repo keeps low-cost smoke inputs explicit and opt-in:
 
 Smoke runs are for orchestration, guardrail, and artifact validation, not for claiming production model quality.
 
-## Engineering Highlights
+## What Makes This Repo Different
 
-The most important work in this repo is not only “train a churn classifier.” It is the surrounding lifecycle reliability and operator truth:
+The main value of this repo is not only the classifier itself. It is the
+surrounding lifecycle discipline:
 
-- **Stage-aware orchestration**
-  - validation, prep, HPO, fixed train, promotion, deploy, and monitor are kept as explicit stages with stable artifacts
-- **Artifact-first debugging**
-  - manifests, summaries, and named outputs are treated as the primary inspection surface instead of raw log-diving
-- **Separation of optimization and production retraining**
-  - HPO and fixed training share core logic but stay distinct operationally
-- **Release truthfulness**
-  - `release_record.json` captures deployment state, canary evidence, lineage, and monitoring handoff without pretending unsupported telemetry exists
-- **Repo-owned scoring proof**
-  - current fresh-cloud evidence proves the repo-owned scorer path through `repo_owned_scoring_proven`
-- **Caller-side monitoring evidence**
-  - retrievable caller-side capture can upgrade monitoring from `limited_but_healthy` to `capture_backed` without relying on Azure collector binding
-- **Truthful retraining policy**
-  - monitoring can now recommend “no retraining signal,” “retraining candidate,” or “investigate before retraining” without skipping validation, promotion, or release gates
-- **HPO stays exploratory until fixed-train continuation**
-  - completed HPO now feeds one validated winner-config continuation back into fixed training instead of pretending HPO outputs are release-ready on their own
+- explicit stage boundaries
+- artifact-first debugging and review
+- separation between exploratory HPO and production retraining
+- truthful release and monitoring semantics
+- bounded, inspectable retraining policy handoffs
+- a private-source / curated-public repo model
 
 ## Architecture
 
@@ -204,6 +227,12 @@ Operational invariants:
 - [release-monitoring-evaluator.yaml](docs/features/release-monitoring-evaluator/release-monitoring-evaluator.yaml)
   Structured contract for the monitoring evaluator feature.
 
+If you want the project-purpose and repo-method sources behind this README,
+start with:
+
+- [project-charter.md](docs/intent/project-charter.md)
+- [pipeline_guide.md](docs/pipeline_guide.md)
+
 ## Source Layout
 
 ```text
@@ -217,6 +246,15 @@ setup/                workspace, environment, and asset setup scripts
 src/                  Azure ML adapters, data, training, promotion, release, monitoring
 tests/                automated verification
 ```
+
+## Non-Goals
+
+This repo is intentionally not trying to be:
+
+- a full generic MLOps platform
+- a full-spectrum continuous observability product
+- a hidden-automation system that skips validation, promotion, or release gates
+- a project where README becomes the deepest source of truth
 
 ## Getting Started
 
